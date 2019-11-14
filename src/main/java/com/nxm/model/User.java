@@ -39,6 +39,9 @@ public class User {
     @Column(name = "col_updatedate")
     private LocalDate updateDate;
     
+    @Column(name = "status")
+    private int status;
+    
     @PrePersist
     public void prePersist() {
     	createDate=LocalDate.now();
@@ -55,6 +58,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+    
+    @ManyToMany
+    @JoinTable(
+            name = "user_employee",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
+    private Set<Employee> employees;
 
     public int getId() {
         return id;
@@ -87,6 +98,19 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public Set<Employee> getEmployees() {
+		return employees;
+	}
+	public void setEmployees(Set<Employee> employees) {
+		this.employees = employees;
+	}
 
 
 }

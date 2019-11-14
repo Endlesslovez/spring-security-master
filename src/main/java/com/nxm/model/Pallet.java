@@ -25,5 +25,38 @@ public class Pallet {
     
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "pallet")
     private Set<PalletPosition> palletPositions;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public long getPalletNumber() {
+		return palletNumber;
+	}
+
+	public void setPalletNumber(long palletNumber) {
+		this.palletNumber = palletNumber;
+	}
+
+	public Set<PalletPosition> getPalletPositions() {
+		return palletPositions;
+	}
+
+	public void setPalletPositions(Set<PalletPosition> palletPositions) {
+		this.palletPositions = palletPositions;
+	}
+    
     
 }

@@ -20,8 +20,8 @@ public class StockTotal {
     @Column(name = "createdate")
     private LocalDate createDate;
 
-
-    private long userId;
+    @Column(name = "userCreateId")
+    private long userCreateId;
 
     @Column(name = "col_datecount")
     private long dateCount;
@@ -34,10 +34,69 @@ public class StockTotal {
     @Column(name = "col_status")
     private int status;
     
-    @ManyToOne
-    @JoinColumn(name = "col_stockchange",nullable = false)
-    private StockChange stockChange;
+   /* @OneToMany(fetch = FetchType.LAZY,mappedBy = "stockTotal")
+    private Set<StockChange> stockChanges;*/
     
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "stockTotal")
     private Set<StockTotalDetail> stockTotalDetails;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public LocalDate getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDate createDate) {
+		this.createDate = createDate;
+	}
+
+	public long getUserCreateId() {
+		return userCreateId;
+	}
+
+	public void setUserCreateId(long userCreateId) {
+		this.userCreateId = userCreateId;
+	}
+
+	public long getDateCount() {
+		return dateCount;
+	}
+
+	public void setDateCount(long dateCount) {
+		this.dateCount = dateCount;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
+
+	/*public Set<StockChange> getStockChanges() {
+		return stockChanges;
+	}
+
+	public void setStockChanges(Set<StockChange> stockChanges) {
+		this.stockChanges = stockChanges;
+	}*/
+
+	public Set<StockTotalDetail> getStockTotalDetails() {
+		return stockTotalDetails;
+	}
+
+	public void setStockTotalDetails(Set<StockTotalDetail> stockTotalDetails) {
+		this.stockTotalDetails = stockTotalDetails;
+	}
+    
+    
 }

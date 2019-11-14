@@ -58,4 +58,78 @@ public class WareHouseDay {
 	public void preUpdate() {
 		updateDate = LocalDate.now();
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getOpenStock() {
+		return openStock;
+	}
+
+	public void setOpenStock(long openStock) {
+		this.openStock = openStock;
+	}
+
+	public long getImportWare() {
+		return importWare;
+	}
+
+	public void setImportWare(long importWare) {
+		this.importWare = importWare;
+	}
+
+	public long getExport() {
+		return export;
+	}
+
+	public void setExport(long export) {
+		this.export = export;
+	}
+
+	public long getCurrentStock() {
+		return currentStock;
+	}
+
+	public void setCurrentStock(long currentStock) {
+		this.currentStock = currentStock;
+	}
+
+	public LocalDate getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDate createDate) {
+		this.createDate = createDate;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public LocalDate getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(LocalDate updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
 }

@@ -33,6 +33,10 @@ public class MediaItem {
 	@ManyToOne
 	@JoinColumn(name = "col_productid", nullable = false)
 	private Product product;
+	
+	@ManyToOne
+	@JoinColumn(name = "col_employeeid", nullable = false)
+	private Employee employee;
 
 	public MediaItem() {
 		super();

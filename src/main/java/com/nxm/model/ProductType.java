@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.Set;
 @Data
-@Entity(name = "tbl_producttype")
+@Entity(name = "tbl_product_type")
 public class ProductType {
 
     @Id
@@ -16,10 +16,10 @@ public class ProductType {
     @Column(unique = true,nullable = false)
     private Long id;
 
-    @Column(name = "col_typename")
+    @Column(name = "col_type_name")
     private  String typeName;
 
-    @Column(name = "col_createdate")
+    @Column(name = "col_create_date")
     private LocalDate createDate;
 
     @Column(name = "col_status")

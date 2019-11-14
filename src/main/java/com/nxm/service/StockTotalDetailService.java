@@ -1,0 +1,10 @@
+package com.nxm.service;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.nxm.model.StockTotalDetail;
+
+public interface StockTotalDetailService {
+    Page<StockTotalDetail> findAll(Pageable pageable);
+}

@@ -11,26 +11,43 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import lombok.Data;
 
-@Entity(name = "tbl_role")
-public class Role {
+@Entity(name = "tbl_employee")
+public class Employee {
 
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY
     )
-    @Column(name = "id", nullable = false)
+    @Column(name = "employee_id", nullable = false)
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "employee_name", nullable = false)
     private String name;
     
-    @Column(name = "description")
-    private String description;
+    @Column(name = "email", nullable = false)
+    private String email;
+    
+    @Column(name = "birthday", nullable = false)
+    private LocalDate birthday;
+    
+    @Column(name = "education_type", nullable = false)
+    private String educationType;
+    
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	private Set<MediaItem> media;
+    
+    @Column(name = "employee_type", nullable = false)
+    private String employeeType;
+    
+    @Column(name = "province_code", nullable = false)
+    private String provinceCode;
     
     public LocalDate getCreateDate() {
 		return createDate;
@@ -51,7 +68,7 @@ public class Role {
     @Column(name = "col_updatedate")
     private LocalDate updateDate;
     
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "employees")
     private Set<User> users;
     
     @PrePersist
@@ -63,10 +80,10 @@ public class Role {
     public void preUpdate() {
     	updateDate=LocalDate.now();
     }
-    public Role() {
+    public Employee() {
     }
 
-    public Role(String name) {
+    public Employee(String name) {
         this.name = name;
     }
 
@@ -93,11 +110,41 @@ public class Role {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
-	public String getDescription() {
-		return description;
+	public String getEmail() {
+		return email;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public LocalDate getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
+	}
+	public String getEducationType() {
+		return educationType;
+	}
+	public void setEducationType(String educationType) {
+		this.educationType = educationType;
+	}
+	public Set<MediaItem> getMedia() {
+		return media;
+	}
+	public void setMedia(Set<MediaItem> media) {
+		this.media = media;
+	}
+	public String getEmployeeType() {
+		return employeeType;
+	}
+	public void setEmployeeType(String employeeType) {
+		this.employeeType = employeeType;
+	}
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
 	}
 
 }
