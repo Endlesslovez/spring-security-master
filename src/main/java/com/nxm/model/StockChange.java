@@ -33,9 +33,6 @@ public class StockChange {
 	private long userCreateId;
 	@Column(name = "col_userUpdateId")
 	private long userUpdateId;
-	@Column(name = "col_updateDate")
-<<<<<<< HEAD
-	private LocalDate updateDate;
 
 	@Column(name = "col_quantity_change")
 	private long quantityChange;
@@ -49,8 +46,7 @@ public class StockChange {
 	@Column(name = "stock_total_id")
 	private long stockTotalId;
 	
-	
-=======
+
 	private String updateDate;
 
 	 
@@ -66,5 +62,5 @@ public class StockChange {
     }
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "stockChange")
 	private Set<StockTotal> stockTotals;
->>>>>>> h
+
 }

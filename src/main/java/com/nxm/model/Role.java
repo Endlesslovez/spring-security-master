@@ -27,27 +27,7 @@ public class Role {
 
     @Column(name = "name", nullable = false)
     private String name;
-    
-<<<<<<< HEAD
-    @Column(name = "description")
-    private String description;
-    
-    public LocalDate getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(LocalDate createDate) {
-		this.createDate = createDate;
-	}
-	public LocalDate getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(LocalDate updateDate) {
-		this.updateDate = updateDate;
-	}
-=======
    
->>>>>>> h
-
 	@Column(name = "col_createdate")
     private String createDate;
     
@@ -73,44 +53,6 @@ public class Role {
          DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
          updateDate = formattedString1.format(formatter2);
     }
-<<<<<<< HEAD
 
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-=======
-  
->>>>>>> h
 }
 

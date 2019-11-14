@@ -20,13 +20,10 @@ public class ProductType {
     @Column(name = "col_type_name")
     private  String typeName;
 
-<<<<<<< HEAD
-    @Column(name = "col_create_date")
-    private LocalDate createDate;
-=======
+
     @Column(name = "col_createdate")
     private String createDate;
->>>>>>> h
+
 
     @Column(name = "col_status")
     private String status;
