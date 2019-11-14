@@ -6,6 +6,7 @@ import javax.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 @Data
 @Entity(name = "tbl_product_type")
@@ -19,15 +20,22 @@ public class ProductType {
     @Column(name = "col_type_name")
     private  String typeName;
 
+<<<<<<< HEAD
     @Column(name = "col_create_date")
     private LocalDate createDate;
+=======
+    @Column(name = "col_createdate")
+    private String createDate;
+>>>>>>> h
 
     @Column(name = "col_status")
     private String status;
 
     @PrePersist
     public void prePersist(){
-        createDate=LocalDate.now();
+       LocalDate formattedString=LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        createDate = formattedString.format(formatter);
     }
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "productType")

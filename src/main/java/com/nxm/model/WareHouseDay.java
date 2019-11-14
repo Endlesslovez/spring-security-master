@@ -14,6 +14,7 @@ import javax.persistence.PreUpdate;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 @Data
 @Entity(name = "tbl_warehouseday")
 public class WareHouseDay {
@@ -37,17 +38,18 @@ public class WareHouseDay {
 	private long currentStock;
 
 	@Column(name = "col_createdate")
-	private LocalDate createDate;
+	private String createDate;
 
 	private long userId;
 
 	@Column(name = "col_updatedate")
-	private LocalDate updateDate;
+	private String updateDate;
 
 	@ManyToOne
 	@JoinColumn(name = "col_product",nullable = false)
 	private Product product;
 
+<<<<<<< HEAD
 	@PrePersist
 	public void prePersist() {
 		createDate = LocalDate.now();
@@ -132,4 +134,23 @@ public class WareHouseDay {
 	}
 	
 	
+=======
+	 
+    @PrePersist
+    public void prePersist(){
+       LocalDate formattedString=LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        createDate = formattedString.format(formatter);
+        
+        LocalDate formattedString1=LocalDate.now();
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        updateDate = formattedString1.format(formatter2);
+    }
+    @PreUpdate
+    public void preUpdate() {
+    	   LocalDate formattedString1=LocalDate.now();
+           DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+           updateDate = formattedString1.format(formatter2);
+    }
+>>>>>>> h
 }

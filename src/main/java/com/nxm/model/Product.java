@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity(name = "tbl_product")
@@ -29,23 +30,30 @@ public class Product {
 	private Set<MediaItem> media;
 
 	@Column(name = "col_createdate")
-	private LocalDate createDate;
+	private String createDate;
 
 	@Column(name = "col_updatedate")
-	private LocalDate updateDate;
+	private String updateDate;
 
 	private long userId;
 
 
 	@PrePersist
-	public void prePersist() {
-		createDate = LocalDate.now();
-		updateDate = LocalDate.now();
-	}
+    public void prePersist(){
+       LocalDate formattedString=LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        createDate = formattedString.format(formatter);
+        
+        LocalDate formattedString1=LocalDate.now();
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        updateDate = formattedString1.format(formatter2);
+    }
 
 	@PreUpdate
 	public void preUpdate() {
-		updateDate = LocalDate.now();
+		 LocalDate formattedString1=LocalDate.now();
+	        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+	        updateDate = formattedString1.format(formatter2);
 	}
 
 	private long packageType;

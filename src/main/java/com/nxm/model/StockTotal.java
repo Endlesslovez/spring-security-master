@@ -7,6 +7,7 @@ import javax.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 @Data
 @Entity(name = "tbl_stocktotal")
@@ -18,17 +19,21 @@ public class StockTotal {
     private long id;
 
     @Column(name = "createdate")
-    private LocalDate createDate;
+    private String createDate;
 
     @Column(name = "userCreateId")
     private long userCreateId;
 
     @Column(name = "col_datecount")
     private long dateCount;
-
+    
     @PrePersist
     public void prePersist(){
-        createDate=LocalDate.now();
+       LocalDate formattedString=LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        createDate = formattedString.format(formatter);
+        
+      
     }
 
     @Column(name = "col_status")
