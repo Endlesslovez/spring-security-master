@@ -49,17 +49,7 @@ public class WareHouseDay {
 	@JoinColumn(name = "col_product",nullable = false)
 	private Product product;
 
-<<<<<<< HEAD
-	@PrePersist
-	public void prePersist() {
-		createDate = LocalDate.now();
-		updateDate = LocalDate.now();
-	}
 
-	@PreUpdate
-	public void preUpdate() {
-		updateDate = LocalDate.now();
-	}
 
 	public long getId() {
 		return id;
@@ -101,11 +91,11 @@ public class WareHouseDay {
 		this.currentStock = currentStock;
 	}
 
-	public LocalDate getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(LocalDate createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
 
@@ -117,11 +107,11 @@ public class WareHouseDay {
 		this.userId = userId;
 	}
 
-	public LocalDate getUpdateDate() {
+	public String getUpdateDate() {
 		return updateDate;
 	}
 
-	public void setUpdateDate(LocalDate updateDate) {
+	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
 
@@ -134,7 +124,7 @@ public class WareHouseDay {
 	}
 	
 	
-=======
+
 	 
     @PrePersist
     public void prePersist(){
@@ -152,5 +142,5 @@ public class WareHouseDay {
            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
            updateDate = formattedString1.format(formatter2);
     }
->>>>>>> h
+
 }

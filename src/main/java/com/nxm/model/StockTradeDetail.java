@@ -51,7 +51,7 @@ public class StockTradeDetail {
     }
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stockTradeDetail")
-	private Set<PositionProductTrade> positioProductTrades;
+	private Set<PositioProductTrade> positioProductTrades;
 
 	@ManyToOne
 	@JoinColumn(name = "col_product", nullable = false)

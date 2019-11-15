@@ -32,7 +32,7 @@ public class PalletPosition {
 	private Set<StockTotalDetail> stockTotalDetails;
 
 	@OneToMany(fetch = FetchType.EAGER,mappedBy = "palletPosition")
-	private Set<PositionProductTrade> productTrades;
+	private Set<PositioProductTrade> productTrades;
 
 	public long getId() {
 		return id;
@@ -82,11 +82,11 @@ public class PalletPosition {
 		this.stockTotalDetails = stockTotalDetails;
 	}
 
-	public Set<PositionProductTrade> getProductTrades() {
+	public Set<PositioProductTrade> getProductTrades() {
 		return productTrades;
 	}
 
-	public void setProductTrades(Set<PositionProductTrade> productTrades) {
+	public void setProductTrades(Set<PositioProductTrade> productTrades) {
 		this.productTrades = productTrades;
 	}
 

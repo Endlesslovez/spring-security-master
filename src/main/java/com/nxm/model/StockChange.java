@@ -60,7 +60,7 @@ public class StockChange {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         updateDate = formattedString1.format(formatter2);
     }
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "stockChange")
-	private Set<StockTotal> stockTotals;
+//	@OneToMany(fetch = FetchType.LAZY,mappedBy = "stockChange")
+//	private Set<StockTotal> stockTotals;
 
 }
