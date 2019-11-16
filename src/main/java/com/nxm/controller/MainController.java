@@ -10,15 +10,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nxm.model.StockTotalDetail;
+import com.nxm.repository.UserRepository;
 import com.nxm.service.StockTotalDetailService;
 
 @Controller
 public class MainController {
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private StockTotalDetailService stockTotalDetailService;
@@ -44,8 +48,17 @@ public class MainController {
 	}
 
 	@GetMapping("/login")
-	public String getLogin() {
-
+	public String getLogin( ) {
+//		if (userRepository.findByEmail(username) == null) {
+//			model.addAttribute("login", "Đăng nhập thất bại mời thử lại");
+//		}
+//		if (username.isEmpty()) {
+//			model.addAttribute("username", "Username trống");
+//		}
+//		if (password.isEmpty()) {
+//			model.addAttribute("password", "Password trống");
+//		}
+		
 		return "login";
 	}
 
@@ -57,11 +70,10 @@ public class MainController {
 		}
 		return "redirect:/";
 	}
+
 	@GetMapping("/quenmatkhau")
 	public String quenMatKhau() {
 		return "quenmatkhau";
 	}
-	
-	
-	
+
 }
