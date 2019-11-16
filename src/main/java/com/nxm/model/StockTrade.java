@@ -2,12 +2,10 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-@Data
 @Entity(name = "tbl_stocktrade")
 public class StockTrade {
 
@@ -60,6 +58,73 @@ public class StockTrade {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stockTrade")
 	private Set<StockTradeDetail> stockTradeDetails;
+
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+	public String getTradeDate() {
+		return tradeDate;
+	}
+	public void setTradeDate(String tradeDate) {
+		this.tradeDate = tradeDate;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public String getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+	public long getTypeOfTrade() {
+		return typeOfTrade;
+	}
+	public void setTypeOfTrade(long typeOfTrade) {
+		this.typeOfTrade = typeOfTrade;
+	}
+	public long getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(long employeeId) {
+		this.employeeId = employeeId;
+	}
+	public long getApproved() {
+		return approved;
+	}
+	public void setApproved(long approved) {
+		this.approved = approved;
+	}
+	public String getDelveryDate() {
+		return delveryDate;
+	}
+	public void setDelveryDate(String delveryDate) {
+		this.delveryDate = delveryDate;
+	}
+	public long getUserUpdate() {
+		return userUpdate;
+	}
+	public void setUserUpdate(long userUpdate) {
+		this.userUpdate = userUpdate;
+	}
+	public Set<StockTradeDetail> getStockTradeDetails() {
+		return stockTradeDetails;
+	}
+	public void setStockTradeDetails(Set<StockTradeDetail> stockTradeDetails) {
+		this.stockTradeDetails = stockTradeDetails;
+	}
 
 	
 }

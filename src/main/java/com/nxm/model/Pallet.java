@@ -6,8 +6,6 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import lombok.Data;
-@Data
 @Entity(name = "tbl_pallet")
 public class Pallet {
 

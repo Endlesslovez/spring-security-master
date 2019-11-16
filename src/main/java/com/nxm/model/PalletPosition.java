@@ -2,11 +2,9 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Set;
-@Data
 @Entity(name = "tbl_pallet_position")
 public class PalletPosition {
 

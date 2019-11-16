@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import lombok.Data;
 
 @Entity(name = "tbl_employee")
 public class Employee {
