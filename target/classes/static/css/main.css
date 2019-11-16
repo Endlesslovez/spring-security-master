@@ -2084,13 +2084,8 @@ body.on-side .wrap-sticky nav.navbar.bootsnav.sticked{
         padding-top: 30px;
         padding-bottom: 30px;
     }
-   
 }
- .validate-form{
-     margin-top: 39px;
-    }
-    .btn-success{
-   width: 100px;
-    height: 50px;
-    margin-right: 22px;
-    }
+   .form-sendmail{
+   margin-top: 28px;
+}
+
