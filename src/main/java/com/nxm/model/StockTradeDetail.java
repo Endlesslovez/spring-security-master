@@ -2,12 +2,10 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-@Data
 @Entity(name = "tbl_stock_trade_detail")
 public class StockTradeDetail {
 
@@ -60,6 +58,68 @@ public class StockTradeDetail {
 	@ManyToOne
 	@JoinColumn(name = "col_stocktrade", nullable = false)
 	private StockTrade stockTrade;
+
+
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public long getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(long quantity) {
+		this.quantity = quantity;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public long getUserCreateId() {
+		return userCreateId;
+	}
+	public void setUserCreateId(long userCreateId) {
+		this.userCreateId = userCreateId;
+	}
+	public long getUserUpdateId() {
+		return userUpdateId;
+	}
+	public void setUserUpdateId(long userUpdateId) {
+		this.userUpdateId = userUpdateId;
+	}
+	public String getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+	public Set<PositioProductTrade> getPositioProductTrades() {
+		return positioProductTrades;
+	}
+	public void setPositioProductTrades(Set<PositioProductTrade> positioProductTrades) {
+		this.positioProductTrades = positioProductTrades;
+	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	public StockTrade getStockTrade() {
+		return stockTrade;
+	}
+	public void setStockTrade(StockTrade stockTrade) {
+		this.stockTrade = stockTrade;
+	}
 
 	
 }

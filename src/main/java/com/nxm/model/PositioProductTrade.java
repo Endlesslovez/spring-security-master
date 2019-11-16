@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 
-import lombok.Data;
-@Data
 @Entity(name = "tbl_positionproducttrade")
 public class PositioProductTrade {
 	
@@ -43,6 +41,46 @@ public class PositioProductTrade {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         createDate = formattedString.format(formatter);
     }
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public StockTradeDetail getStockTradeDetail() {
+		return stockTradeDetail;
+	}
+
+	public void setStockTradeDetail(StockTradeDetail stockTradeDetail) {
+		this.stockTradeDetail = stockTradeDetail;
+	}
+
+	public PalletPosition getPalletPosition() {
+		return palletPosition;
+	}
+
+	public void setPalletPosition(PalletPosition palletPosition) {
+		this.palletPosition = palletPosition;
+	}
+
+	public long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(long quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
 	
 	
 	

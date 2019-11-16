@@ -3,12 +3,10 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-@Data
 @Entity(name = "tbl_product_type")
 public class ProductType {
 

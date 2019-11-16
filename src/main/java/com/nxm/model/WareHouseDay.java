@@ -11,11 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-@Data
 @Entity(name = "tbl_warehouseday")
 public class WareHouseDay {
 	

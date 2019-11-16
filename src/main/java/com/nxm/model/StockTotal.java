@@ -4,12 +4,10 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
-import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-@Data
 @Entity(name = "tbl_stocktotal")
 public class StockTotal {
 
@@ -45,5 +43,54 @@ public class StockTotal {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "stockTotal")
     private Set<StockTotalDetail> stockTotalDetails;
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	public long getUserCreateId() {
+		return userCreateId;
+	}
+
+	public void setUserCreateId(long userCreateId) {
+		this.userCreateId = userCreateId;
+	}
+
+	public long getDateCount() {
+		return dateCount;
+	}
+
+	public void setDateCount(long dateCount) {
+		this.dateCount = dateCount;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public Set<StockTotalDetail> getStockTotalDetails() {
+		return stockTotalDetails;
+	}
+
+	public void setStockTotalDetails(Set<StockTotalDetail> stockTotalDetails) {
+		this.stockTotalDetails = stockTotalDetails;
+	}
+
+    
     
 }

@@ -13,7 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import lombok.Data;
 
 @Entity(name = "tbl_role")
 public class Role {
