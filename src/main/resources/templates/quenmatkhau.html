@@ -32,11 +32,16 @@
 		<div class="container-login100">
 			<img src="/images/logo.png" alt="" class="img-login">
 			<div class="wrap-login100">
+			<form th:action="@{/login}" method="POST" class="btn-back">
+			<button type="submit" class="close" aria-label="Close" >
+			<span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
+				</button>
+				</form>
 				<div class="login100-pic js-tilt" data-tilt>
 					<img src="/images/logo-login.png" alt="IMG">
 				</div>
 
-
+				
 				<form class="login100-form validate-form form-sendmail" th:action="@{/sendmail}"
 					method="POST">
 					<span class="login100-form-title" style="margin-left: -100px;">
