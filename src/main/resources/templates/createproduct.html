@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Giải pháp quản lý kho hàng</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+</head>
+<body>
+	<!-- <div th:replace="/template/header :: header"></div> -->
+	<header class="header">
+		<img src="/images/logo.png" alt="" class="img-header"> <a
+			style="top: 11px; position: absolute; right: 120px; color: white;"><span
+			sec:authentication="name"></span></a>
+		<form action="#" th:action="@{/logout}" method="POST"
+			class="btn-logout">
+
+			<button type="submit" class="btn btn-outline-primary"
+				style="color: white; width:75%; font-weight: bold;">ĐĂNG XUẤT</button>
+		</form>
+	</header>
+
+	<nav class="site-header sticky-top py-1" style="position: relative;">
+		<div
+			class="container d-flex flex-column flex-md-row justify-content-between"
+			style="max-width: 80%; margin-left: 0px;">
+			 <a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ TỒN
+				KHO</a> <span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN
+				LÝ NHẬP XUẤT</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">BÁO CÁO TỒN KHO</a> <span></span> <a
+				class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
+				LƯỢNG</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ TÀI KHOẢN</a> <span></span>
+		</div>
+	</nav>
+	<article>
+		<div class="container">
+			<div class="col">
+				<div class="row">
+					<div class="form-create-product"
+						style="width: 55%; margin-left: 20%;">
+
+						<h2 style="margin-left: 27%; margin-bottom: 6%; margin-top: 6%;">THÊM
+							SẢN PHẨM</h2>
+						<table class="table">
+
+							<tr>
+								<td>Tên sản phẩm</td>
+								<td>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											id="exampleInputEmail1" aria-describedby="emailHelp"
+											placeholder="Enter name">
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Nhãn hiệu sản phẩm</td>
+								<td><div class="input-group mb-3">
+										<select class="custom-select" id="inputGroupSelect03"
+											aria-label="Example select with button addon">
+											<option selected>Choose...</option>
+											<option value="1">One</option>
+											<option value="2">Two</option>
+											<option value="3">Three</option>
+										</select>
+									</div></td>
+							</tr>
+							<tr>
+								<td>Loại sản phẩm</td>
+								<td><div class="input-group mb-3">
+										<select class="custom-select" id="inputGroupSelect03"
+											aria-label="Example select with button addon">
+											<option selected>Choose...</option>
+											<option value="1">One</option>
+											<option value="2">Two</option>
+											<option value="3">Three</option>
+										</select>
+									</div></td>
+							</tr>
+							<tr>
+								<td>Ngày hết hạn</td>
+								<td>
+									<div class="form-group">
+										<input type="date" class="form-control"
+											id="exampleInputEmail1" aria-describedby="emailHelp"
+											placeholder="Enter date">
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Số lượng</td>
+								<td>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											id="exampleInputEmail1" aria-describedby="emailHelp"
+											placeholder="Enter amount">
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Thành tiền</td>
+								<td>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											id="exampleInputEmail1" aria-describedby="emailHelp"
+											placeholder="Enter money">
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Số lượng tồn kho</td>
+								<td>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											id="exampleInputEmail1" aria-describedby="emailHelp"
+											placeholder="Enter stock">
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Pallet Position Id</td>
+								<td>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											id="exampleInputEmail1" aria-describedby="emailHelp"
+											placeholder="Enter pallet">
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Hình ảnh</td>
+								<td><div class="input-group mb-3">
+										<div class="custom-file">
+											<input type="file" class="custom-file-input"
+												id="inputGroupFile02"> <label
+												class="custom-file-label" for="inputGroupFile02"
+												aria-describedby="inputGroupFileAddon02">Choose file</label>
+										</div>
+										<div class="input-group-append">
+											<span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
+										</div>
+									</div></td>
+							</tr>
+							<tr>
+								<td><form action="">
+										<button type="button" class="btn btn-success">Lưu</button>
+									</form></td>
+								<td><form action="">
+										<button type="button" class="btn btn-danger">Hủy</button>
+									</form></td>
+							</tr>
+						</table>
+
+
+
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</article>
+	<footer class="footer">Copyright &copy; Feature Solution Company
+		2019</footer>
+
+
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+	<script>
+		$('.js-tilt').tilt({
+			scale : 1.1
+		})
+	</script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
+</html>
