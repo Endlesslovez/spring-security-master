@@ -40,25 +40,26 @@
 					method="POST">
 					<span class="login100-form-title" style="margin-left: -100px;">
 						ĐĂNG NHẬP</span> 
+						<span th:text="${login}"></span>
 					<div class="wrap-input100 validate-input"
 						data-validate="Valid email is required: ex@abc.xyz">
 					
 						<input class="input100" type="text" name="username"
-							placeholder="Email"> <span class="focus-input100"></span>
+							placeholder="Email" required min="1"> <span class="focus-input100" ></span>
 						<span class="symbol-input100"> <i class="fa fa-envelope"
 							aria-hidden="true"></i>
 						</span>
 					</div>
-				
+				<span th:text="${username}"></span>
 					<div class="wrap-input100 validate-input"
 						data-validate="Password is required">
 						<input class="input100" type="password" name="password"
-							placeholder="Password"> <span class="focus-input100"></span>
+							placeholder="Password" required min="1"> <span class="focus-input100"></span>
 						<span class="symbol-input100"> <i class="fa fa-eye"
 							aria-hidden="true"></i>
 						</span>
 					</div>
-					
+					<span th:text="${password}"></span>
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">Đăng nhập</button>
 					</div>
