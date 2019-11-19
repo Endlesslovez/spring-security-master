@@ -131,7 +131,7 @@
 															<div class="form-group">
 																<input type="text" class="form-control"
 																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter name">
+																	placeholder="Enter name" name="nameproduct">
 
 															</div>
 														</td>
@@ -140,7 +140,7 @@
 														<td>Nhãn hiệu sản phẩm</td>
 														<td><div class="input-group mb-3">
 																<select class="custom-select" id="inputGroupSelect03"
-																	aria-label="Example select with button addon">
+																	aria-label="Example select with button addon" name="nhanhieu">
 																	<option selected>Choose...</option>
 																	<option value="1">One</option>
 																	<option value="2">Two</option>
@@ -152,7 +152,7 @@
 														<td>Loại sản phẩm</td>
 														<td><div class="input-group mb-3">
 																<select class="custom-select" id="inputGroupSelect03"
-																	aria-label="Example select with button addon">
+																	aria-label="Example select with button addon" name="producttype">
 																	<option selected>Choose...</option>
 																	<option value="1">One</option>
 																	<option value="2">Two</option>
@@ -166,7 +166,7 @@
 															<div class="form-group">
 																<input type="date" class="form-control"
 																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter date">
+																	placeholder="Enter date" name="date">
 															</div>
 														</td>
 													</tr>
@@ -176,7 +176,7 @@
 															<div class="form-group">
 																<input type="text" class="form-control"
 																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter amount">
+																	placeholder="Enter amount" name="amount">
 
 															</div>
 														</td>
@@ -187,7 +187,7 @@
 															<div class="form-group">
 																<input type="number" class="form-control"
 																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter money">
+																	placeholder="Enter money" name="money">
 
 															</div>
 														</td>
@@ -198,7 +198,7 @@
 															<div class="form-group">
 																<input type="text" class="form-control"
 																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter stock">
+																	placeholder="Enter stock" name="stock">
 
 															</div>
 														</td>
@@ -209,7 +209,7 @@
 															<div class="form-group">
 																<input type="text" class="form-control"
 																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter pallet">
+																	placeholder="Enter pallet" name="pallet">
 
 															</div>
 														</td>
@@ -219,15 +219,12 @@
 														<td><div class="input-group mb-3">
 																<div class="custom-file">
 																	<input type="file" class="custom-file-input"
-																		id="inputGroupFile02"> <label
+																		id="inputGroupFile02" name="image"> <label
 																		class="custom-file-label" for="inputGroupFile02"
 																		aria-describedby="inputGroupFileAddon02">Choose
 																		file</label>
 																</div>
-																<div class="input-group-append">
-																	<span class="input-group-text"
-																		id="inputGroupFileAddon02">Upload</span>
-																</div>
+															
 															</div></td>
 													</tr>
 
@@ -236,7 +233,6 @@
 										</div>
 									</div>
 								</div>
-
 								<button type="button" class="close" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
@@ -244,7 +240,7 @@
 							</div>
 
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
+								<button type="button" class="btn btn-secondary close"
 									data-dismiss="modal">Hủy</button>
 								<button type="button" class="btn btn-primary">Lưu</button>
 							</div>
