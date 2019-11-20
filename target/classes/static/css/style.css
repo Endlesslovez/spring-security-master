@@ -42,6 +42,12 @@
 	font-size: 14pt;
 }
 
+footer{
+	background: #00ff00215255218;
+	font-family: "Myriad Pro";
+	font-style: "Regular";
+	font-size: 14pt;
+}
 .img-login {
 	max-width: 29%;
 	margin-left: 5%;

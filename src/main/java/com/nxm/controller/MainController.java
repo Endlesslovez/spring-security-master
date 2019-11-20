@@ -104,17 +104,25 @@ public class MainController {
          HSSFSheet sheet = workbook.createSheet("Danh Sách Nhân Viên");
 
          HSSFRow rowhead = sheet.createRow((short) 0);
-         rowhead.createCell(0).setCellValue("No.");
-         rowhead.createCell(1).setCellValue("Name");
-         rowhead.createCell(2).setCellValue("Address");
+         rowhead.createCell(0).setCellValue("");
+         rowhead.createCell(1).setCellValue("");
+         rowhead.createCell(2).setCellValue("Danh");
          rowhead.createCell(3).setCellValue("Email");
-
-         HSSFRow row = sheet.createRow((short) 1);
+         
+         HSSFRow row1 = sheet.createRow((short) 1);
+         row1.createCell(0).setCellValue("No.");
+         row1.createCell(1).setCellValue("Mã sản phẩm");
+         row1.createCell(2).setCellValue("Tên sản phẩm");
+         row1.createCell(3).setCellValue("Số lượng");
+         row1.createCell(4).setCellValue("Ngày hết hạn");
+         row1.createCell(5).setCellValue("Mã vị trí");
+         HSSFRow row = sheet.createRow((short) 2);
          row.createCell(0).setCellValue("1");
-         row.createCell(1).setCellValue("Carlos");
+         row.createCell(1).setCellValue("SP001");
          row.createCell(2).setCellValue("Costa Rica");
-         row.createCell(3).setCellValue("myNameh@gmail.com");
-
+         row.createCell(3).setCellValue("20");
+         row.createCell(4).setCellValue("22/12/2019");
+         row.createCell(5).setCellValue("VT0012");
          FileOutputStream fileOut = new FileOutputStream(fileName);
          workbook.write(fileOut);
          fileOut.close();
