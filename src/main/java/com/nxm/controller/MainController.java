@@ -17,14 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nxm.model.StockTotalDetail;
 import com.nxm.repository.UserRepository;
@@ -34,6 +31,9 @@ import com.nxm.service.StockTotalDetailService;
 public class MainController {
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEndcode;
 
 	@Autowired
 	private StockTotalDetailService stockTotalDetailService;
@@ -59,19 +59,26 @@ public class MainController {
 	}
 
 	@GetMapping("/login")
-	public String getLogin( ) {
-//		if (userRepository.findByEmail(username) == null) {
-//			model.addAttribute("login", "Đăng nhập thất bại mời thử lại");
-//		}
-//		if (username.isEmpty()) {
-//			model.addAttribute("username", "Username trống");
-//		}
-//		if (password.isEmpty()) {
-//			model.addAttribute("password", "Password trống");
-//		}
-		
+	public String getLogin() {
 		return "login";
 	}
+//
+//	@GetMapping("/login")
+//	public String getLoginError(@RequestParam("username") String username, @RequestParam("password") String password,
+//			ModelMap modelMap) {
+//		User user = userRepository.findByEmail(username);
+//		if (username.length() == 0) {
+//			modelMap.addAttribute("username", "Tai Khoan trong");
+//		}
+//		if (password.length() == 0) {
+//			modelMap.addAttribute("password", "Mat khau de trong");
+//		}
+//		if (user == null) {
+//			modelMap.addAttribute("login", "Dang nhap that bai");
+//		}
+//
+//		return "login";
+//	}
 
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
@@ -87,7 +94,7 @@ public class MainController {
 		return "quenmatkhau";
 	}
 
-	@RequestMapping("/exportExcel")
+	@GetMapping("/exportExcel")
     public void downloadFile(HttpServletRequest httpServletRequest, HttpServletResponse response) {             
 
 		String typeOflst = httpServletRequest.getParameter("typeOflst");
@@ -170,4 +177,5 @@ public class MainController {
          System.out.println(ex);
      }
  }
+
 }
