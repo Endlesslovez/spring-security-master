@@ -10,9 +10,16 @@ import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -95,87 +102,104 @@ public class MainController {
 	}
 
 	@GetMapping("/exportExcel")
-    public void downloadFile(HttpServletRequest httpServletRequest, HttpServletResponse response) {             
+	public void downloadFile(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 
 		String typeOflst = httpServletRequest.getParameter("typeOflst");
-		 String fileName ;
+		String fileName;
 		if (typeOflst.equals("1")) {
 			fileName = "F:/download/QLPM/DsSanPhamHethan.xls";
 		} else {
 			fileName = "F:/download/QLPM/DsSanPhamHetHang.xls";
 		}
-    try {
+		try {
 
-        
-         HSSFWorkbook workbook = new HSSFWorkbook();
-         HSSFSheet sheet = workbook.createSheet("Danh Sách Nhân Viên");
+			HSSFWorkbook workbook = new HSSFWorkbook();
+			HSSFSheet sheet = workbook.createSheet("Danh Sách Nhân Viên");
+			HSSFFont font = workbook.createFont();
+	        font.setBold(true);
+	       // font.setItalic(true);
+	 
+	        // Font Height
+	        font.setFontHeightInPoints((short) 10);
+	 
+	        // Font Color
+	        font.setColor(IndexedColors.WHITE.index);
+			HSSFCellStyle style = workbook.createCellStyle();
+			style.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			style.setFont(font);
+			HSSFRow rowhead = sheet.createRow((short) 0);
+			rowhead.createCell(0).setCellValue("");
+			rowhead.createCell(1).setCellValue("");
+			rowhead.createCell(2).setCellValue("Danh sách sản phẩm");
+			
+			rowhead.createCell(3).setCellValue("");
+			
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(0).setCellValue("No.");
+			row1.createCell(1).setCellValue("Mã sản phẩm");
+			row1.createCell(2).setCellValue("Tên sản phẩm");
+			row1.createCell(3).setCellValue("Số lượng");
+			row1.createCell(4).setCellValue("Ngày hết hạn");
+			row1.createCell(5).setCellValue("Mã vị trí");
+			row1.getCell(0).setCellStyle(style);
+			row1.getCell(1).setCellStyle(style);
+			row1.getCell(2).setCellStyle(style);
+			row1.getCell(3).setCellStyle(style);
+			row1.getCell(4).setCellStyle(style);
+			row1.getCell(5).setCellStyle(style);
+			HSSFRow row = sheet.createRow((short) 2);
+			row.createCell(0).setCellValue("1");
+			row.createCell(1).setCellValue("SP001");
+			row.createCell(2).setCellValue("Costa Rica");
+			row.createCell(3).setCellValue("20");
+			row.createCell(4).setCellValue("22/12/2019");
+			row.createCell(5).setCellValue("VT0012");
+			FileOutputStream fileOut = new FileOutputStream(fileName);
+			workbook.write(fileOut);
+			fileOut.close();
+			System.out.println("Your excel file has been generated!");
+			sheet.autoSizeColumn(5);
+			// Code to download
+			File fileToDownload = new File(fileName);
+			InputStream in = new FileInputStream(fileToDownload);
 
-         HSSFRow rowhead = sheet.createRow((short) 0);
-         rowhead.createCell(0).setCellValue("");
-         rowhead.createCell(1).setCellValue("");
-         rowhead.createCell(2).setCellValue("Danh");
-         rowhead.createCell(3).setCellValue("Email");
-         
-         HSSFRow row1 = sheet.createRow((short) 1);
-         row1.createCell(0).setCellValue("No.");
-         row1.createCell(1).setCellValue("Mã sản phẩm");
-         row1.createCell(2).setCellValue("Tên sản phẩm");
-         row1.createCell(3).setCellValue("Số lượng");
-         row1.createCell(4).setCellValue("Ngày hết hạn");
-         row1.createCell(5).setCellValue("Mã vị trí");
-         HSSFRow row = sheet.createRow((short) 2);
-         row.createCell(0).setCellValue("1");
-         row.createCell(1).setCellValue("SP001");
-         row.createCell(2).setCellValue("Costa Rica");
-         row.createCell(3).setCellValue("20");
-         row.createCell(4).setCellValue("22/12/2019");
-         row.createCell(5).setCellValue("VT0012");
-         FileOutputStream fileOut = new FileOutputStream(fileName);
-         workbook.write(fileOut);
-         fileOut.close();
-         System.out.println("Your excel file has been generated!");
+			// Gets MIME type of the file
+			String mimeType = new MimetypesFileTypeMap().getContentType(fileName);
 
-         //Code to download
-         File fileToDownload = new File(fileName);
-         InputStream in = new FileInputStream(fileToDownload);
+			if (mimeType == null) {
+				// Set to binary type if MIME mapping not found
+				mimeType = "application/octet-stream";
+			}
+			System.out.println("MIME type: " + mimeType);
 
-         // Gets MIME type of the file
-         String mimeType = new MimetypesFileTypeMap().getContentType(fileName);
+			// Modifies response
+			response.setContentType(mimeType);
+			response.setContentLength((int) fileToDownload.length());
 
-         if (mimeType == null) {
-             // Set to binary type if MIME mapping not found
-             mimeType = "application/octet-stream";
-         }
-         System.out.println("MIME type: " + mimeType);
+			// Forces download
+			String headerKey = "Content-Disposition";
+			String headerValue = String.format("attachment; filename=\"%s\"", fileToDownload.getName());
+			response.setHeader(headerKey, headerValue);
 
-         // Modifies response
-         response.setContentType(mimeType);
-         response.setContentLength((int) fileToDownload.length());
+			// obtains response's output stream
+			OutputStream outStream = response.getOutputStream();
 
-         // Forces download
-         String headerKey = "Content-Disposition";
-         String headerValue = String.format("attachment; filename=\"%s\"", fileToDownload.getName());
-         response.setHeader(headerKey, headerValue);
+			byte[] buffer = new byte[4096];
+			int bytesRead = -1;
 
-         // obtains response's output stream
-         OutputStream outStream = response.getOutputStream();
+			while ((bytesRead = in.read(buffer)) != -1) {
+				outStream.write(buffer, 0, bytesRead);
+			}
 
-         byte[] buffer = new byte[4096];
-         int bytesRead = -1;
+			in.close();
+			outStream.close();
 
-         while ((bytesRead = in.read(buffer)) != -1) {
-             outStream.write(buffer, 0, bytesRead);
-         }
+			System.out.println("File downloaded at client successfully");
 
-         in.close();
-         outStream.close();
-
-         System.out.println("File downloaded at client successfully");
-
-
-     } catch (Exception ex) {
-         System.out.println(ex);
-     }
- }
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+	}
 
 }
