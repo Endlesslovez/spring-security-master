@@ -35,7 +35,7 @@
 	<!-- <div th:replace="/template/header :: header"></div> -->
 	<header class="header">
 		<img src="/images/logo.png" alt="" class="img-header"> <a
-			style="top: 0px; position: absolute; right: 120px; color: white;"><span
+			style="top: 0px; position: absolute; right: 10%	; color: white;"><span
 			sec:authentication="name"></span></a>
 		<form action="#" th:action="@{/logout}" method="POST"
 			class="btn-logout">
@@ -45,7 +45,7 @@
 		</form>
 	</header>
 
-	<nav class="site-header sticky-top py-1" style="position: relative;">
+	<nav class="site-header sticky-top py-1" style="position: relative; font-family: 'Archivo Black', sans-serif;">
 		<div
 			class="container d-flex flex-column flex-md-row justify-content-between"
 			style="max-width: 80%; margin-left: 0px;">
@@ -68,7 +68,7 @@
 
 
 						<table class="table" style="border: black 1px solid;">
-							<tr class="table-tr-title">
+							<tr  style="background: #00ff00215255218;">
 								<th class="th">MÃ SẢN PHẨM</th>
 								<th class="th">TÊN SẢN PHẨM</th>
 								<th class="th">SỐ LƯỢNG</th>
@@ -258,7 +258,7 @@
 
 
 						<table class="table" style="border: black 1px solid;">
-							<tr class="table-tr-title">
+							<tr class="table-tr-title"style="background: #00ff00215255218;">
 								<th class="th">MÃ SẢN PHẨM</th>
 								<th class="th">TÊN SẢN PHẨM</th>
 								<th class="th">SỐ LƯỢNG</th>
@@ -442,7 +442,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" style="margin-bottom:3%;">
 				<div class="col"></div>
 				<div class="col"></div>
 				<div class="col"> <form action="/exportExcel" method="get">
@@ -450,14 +450,14 @@
 				<select style="width:70%;"id="typeOflst" name="typeOflst">
 									<option value="1">Ds Hết hạn</option>
 									<option value="2">Ds Hết hàng</option>
-							</select><button class="btn btn-info" type="submit">Xuất Excel</button></form></div>
+							</select><button class="btn btn-info" type="submit" style="margin-left: 5px;width:28%;">Xuất Excel</button></form></div>
 			</div>
 		</div>
 
 
 	</article>
-	<div class="footer">Copyright &copy; Feature Solution Company
-		2019</div>
+	<footer style="background: rgb(215, 255, 218);font-family: 'Myriad Pro';font-style: 'Regular';font-size: 14pt; text-align:center;">Copyright &copy; Feature Solution Company
+		2019</footer>
 
 
 
