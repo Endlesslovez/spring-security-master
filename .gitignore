@@ -1,0 +1,51 @@
+Web Java App/DMS.ONE_web/web/resources/scripts/business/stock/vnm.stock.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/sale-product/vnm.sale-product.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/catalog/vnm.catalog.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/superviseshop/vnm.superviseshop.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/sale-product/vnm.sale-product.min.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/superviseshop/vnm.superviseshop.min.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/po/vnm.po.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/program/vnm.program.js
+Web Java App/DMS.ONE_common/.classpath
+Web Java App/DMS.ONE_common/.settings/org.eclipse.wst.common.project.facet.core.xml
+Web Java App/DMS.ONE_core/.classpath
+Web Java App/DMS.ONE_web/.classpath
+Web Java App/DMS.ONE_web/web/resources/scripts/business/po/vnm.po.js
+Web Java App/DMS.ONE_web/web/resources/scripts/business/program/vnm.program.js
+
+DMS.ONE_TrangAn_V1/.idea/
+DMS.ONE_TrangAn_V1/.gradle/
+
+# Operating System Files
+
+*.DS_Store
+Thumbs.db
+*.sw?
+.#*
+*#
+*~
+*.sublime-*
+
+# Build Artifacts
+
+.gradle/
+build/
+target/
+bin/
+dependency-reduced-pom.xml
+
+# Eclipse Project Files
+
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA Files
+
+*.iml
+*.ipr
+*.iws
+*.idea
+
+README.html
+Web Java App/DMS.ONE_web/web/resources/scripts/business/saleplan/vnm.sale-plan.js

@@ -58,7 +58,36 @@ input {
 	outline: none;
 	border: none;
 }
-
+.tr-table-lv1{
+	transition: transform .2s;
+	background: #ffaaaa; 
+}
+.tr-table-lv1:hover {
+  transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+	z-index: 99;
+	background: white;
+	color:red;
+}
+.tr-table-lv2{
+	transition: transform .2s;
+	background: #ffd1a4;
+}
+.tr-table-lv2:hover {
+  transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+	z-index: 99;
+	background: white;
+	color:red;
+}
+.tr-table-lv3{
+	transition: transform .2s;
+	background: #9ddfff;
+}
+.tr-table-lv3:hover {
+  transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+	z-index: 99;
+	background: white;
+	color:red;
+}
 textarea {
 	outline: none;
 	border: none;
@@ -466,7 +495,7 @@ header {
 	width: 100%;
 	position: relative;
 	min-height: 50px;
-	background-color: #acfc98;
+	background-color: #dadada;
 }
 
 .btn-logout {
@@ -487,13 +516,13 @@ header {
 }
 
 #navbarNavAltMarkup {
-	background-color: #80ff00;
+	background-color: #31b573;
 	color: white;
 }
 
 .table-title {
 	margin-top: 5%;
-	color: #ff8000;
+	color:  #31b573;
 	text-align: center;
 	margin-bottom: 5%;
 }
@@ -662,7 +691,7 @@ nav.navbar.bootsnav ul.nav li.active > a:hover,
 nav.navbar.bootsnav ul.nav li.active > a:focus,
 nav.navbar.bootsnav ul.nav li.active > a{
     background-color: transparent;
-     color: #00ffff;
+     color: #ffffff;
      text-decoration: none;
 }
 
