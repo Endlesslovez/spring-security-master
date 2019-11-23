@@ -11,9 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -119,23 +126,46 @@ public class MainController {
 
 			HSSFWorkbook workbook = new HSSFWorkbook();
 			HSSFSheet sheet = workbook.createSheet("Danh Sách Nhân Viên");
-
+			HSSFFont font = workbook.createFont();
+	        font.setBold(true);
+	       // font.setItalic(true);
+	 
+	        // Font Height
+	        font.setFontHeightInPoints((short) 10);
+	 
+	        // Font Color
+	        font.setColor(IndexedColors.WHITE.index);
+			HSSFCellStyle style = workbook.createCellStyle();
+			style.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			style.setFont(font);
 			HSSFRow rowhead = sheet.createRow((short) 0);
-			rowhead.createCell(0).setCellValue("No.");
-			rowhead.createCell(1).setCellValue("Name");
-			rowhead.createCell(2).setCellValue("Address");
-			rowhead.createCell(3).setCellValue("Email");
-
-			HSSFRow row = sheet.createRow((short) 1);
+			rowhead.createCell(0).setCellValue("");
+			rowhead.createCell(1).setCellValue("");
+			rowhead.createCell(2).setCellValue("Danh sách sản phẩm");
+			
+			rowhead.createCell(3).setCellValue("");
+			
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(0).setCellValue("No.");
+			row1.createCell(1).setCellValue("Mã sản phẩm");
+			row1.createCell(2).setCellValue("Tên sản phẩm");
+			row1.createCell(3).setCellValue("Số lượng");
+			row1.createCell(4).setCellValue("Ngày hết hạn");
+			row1.createCell(5).setCellValue("Mã vị trí");
+			row1.getCell(0).setCellStyle(style);
+			row1.getCell(1).setCellStyle(style);
+			row1.getCell(2).setCellStyle(style);
+			row1.getCell(3).setCellStyle(style);
+			row1.getCell(4).setCellStyle(style);
+			row1.getCell(5).setCellStyle(style);
+			HSSFRow row = sheet.createRow((short) 2);
 			row.createCell(0).setCellValue("1");
-			row.createCell(1).setCellValue("Carlos");
+			row.createCell(1).setCellValue("SP001");
 			row.createCell(2).setCellValue("Costa Rica");
-			row.createCell(3).setCellValue("myNameh@gmail.com");
-
-			FileOutputStream fileOut = new FileOutputStream(fileName);
-			workbook.write(fileOut);
-			fileOut.close();
-			System.out.println("Your excel file has been generated!");
+			row.createCell(3).setCellValue("20");
+			row.createCell(4).setCellValue("22/12/2019");
+			row.createCell(5).setCellValue("VT0012");
 
 			// Code to download
 			File fileToDownload = new File(fileName);
@@ -179,6 +209,7 @@ public class MainController {
 		}
 	}
 
+
 	@GetMapping("/stock")
 	public String stock(Model model) {
 		model.addAttribute("brand", brandService.getAll());
@@ -210,4 +241,5 @@ public class MainController {
 	  }
 
 	}
+
 
