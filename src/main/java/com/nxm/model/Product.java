@@ -35,6 +35,7 @@ public class Product {
 	@Column(name = "col_updatedate")
 	private String updateDate;
 
+	@Column(name = "col_create_id")
 	private long userId;
 
 	@Column(name = "col_image")
@@ -79,11 +80,11 @@ public class Product {
 	@JoinColumn(name = "product_type", nullable = false)
 	private ProductType productType;
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -143,6 +144,15 @@ public class Product {
 		this.userId = userId;
 	}
 
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public long getPackageType() {
 		return packageType;
 	}
@@ -198,13 +208,6 @@ public class Product {
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
 
 	public Product(Long id, String name, Brand brand, int price, Set<MediaItem> media, String createDate,
 			String updateDate, long userId, String image, long packageType,
@@ -233,6 +236,7 @@ public class Product {
 	public Product() {
 		super();
 	}
+
 
 	
 
