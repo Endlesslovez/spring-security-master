@@ -35,9 +35,11 @@ public class Product {
 	@Column(name = "col_updatedate")
 	private String updateDate;
 
+	@Column(name = "col_create_id")
 	private long userId;
-
-
+	@Column(name = "col_image")
+	private String image;
+	
 	@PrePersist
     public void prePersist(){
        LocalDate formattedString=LocalDate.now();
@@ -75,6 +77,134 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "product_type",nullable = false)
 	private ProductType productType;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Brand getBrand() {
+		return brand;
+	}
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public Set<MediaItem> getMedia() {
+		return media;
+	}
+
+	public void setMedia(Set<MediaItem> media) {
+		this.media = media;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public long getPackageType() {
+		return packageType;
+	}
+
+	public void setPackageType(long packageType) {
+		this.packageType = packageType;
+	}
+
+	public Set<StockTradeDetail> getStockTradeDetails() {
+		return stockTradeDetails;
+	}
+
+	public void setStockTradeDetails(Set<StockTradeDetail> stockTradeDetails) {
+		this.stockTradeDetails = stockTradeDetails;
+	}
+
+	public Set<StockTotalDetail> getStockTotalDetails() {
+		return stockTotalDetails;
+	}
+
+	public void setStockTotalDetails(Set<StockTotalDetail> stockTotalDetails) {
+		this.stockTotalDetails = stockTotalDetails;
+	}
+
+	public Set<WareHouseDay> getWareHouseDays() {
+		return wareHouseDays;
+	}
+
+	public void setWareHouseDays(Set<WareHouseDay> wareHouseDays) {
+		this.wareHouseDays = wareHouseDays;
+	}
+
+	public Set<MediaItem> getMediaItems() {
+		return mediaItems;
+	}
+
+	public void setMediaItems(Set<MediaItem> mediaItems) {
+		this.mediaItems = mediaItems;
+	}
+
+	public Set<StockChange> getStockChanges() {
+		return stockChanges;
+	}
+
+	public void setStockChanges(Set<StockChange> stockChanges) {
+		this.stockChanges = stockChanges;
+	}
+
+	public ProductType getProductType() {
+		return productType;
+	}
+
+	public void setProductType(ProductType productType) {
+		this.productType = productType;
+	}
 
 
 	

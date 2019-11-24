@@ -34,7 +34,7 @@
 		<h4 style="position: absolute; right: 10%; top:10%; color: #31b573;">XIN CHÀO&#160;&#160;&#160;<span sec:authentication="name"></span></h4>
 			<form action="#" th:action="@{/logout}" method="POST" class="btn-logout">
 
-				<button type="submit" class="btn btn-info" style="color: white; back-ground: #20754a; width: 75%;">ĐĂNG
+				<button type="submit" class="btn_logout" >ĐĂNG
 					XUẤT</button>
 			
 			</form>
@@ -43,7 +43,7 @@
 	<nav class="site-header sticky-top py-1" style="position: relative; font-family: 'Archivo Black', sans-serif;background:#31b573;">
 		<div class="container d-flex flex-column flex-md-row justify-content-between"
 			style="max-width: 80%; margin-left: 0px;">
-			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ TỒN
+			<a class="py-2 d-none d-md-inline-block" th:href="@{/stock}">QUẢN LÝ TỒN
 				KHO</a> <span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN
 				LÝ NHẬP XUẤT</a> <span></span> <a class="py-2 d-none d-md-inline-block" href="#">BÁO CÁO TỒN KHO</a>
 			<span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
@@ -61,7 +61,7 @@
 
 
 						<table class="table" style="border: black 1px solid;">
-							<tr class="tr-table" style="background: #79f382;color:white;">
+							<tr class="tr-table">
 								<td >MÃ SẢN PHẨM</td>
 								<td >TÊN SẢN PHẨM</td>
 								<td >SỐ LƯỢNG</td>
@@ -180,7 +180,7 @@
                                 class="btn btn-danger btn-sm" >Delete</a>
                         </td>-->
 							</tr>
-
+						<tfoot class="table-title"></tfoot>
 						</table>
 
 					</div>
@@ -188,7 +188,7 @@
 
 
 						<table class="table ">
-							<tr style="background: #80ff00;color:white;">
+							<tr >
 								<td >MÃ SẢN PHẨM</td>
 								<td >TÊN SẢN PHẨM</td>
 								<td >SỐ LƯỢNG</td>
@@ -246,7 +246,7 @@
 
 
 							<table class="table" style="border: black 1px solid;">
-							<tr class="tr-table" style="background: #79f382;color:white;">
+							<tr class="tr-table" >
 								<td >MÃ SẢN PHẨM</td>
 								<td >TÊN SẢN PHẨM</td>
 								<td >SỐ LƯỢNG</td>
@@ -365,7 +365,7 @@
                                 class="btn btn-danger btn-sm" >Delete</a>
                         </td>-->
 							</tr>
-
+						<tfoot class="tfooter"></tfoot>
 						</table>
 
 					</div>
