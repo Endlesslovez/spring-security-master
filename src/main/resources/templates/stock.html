@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <title>Giải pháp quản lý kho hàng</title>
 <meta charset="UTF-8">
@@ -84,15 +86,15 @@
 							<th scope="col">Số lượng tồn kho đáp ứng</th>
 							<th scope="col">Pallet Position Id</th>
 							<th scope="col">Chuyển vị trí</th>
-							<th scope="col"><form action="">
-									<button type="button" class="btn btn-primary"
-										data-toggle="modal" data-target="#exampleModal">
-										<i class="fa fa-plus"></i>
-									</button>
-								</form></th>
+							<th scope="col">
+								<button type="button" class="btn btn-primary"
+									data-toggle="modal" data-target="#exampleModal">
+									<i class="fa fa-plus"></i>
+								</button>
+							</th>
 					</thead>
 					<tbody>
-					
+
 						<tr>
 							<td scope="col"></td>
 							<td></td>
@@ -104,149 +106,157 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><form action="">
-									<button type="button" class="btn btn-danger"><i class="fa fa-edit"></i></button>
+							<td><form action="@{combo}">
+									<button type="button" class="btn btn-danger">
+										<i class="fa fa-edit"></i>
+									</button>
 								</form></td>
 						</tr>
 					</tbody>
 				</table>
+				<form  method="POST" enctype="multipart/form-data">
 
-				<div class="modal fade" id="exampleModal" tabindex="-1"
-					role="dialog" aria-labelledby="exampleModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<div class="container">
-									<div class="col">
-										<div class="row">
-											<div class="form-create-product">
+					<div class="modal fade" id="exampleModal" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<div class="container">
+										<div class="col">
+											<div class="row">
+												<div class="form-create-product">
+													<h2 style="margin: 10% 0% 10% 34%;">THÊM SẢN PHẨM</h2>
+													<table class="table">
+														<tr>
+															<td>Tên sản phẩm</td>
+															<td>
+																<div class="form-group">
+																	<input type="text" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter name" name="nameproduct">
 
-												<h2 style="margin: 10% 0% 10% 34%;">THÊM SẢN PHẨM</h2>
-												<table class="table">
-
-													<tr>
-														<td>Tên sản phẩm</td>
-														<td>
-															<div class="form-group">
-																<input type="text" class="form-control"
-																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter name" name="nameproduct">
-
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>Nhãn hiệu sản phẩm</td>
-														<td><div class="input-group mb-3">
-																<select class="custom-select" id="inputGroupSelect03"
-																	aria-label="Example select with button addon" name="nhanhieu">
-																	<option selected>Choose...</option>
-																	<option value="1">One</option>
-																	<option value="2">Two</option>
-																	<option value="3">Three</option>
-																</select>
-															</div></td>
-													</tr>
-													<tr>
-														<td>Loại sản phẩm</td>
-														<td><div class="input-group mb-3">
-																<select class="custom-select" id="inputGroupSelect03"
-																	aria-label="Example select with button addon" name="producttype">
-																	<option selected>Choose...</option>
-																	<option value="1">One</option>
-																	<option value="2">Two</option>
-																	<option value="3">Three</option>
-																</select>
-															</div></td>
-													</tr>
-													<tr>
-														<td>Ngày hết hạn</td>
-														<td>
-															<div class="form-group">
-																<input type="date" class="form-control"
-																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter date" name="date">
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>Số lượng</td>
-														<td>
-															<div class="form-group">
-																<input type="text" class="form-control"
-																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter amount" name="amount">
-
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>Thành tiền</td>
-														<td>
-															<div class="form-group">
-																<input type="number" class="form-control"
-																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter money" name="money">
-
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>Số lượng tồn kho</td>
-														<td>
-															<div class="form-group">
-																<input type="text" class="form-control"
-																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter stock" name="stock">
-
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>Pallet Position Id</td>
-														<td>
-															<div class="form-group">
-																<input type="text" class="form-control"
-																	id="exampleInputEmail1" aria-describedby="emailHelp"
-																	placeholder="Enter pallet" name="pallet">
-
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td>Hình ảnh</td>
-														<td><div class="input-group mb-3">
-																<div class="custom-file">
-																	<input type="file" class="custom-file-input"
-																		id="inputGroupFile02" name="image"> <label
-																		class="custom-file-label" for="inputGroupFile02"
-																		aria-describedby="inputGroupFileAddon02">Choose
-																		file</label>
 																</div>
-															
-															</div></td>
-													</tr>
+															</td>
+														</tr>
+														<tr>
+															<td>Nhãn hiệu sản phẩm</td>
+															<td>
+																<div class="input-group mb-3" 
+																		>
+																	<select class="custom-select" id="inputGroupSelect03"
+																		aria-label="Example select with button addon" >
+																		<option value="">Chọn Nhãn Hiệu</option>
+																		<option th:each="country : ${brand}"
+																			th:value="${country.id}" th:utext="${country.name}" />
+																	</select>
 
-												</table>
+
+																</div>
+															</td>
+														</tr>
+														
+														<tr>
+															<td>Loại sản phẩm</td>
+															<td><div class="input-group mb-3">
+																	<select class="custom-select" id="inputGroupSelect03"
+																		aria-label="Example select with button addon" >
+																		<option value="">Chọn Loại Sản Phẩm</option>
+																		<option th:each="country : ${protype}"
+																			th:value="${country.id}" th:utext="${country.typeName}" />
+																	</select>
+																</div></td>
+														</tr>
+														<tr>
+															<td>Ngày hết hạn</td>
+															<td>
+																<div class="form-group">
+																	<input type="date" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter date" name="date">
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>Số lượng</td>
+															<td>
+																<div class="form-group">
+																	<input type="text" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter amount" name="amount">
+
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>Thành tiền</td>
+															<td>
+																<div class="form-group">
+																	<input type="number" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter money" name="money">
+
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>Số lượng tồn kho</td>
+															<td>
+																<div class="form-group">
+																	<input type="text" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter stock" name="stock">
+
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>Pallet Position Id</td>
+															<td>
+																<div class="form-group">
+																	<input type="text" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter pallet" name="pallet">
+
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>Hình ảnh</td>
+															<td><div class="input-group mb-3">
+																	<div class="custom-file">
+																		<input type="file" class="custom-file-input"
+																			id="inputGroupFile02" name="image"> <label
+																			class="custom-file-label" for="inputGroupFile02"
+																			aria-describedby="inputGroupFileAddon02">Choose
+																			file</label>
+																	</div>
+
+																</div></td>
+														</tr>
+
+													</table>
+												</div>
 											</div>
 										</div>
 									</div>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
 								</div>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
 
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary close"
-									data-dismiss="modal">Hủy</button>
-								<button type="button" class="btn btn-primary">Lưu</button>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary close"
+										data-dismiss="modal">Hủy</button>
+									<form>
+										<button type="button" class="btn btn-primary">Lưu</button>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 
