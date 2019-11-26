@@ -39,7 +39,7 @@ public class SendMailController {
 		System.out.println(password.toString());
 		user.setPassword(passwordEncoder.encode(password.toString()));
 		respository.save(user);
-		String text = "Mật khẩu mới của bạn là /n " + password;
+		String text = "Mật khẩu mới của bạn là \n " + password;
 		sendmail.sendMail(email, text);
 		if (sendmail.sendMail(email, text) == true) {
 			model.addAttribute("sendmail", "Mời bạn vào mail xác nhận mật khẩu");
@@ -50,8 +50,5 @@ public class SendMailController {
 	return "quenmatkhau";
 
 }
-	@PostMapping("/cancel")
-	public String cancel() {
-		return "login";
-	}
+	
 }
