@@ -2,27 +2,22 @@ package com.nxm.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,48 +25,36 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nxm.model.Brand;
 import com.nxm.model.Product;
+import com.nxm.model.ProductType;
 import com.nxm.model.StockTotalDetail;
-import com.nxm.model.User;
-import com.nxm.repository.BrandRepositoty;
 import com.nxm.repository.ProductRepository;
 import com.nxm.repository.UserRepository;
 import com.nxm.service.BrandService;
+import com.nxm.service.ProductService;
 import com.nxm.service.ProductTypeService;
 import com.nxm.service.StockTotalDetailService;
-
-import antlr.collections.List;
 
 @Controller
 public class MainController {
 
-	@Autowired
-	private BrandService brandService;
 
-	@Autowired
-	private ProductTypeService proTypeRepository;
-
-	@Autowired
+/*	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
-	private PasswordEncoder passwordEndcode;
+	private PasswordEncoder passwordEndcode;*/
 
 	@Autowired
 	private StockTotalDetailService stockTotalDetailService;
 
-	@Autowired
-	private ProductRepository productRepository;
+
 	
 	@GetMapping("/")
 	public String index(Model model, Pageable pageable) {
@@ -209,37 +192,6 @@ public class MainController {
 		}
 	}
 
-
-	@GetMapping("/stock")
-	public String stock(Model model) {
-		model.addAttribute("brand", brandService.getAll());
-		model.addAttribute("protype", proTypeRepository.getAll());
-		model.addAttribute("product", new Product());
-		return "stock";
-	}
-
-	@Value("${image.upload-dir}")
-	private String localtion;
-	
-	@PostMapping("/addproduct")
-	public String addproduct(Model model,Product product,MultipartFile file) {
-		  
-	    try {
-	    
-	        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-	      File file1 = new File(localtion, fileName);
-	      product.setImage(fileName);
-	     if(file1.exists()) {
-	    	 model.addAttribute("file", "File đã tồn tại");
-	     }
-	     productRepository.save(product);
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	      model.addAttribute("message", "upload failed");
-	    }
-	    return "stock";
-	  }
-
-	}
+}
 
 
