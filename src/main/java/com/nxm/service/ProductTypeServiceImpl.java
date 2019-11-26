@@ -19,4 +19,10 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 		return  repositoty.findAll();
 	}
 
+	@Override
+	public ProductType findProductById(Long id) {
+
+		return 	repositoty.findProductTypeById(id);
+	}
+
 }
