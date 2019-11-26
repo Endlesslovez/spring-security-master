@@ -2,6 +2,7 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -41,7 +42,8 @@ public class Product implements Serializable {
 	@Column(name = "col_updatedate")
 	private String updateDate;
 
-	
+	@Column(name = "col_image")
+	private String image;
 	@PrePersist
 	public void prePersist() {
 		LocalDate formattedString = LocalDate.now();
@@ -137,14 +139,14 @@ public class Product implements Serializable {
 //		this.updateDate = updateDate;
 //	}
 
-//
-//	public String getImage() {
-//		return image;
-//	}
-//
-//	public void setImage(String image) {
-//		this.image = image;
-//	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public String getPackageType() {
 		return packageType;
