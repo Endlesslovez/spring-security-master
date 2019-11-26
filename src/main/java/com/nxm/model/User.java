@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.validation.constraints.NotNull;
 
 
 @Entity(name = "tbl_user")
@@ -28,8 +29,10 @@ public class User {
     private int id;
 
     @Column(name = "email", nullable = false, unique = true)
+    @NotNull(message = "Không để trống tài khoản")
     private String email;
-
+    
+    @NotNull(message = "Không để trống password")
     @Column(name = "password", nullable = false)
     private String password;
 
