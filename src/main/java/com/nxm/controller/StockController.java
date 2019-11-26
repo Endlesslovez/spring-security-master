@@ -1,36 +1,26 @@
 package com.nxm.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.nxm.model.Brand;
 import com.nxm.model.Product;
-import com.nxm.model.UploadFileResponse;
+import com.nxm.model.ProductType;
 import com.nxm.repository.ProductRepository;
 import com.nxm.service.BrandService;
-import com.nxm.service.FileStorageService;
+import com.nxm.service.ProductService;
 import com.nxm.service.ProductTypeService;
 
 @Controller
@@ -42,6 +32,15 @@ public class StockController {
 	private ProductTypeService proTypeRepository;
 	@Autowired
 	private ProductRepository productRepository;
+
+
+    
+	@Autowired
+	private ProductService service;
+	
+	@Autowired
+	private ProductTypeService protypeService;
+	
 	@GetMapping("/stock")
 	public String stock(Model model) {
 		model.addAttribute("brand", brandService.getAll());
@@ -53,8 +52,31 @@ public class StockController {
 	@Value("${image.upload-dir}")
 	private String localtion;
 	
-	@PostMapping("/addproduct")
-	public String addproduct(Model model,Product product,MultipartFile file) {
+
+	@PostMapping("/stock")
+	public String addproduct(@ModelAttribute Product product, @RequestParam("name") String name,
+			@RequestParam("brand") String brand, @RequestParam("price") int price,
+			@RequestParam("productType") String productType, @RequestParam("packageType") String packageType,Model model) {
+		Long longId = Long.parseLong(brand);
+		Brand brand1 = brandService.findBrandById(longId);
+		
+		Long longIdpro = Long.parseLong(productType);
+		ProductType productType2 = protypeService.findProductById(longIdpro);
+		product.setName(name);
+		product.setPackageType(packageType);
+		product.setPrice(price);
+		product.setBrand(brand1);
+		product.setProductType(productType2);
+		if(service.create(product)==true) {
+			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
+			return "stock";
+		}else {
+			model.addAttribute("mgs", "Thêm mới không thàng công");
+			return "stock";
+		}
+	}
+
+	public String addproduct1(Model model,Product product,MultipartFile file) {
 		  
 	    try {
 	    
@@ -73,51 +95,49 @@ public class StockController {
 	  }
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 
-    @Autowired
-    private FileStorageService fileStorageService;
-    
-    @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
-    }
-
-    @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-        // Load file as Resource
-        Resource resource = fileStorageService.loadFileAsResource(fileName);
-
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            logger.info("Could not determine file type.");
-        }
-
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    }
+//    
+//    @PostMapping("/uploadFile")
+//    public UploadFileResponse uploadFile1(@RequestParam("file") MultipartFile file) {
+// 
+//        String fileName = fileStorageService.storeFile(file);
+//
+//
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/downloadFile/")
+//                .path(fileName)
+//                .toUriString();
+//
+//	
+//	
+//	
+//        return new UploadFileResponse(fileName, fileDownloadUri,
+//                file.getContentType(), file.getSize());
+//}
+//
+//
+//
+//   
+//    @GetMapping("/downloadFile/{fileName:.+}")
+//    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+//        // Load file as Resource
+//        Resource resource = fileStorageService.loadFileAsResource(fileName);
+//
+//        // Try to determine file's content type
+//        String contentType = null;
+//        try {
+//            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+//        } catch (IOException ex) {
+//            logger.info("Could not determine file type.");
+//        }
+//
+//        // Fallback to the default content type if type could not be determined
+//        if(contentType == null) {
+//            contentType = "application/octet-stream";
+//        }
+//
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType(contentType))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//                .body(resource);
+//    }
 }
