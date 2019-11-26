@@ -42,8 +42,7 @@
 		<form action="#" th:action="@{/logout}" method="POST"
 			class="btn-logout">
 
-			<button type="submit" class="btn_logout">ĐĂNG
-				XUẤT</button>
+			<button type="submit" class="btn_logout">ĐĂNG XUẤT</button>
 		</form>
 	</header>
 
@@ -71,7 +70,7 @@
 						size="10" />
 				</fieldset>
 
-
+				<span th:text="${mgs}"></span>
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -113,8 +112,8 @@
 						</tr>
 					</tbody>
 				</table>
-				<form  method="POST" enctype="multipart/form-data">
-
+				<form th:object="${product}" th:action="@{/stock}" th:method="POST"
+					action="stock.html">
 					<div class="modal fade" id="exampleModal" tabindex="-1"
 						role="dialog" aria-labelledby="exampleModalLabel"
 						aria-hidden="true">
@@ -133,7 +132,20 @@
 																<div class="form-group">
 																	<input type="text" class="form-control"
 																		id="exampleInputEmail1" aria-describedby="emailHelp"
-																		placeholder="Enter name" name="nameproduct">
+																		placeholder="Enter name" name="name"
+																		th:field="*{name}">
+
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td>Giá</td>
+															<td>
+																<div class="form-group">
+																	<input type="number" class="form-control"
+																		id="exampleInputEmail1" aria-describedby="emailHelp"
+																		placeholder="Enter name" name="price"
+																		th:field="*{price}">
 
 																</div>
 															</td>
@@ -141,91 +153,57 @@
 														<tr>
 															<td>Nhãn hiệu sản phẩm</td>
 															<td>
-																<div class="input-group mb-3" 
-																		>
+																<div class="input-group mb-3">
 																	<select class="custom-select" id="inputGroupSelect03"
-																		aria-label="Example select with button addon" >
+																		aria-label="Example select with button addon"
+																		th:field="*{brand}">
 																		<option value="">Chọn Nhãn Hiệu</option>
 																		<option th:each="country : ${brand}"
-																			th:value="${country.id}" th:utext="${country.name}" />
+																			th:value="${country.id}" th:text="${country.name}"
+																			th:name="brandid" />
 																	</select>
 
 
 																</div>
 															</td>
 														</tr>
-														
+
 														<tr>
 															<td>Loại sản phẩm</td>
 															<td><div class="input-group mb-3">
 																	<select class="custom-select" id="inputGroupSelect03"
-																		aria-label="Example select with button addon" >
+																		aria-label="Example select with button addon"
+																		name="productType" th:field="*{productType}">
 																		<option value="">Chọn Loại Sản Phẩm</option>
 																		<option th:each="country : ${protype}"
-																			th:value="${country.id}" th:utext="${country.typeName}" />
+																			th:value="${country.id}"
+																			th:text="${country.typeName}" />
 																	</select>
 																</div></td>
 														</tr>
 														<tr>
-															<td>Ngày hết hạn</td>
+															<td>Loại gói</td>
 															<td>
-																<div class="form-group">
-																	<input type="date" class="form-control"
-																		id="exampleInputEmail1" aria-describedby="emailHelp"
-																		placeholder="Enter date" name="date">
+																<div class="input-group mb-3">
+																	<select class="custom-select" id="inputGroupSelect03"
+																		aria-label="Example select with button addon"
+																		name="packageType">
+																		<option value="">Chọn loại gói sản phẩm</option>
+																		<option value="1">Size to</option>
+																		<option value="2">Size nhỏ</option>
+																	</select>
 																</div>
 															</td>
 														</tr>
-														<tr>
-															<td>Số lượng</td>
-															<td>
-																<div class="form-group">
-																	<input type="text" class="form-control"
-																		id="exampleInputEmail1" aria-describedby="emailHelp"
-																		placeholder="Enter amount" name="amount">
 
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td>Thành tiền</td>
-															<td>
-																<div class="form-group">
-																	<input type="number" class="form-control"
-																		id="exampleInputEmail1" aria-describedby="emailHelp"
-																		placeholder="Enter money" name="money">
 
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td>Số lượng tồn kho</td>
-															<td>
-																<div class="form-group">
-																	<input type="text" class="form-control"
-																		id="exampleInputEmail1" aria-describedby="emailHelp"
-																		placeholder="Enter stock" name="stock">
 
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td>Pallet Position Id</td>
-															<td>
-																<div class="form-group">
-																	<input type="text" class="form-control"
-																		id="exampleInputEmail1" aria-describedby="emailHelp"
-																		placeholder="Enter pallet" name="pallet">
-
-																</div>
-															</td>
-														</tr>
-														<tr>
+														<!--  <tr>
 															<td>Hình ảnh</td>
 															<td><div class="input-group mb-3">
 																	<div class="custom-file">
 																		<input type="file" class="custom-file-input"
-																			id="inputGroupFile02" name="image"> <label
+																			id="inputGroupFile02" th:path="image"> <label
 																			class="custom-file-label" for="inputGroupFile02"
 																			aria-describedby="inputGroupFileAddon02">Choose
 																			file</label>
@@ -233,7 +211,7 @@
 
 																</div></td>
 														</tr>
-
+											-->
 													</table>
 												</div>
 											</div>
@@ -246,11 +224,11 @@
 								</div>
 
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary close"
+									<button type="reset" class="btn btn-secondary close"
 										data-dismiss="modal">Hủy</button>
-							
-										<button type="button" class="btn btn-primary">Lưu</button>
-									
+
+									<button type="submit" class="btn btn-primary">Lưu</button>
+
 								</div>
 							</div>
 						</div>
