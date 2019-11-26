@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Giải pháp quản lý kho hàng</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+	<style type="text/css">
+	* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.58;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+body:before {
+    height: 50%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #128ff2;
+    content: "";
+    z-index: 0;
+}
+
+.clearfix:after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.7em;
+}
+
+a {
+    color: #128ff2;
+}
+
+button {
+    box-shadow: none;
+    border: 1px solid transparent;
+    font-size: 14px;
+    outline: none;
+    line-height: 100%;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0.6rem 1rem;
+    border-radius: 2px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    min-height: 38px;
+}
+
+button.primary {
+    background-color: #128ff2;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+}
+
+input {
+    font-size: 1rem;
+}
+
+input[type="file"] {
+    border: 1px solid #128ff2;
+    padding: 6px;
+    max-width: 100%;
+}
+
+.file-input {
+    width: 100%;
+}
+
+.submit-btn {
+    display: block;
+    margin-top: 15px;
+    min-width: 100px;
+}
+
+@media screen and (min-width: 500px) {
+    .file-input {
+        width: calc(100% - 115px);
+    }
+
+    .submit-btn {
+        display: inline-block;
+        margin-top: 0;
+        margin-left: 10px;
+    }
+}
+
+.upload-container {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #fff;
+      box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+      margin-top: 60px;
+      min-height: 400px;
+      position: relative;
+      padding: 20px;
+}
+
+.upload-header {
+    border-bottom: 1px solid #ececec;
+}
+
+.upload-header h2 {
+    font-weight: 500;
+}
+
+.single-upload {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.upload-response {
+    overflow-x: hidden;
+    word-break: break-all;
+}
+	</style>
+</head>
+<body>
+	<!-- <div th:replace="/template/header :: header"></div> -->
+	<header class="header">
+		<img src="/images/logo.png" alt="" class="img-header"> <a
+			style="top: 11px; position: absolute; right: 120px; color: white;"><span
+			sec:authentication="name"></span></a>
+		<form action="#" th:action="@{/logout}" method="POST"
+			class="btn-logout">
+
+			<button type="submit" class="btn_logout">ĐĂNG
+				XUẤT</button>
+		</form>
+	</header>
+
+	<nav class="site-header sticky-top py-1" style="position: relative;">
+		<div
+			class="container d-flex flex-column flex-md-row justify-content-between"
+			style="max-width: 80%; margin-left: 0px;">
+			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ TỒN KHO</a>
+			<span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN
+				LÝ NHẬP XUẤT</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">BÁO CÁO TỒN KHO</a> <span></span> <a
+				class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
+				LƯỢNG</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ TÀI KHOẢN</a> <span></span>
+		</div>
+	</nav>
+	<article>
+		<!-- <h2>QUẢN LÝ TỒN KHO</h2>
+		<div class="row">
+			<div class="col">
+				<fieldset>
+					<legend>Tìm kiếm</legend>
+					Ten sản phẩm <input type="text" size="30" /><br /> Nhản hiệu <input
+						type="text" size="30" /><br /> Loại sản phẩm<input type="text"
+						size="10" />
+				</fieldset>
+
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Mã sản phẩm</th>
+							<th scope="col">Tên sản phẩm</th>
+							<th scope="col">Nhản hiệu sản phẩm</th>
+							<th scope="col">Loại sản phẩm</th>
+							<th scope="col">Ngày hết hạn</th>
+							<th scope="col">Số lượng thực tế</th>
+							<th scope="col">Thành tiền</th>
+							<th scope="col">Số lượng tồn kho đáp ứng</th>
+							<th scope="col">Pallet Position Id</th>
+							<th scope="col">Chuyển vị trí</th>
+							<th scope="col"><form action="">
+									<button type="button" class="btn btn-primary"
+										data-toggle="modal" data-target="#exampleModal">
+										<i class="fa fa-plus"></i>
+									</button>
+								</form></th>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td scope="col"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><form action="">
+									<button type="button" class="btn btn-danger"><i class="fa fa-edit"></i></button>
+								</form></td>
+						</tr>
+					</tbody>
+				</table> -->
+
+				<!-- <div class="modal fade" id="exampleModal" tabindex="-1"
+					role="dialog" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<div class="container">
+									<div class="col">
+										<div class="row">
+											<div class="form-create-product">
+
+												<h2 style="margin: 10% 0% 10% 34%;">THÊM SẢN PHẨM</h2>
+												<table class="table">
+
+													<tr>
+														<td>Tên sản phẩm</td>
+														<td>
+															<div class="form-group">
+																<input type="text" class="form-control"
+																	id="exampleInputEmail1" aria-describedby="emailHelp"
+																	placeholder="Enter name" name="nameproduct">
+
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>Nhãn hiệu sản phẩm</td>
+														<td><div class="input-group mb-3">
+																<select class="custom-select" id="inputGroupSelect03"
+																	aria-label="Example select with button addon" name="nhanhieu">
+																	<option selected>Choose...</option>
+																	<option value="1">One</option>
+																	<option value="2">Two</option>
+																	<option value="3">Three</option>
+																</select>
+															</div></td>
+													</tr>
+													<tr>
+														<td>Loại sản phẩm</td>
+														<td><div class="input-group mb-3">
+																<select class="custom-select" id="inputGroupSelect03"
+																	aria-label="Example select with button addon" name="producttype">
+																	<option selected>Choose...</option>
+																	<option value="1">One</option>
+																	<option value="2">Two</option>
+																	<option value="3">Three</option>
+																</select>
+															</div></td>
+													</tr>
+													<tr>
+														<td>Ngày hết hạn</td>
+														<td>
+															<div class="form-group">
+																<input type="date" class="form-control"
+																	id="exampleInputEmail1" aria-describedby="emailHelp"
+																	placeholder="Enter date" name="date">
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>Số lượng</td>
+														<td>
+															<div class="form-group">
+																<input type="text" class="form-control"
+																	id="exampleInputEmail1" aria-describedby="emailHelp"
+																	placeholder="Enter amount" name="amount">
+
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>Thành tiền</td>
+														<td>
+															<div class="form-group">
+																<input type="number" class="form-control"
+																	id="exampleInputEmail1" aria-describedby="emailHelp"
+																	placeholder="Enter money" name="money">
+
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>Số lượng tồn kho</td>
+														<td>
+															<div class="form-group">
+																<input type="text" class="form-control"
+																	id="exampleInputEmail1" aria-describedby="emailHelp"
+																	placeholder="Enter stock" name="stock">
+
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>Pallet Position Id</td>
+														<td>
+															<div class="form-group">
+																<input type="text" class="form-control"
+																	id="exampleInputEmail1" aria-describedby="emailHelp"
+																	placeholder="Enter pallet" name="pallet">
+
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td>Hình ảnh</td>
+														<td><div class="input-group mb-3">
+																<div class="custom-file">
+																	<input type="file" class="custom-file-input"
+																		id="inputGroupFile02" name="image"> <label
+																		class="custom-file-label" for="inputGroupFile02"
+																		aria-describedby="inputGroupFileAddon02">Choose
+																		file</label>
+																</div>
+															
+															</div></td>
+													</tr>
+
+												</table>
+											</div>
+										</div>
+									</div>
+								</div> -->
+								<noscript>
+            <h2>Sorry! Your browser doesn't support Javascript</h2>
+        </noscript>
+        <div class="upload-container">
+            <div class="upload-header">
+                <h2>Spring Boot File Upload / Download Rest API Example</h2>
+            </div>
+            <div class="upload-content">
+                <div class="single-upload">
+                    <h3>Upload Single File</h3>
+                    <form id="singleUploadForm" name="singleUploadForm">
+                        <input id="singleFileUploadInput" type="file" name="file" class="file-input" required />
+                        <button type="submit" class="primary submit-btn">Submit</button>
+                    </form>
+                    <div class="upload-response">
+                        <div id="singleFileUploadError"></div>
+                        <div id="singleFileUploadSuccess"></div>
+                    </div>
+                </div>
+                <div class="multiple-upload">
+                    <h3>Upload Multiple Files</h3>
+                    <form id="multipleUploadForm" name="multipleUploadForm">
+                        <input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
+                        <button type="submit" class="primary submit-btn">Submit</button>
+                    </form>
+                    <div class="upload-response">
+                        <div id="multipleFileUploadError"></div>
+                        <div id="multipleFileUploadSuccess"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/main.js" ></script>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary close"
+									data-dismiss="modal">Hủy</button>
+								<button type="button" class="btn btn-primary">Lưu</button>
+							</div>
+						</div>
+				<!-- 	</div>
+				</div>
+			</div>
+		</div> -->
+
+
+	</article>
+	<div class="footer">Copyright &copy; Feature Solution Company
+		2019</div>
+
+
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+	<script>
+		$('.js-tilt').tilt({
+			scale : 1.1
+		});
+		$('#singleUploadForm').submit(function(event) {
+		    var formElement = this;
+		    // You can directly create form data from the form element
+		    // (Or you could get the files from input element and append them to FormData as we did in vanilla javascript)
+		    var formData = new FormData(formElement);
+
+		    $.ajax({
+		        type: "POST",
+		        enctype: 'multipart/form-data',
+		        url: "/uploadFile",
+		        data: formData,
+		        processData: false,
+		        contentType: false,
+		        success: function (response) {
+		            console.log(response);
+		            // process response
+		        },
+		        error: function (error) {
+		            console.log(error);
+		            // process error
+		        }
+		    });
+
+		    event.preventDefault();
+		});
+	</script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
+</html>
