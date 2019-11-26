@@ -23,4 +23,11 @@ public class BrandServiceImpl implements BrandService{
 		return repository.findAll();
 	}
 
+
+	@Override
+	public Brand findBrandById(Long id ) {
+		// TODO Auto-generated method stub
+		return repository.findByBrandById(id);
+	}
+
 }
