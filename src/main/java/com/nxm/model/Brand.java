@@ -2,16 +2,19 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 @Entity(name = "tbl_brand")
 public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
-    private long id;
+    @JsonIgnore
+    private Long id;
 
     @Column(name = "col_name")
     private String name;
@@ -22,9 +25,8 @@ public class Brand {
     @Column(name = "col_createdate")
     private String createDate;
 
-    @OneToOne
-    @JoinColumn(name = "product_id",nullable = false)
-    private Product product;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "brand")
+    private Set<Product> product;
 
     private long userId;
 
@@ -39,11 +41,11 @@ public class Brand {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -71,11 +73,11 @@ public class Brand {
 		this.createDate = createDate;
 	}
 
-	public Product getProduct() {
+	public Set<Product> getProduct() {
 		return product;
 	}
 
-	public void setProduct(Product product) {
+	public void setProduct(Set<Product> product) {
 		this.product = product;
 	}
 
