@@ -11,7 +11,7 @@ public class PalletPosition {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, unique = true)
-	private long id;
+	private Integer id;
 	
 	@ManyToOne
 	@JoinColumn(name = "palletid",nullable = false)
@@ -32,11 +32,11 @@ public class PalletPosition {
 	@OneToMany(fetch = FetchType.EAGER,mappedBy = "palletPosition")
 	private Set<PositioProductTrade> productTrades;
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

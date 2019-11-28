@@ -45,11 +45,11 @@ import com.nxm.service.StockTotalDetailService;
 public class MainController {
 
 
-/*	@Autowired
+	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
-	private PasswordEncoder passwordEndcode;*/
+	private PasswordEncoder passwordEndcode;
 
 	@Autowired
 	private StockTotalDetailService stockTotalDetailService;

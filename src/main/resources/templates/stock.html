@@ -63,8 +63,8 @@
 		<h2>QUẢN LÝ TỒN KHO</h2>
 		<div class="row">
 			<div class="col">
-			
-						<form th:object="${product}" th:action="@{/stock}" th:method="POST"
+
+				<form th:object="${product}" th:action="@{/stock}" th:method="POST"
 					action="stock.html">
 					<table>
 						<tr>
@@ -120,7 +120,7 @@
 
 						</tr>
 					</table>
-				</form> 
+				</form>
 				<span th:text="${mgs}"></span>
 				<table class="table table-striped">
 					<thead>
@@ -287,8 +287,95 @@
 				</form>
 			</div>
 		</div>
+		<div th:if="${not #lists.isEmpty(palletpositions)}">
+			<h2>DANH SÁCH KHOANG CHỨA</h2>
+			<table class="table table-striped">
+				<tr>
+					<th class="th">Số thứ tự</th>
+					<th class="th">Tên Khu vực</th>
+					<th class="th">Số Pallet</th>
+					<th class="th">Pallet position id</th>
+					<th class="th">Sức chứa</th>
+					<th class="th">Sản phẩm</th>
+				</tr>
+				<tr th:each="palletposition : ${palletpositions}">
+					<td th:text="${palletposition.id}"></td>
+					<td th:text="${palletposition.pallet.areaId}"></td>
+					<td th:text="${palletposition.pallet.palletNumber}"></td>
+					<td th:text="${palletposition.id}"></td>
+					<td th:text="${100-palletposition.emptyPercent}"></td>
+					<td></td>
+				</tr>
+			</table>
 
+		</div>
 
+		<!-- Pagination Bar -->
+		<div th:fragment='paginationbar'>
+			<div>
+				<ul class='pagination pagination-centered'>
+					<li th:class="${page.firstPage}?'disabled':''"><span
+						th:if='${page.firstPage}'>First</span> <a
+						th:if='${not page.firstPage}'
+						th:href='@{${page.url}(page=0,size=${page.size})}'>First</a></li>
+					<li th:class="${page.hasPreviousPage}? '' : 'disabled'"><span
+						th:if='${not page.hasPreviousPage}'>«</span> <a
+						th:if='${page.hasPreviousPage}'
+						th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'
+						title='Go to previous page'>«</a></li>
+					<li th:each='item : ${page.items}'
+						th:class="${item.current}? 'active' : ''"><span
+						th:if='${item.current}' th:text='${item.number}'>1</span> <a
+						th:if='${not item.current}'
+						th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'><span
+							th:text='${item.number}'>1</span></a></li>
+					<li th:class="${page.hasNextPage}? '' : 'disabled'"><span
+						th:if='${not page.hasNextPage}'>»</span> <a
+						th:if='${page.hasNextPage}'
+						th:href='@{${page.url}(page=${page.number},size=${page.size})}'
+						title='Go to next page'>»</a></li>
+					<li th:class="${page.lastPage}? 'disabled' : ''"><span
+						th:if='${page.lastPage}'>Last</span> <a
+						th:if='${not page.lastPage}'
+						th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>Last</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row row-cols-3" style="margin-bottom: 3%;">
+			<div class="col">
+				<form action="/exportExcelCK" method="get"
+					style="width: 20%; float: left;">
+					<button class="btn btn-info" type="submit"
+						style="width: 100%; background-color: #a2fca8; color: black; font-weight: bold;">XUẤT
+						EXCEL</button>
+				</form>
+
+				<form th:action="@{/importExcel}" method="post"
+					enctype="multipart/form-data">
+
+					<input type="file" th:name="file"> <input th:type="submit"
+						value="Import"
+						style="width: 28%; background-color: #a2fca8; color: black; font-weight: bold;" />
+				</form>
+			</div>
+			<div class="col">
+				<form action="/exportExcel" method="get"
+					style="width: 20%; float: right;">
+
+					<button class="btn btn-info" type="submit"
+						style="margin-left: 5px; width: 100%; background-color: #a2fca8; color: black; font-weight: bold;">DUYỆT
+						KIỂM KÊ</button>
+				</form>
+			</div>
+
+			<form action="/exportExcel" method="get"
+				style="width: 20%; float: right;">
+				<button class="btn btn-info" type="submit"
+					style="margin-left: 20%; width: 80%; background-color: #a2fca8; color: black; font-weight: bold;">KIỂM
+					KÊ KHO</button>
+			</form>
+		</div>
 	</article>
 	<div class="footer">Copyright &copy; Feature Solution Company
 		2019</div>
@@ -307,7 +394,7 @@
 	<script>
 		$('.js-tilt').tilt({
 			scale : 1.1
-		})
+		});
 	</script>
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>

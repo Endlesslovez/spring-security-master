@@ -37,7 +37,7 @@
 				</div>
 
 				<form class="login100-form validate-form" th:action="@{/login}"
-					onsubmit=" return validateForm()" onclick="" method="POST">
+					onsubmit=" return validateForm()" method="POST">
 					<span class="login100-form-title" style="margin-left: -100px;">
 						ĐĂNG NHẬP</span>
 					<div id="login" style="color: red"></div>
@@ -60,7 +60,7 @@
 					</div>
 					<div class="passerror" id="passerror" style="color: red"></div>
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">Đăng nhập</button>
+						<button class="login100-form-btn" type="submit">Đăng nhập</button>
 					</div>
 
 					<div class="text-center p-t-12">
@@ -94,7 +94,7 @@
 				document.getElementById("emailerror").innerText = "Tài khoản không được để trống";
 			} else if (password == '') {
 				document.getElementById("passerror").innerText = "Password không được để trống";
-			} else if (username != "minhnxph06906@fpt.edu.vn") {
+			} else if (username != "leanhvu86@gmail.com") {
 
 				document.getElementById("login").innerText = "Đăng nhập thất bại";
 			} else {
