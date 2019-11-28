@@ -30,36 +30,36 @@ public class StockController {
 
 	@Autowired
 	private ProductTypeService proTypeRepository;
+
 	@Autowired
 	private ProductRepository productRepository;
 
-
-    
 	@Autowired
 	private ProductService service;
-	
+
 	@Autowired
 	private ProductTypeService protypeService;
-	
+
 	@GetMapping("/stock")
 	public String stock(Model model) {
 		model.addAttribute("brand", brandService.getAll());
 		model.addAttribute("protype", proTypeRepository.getAll());
 		model.addAttribute("product", new Product());
+
 		return "stock";
 	}
 
 	@Value("${image.upload-dir}")
 	private String localtion;
-	
 
 	@PostMapping("/stock")
 	public String addproduct(@ModelAttribute Product product, @RequestParam("name") String name,
 			@RequestParam("brand") String brand, @RequestParam("price") int price,
-			@RequestParam("productType") String productType, @RequestParam("packageType") String packageType,Model model) {
+			@RequestParam("productType") String productType, @RequestParam("packageType") String packageType,
+			Model model) {
 		Long longId = Long.parseLong(brand);
 		Brand brand1 = brandService.findBrandById(longId);
-		
+		System.out.println(brand1.getName());
 		Long longIdpro = Long.parseLong(productType);
 		ProductType productType2 = protypeService.findProductById(longIdpro);
 		product.setName(name);
@@ -67,32 +67,33 @@ public class StockController {
 		product.setPrice(price);
 		product.setBrand(brand1);
 		product.setProductType(productType2);
-		if(service.create(product)==true) {
-			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
-			return "stock";
-		}else {
-			model.addAttribute("mgs", "Thêm mới không thàng công");
-			return "stock";
+		if (service.create(product) == true) {
+			model.addAttribute("mgs", "Thêm sản phẩm thành công");
+		} else {
+			model.addAttribute("mgs", "Thêm sản phẩm không thành công");
 		}
+
+		return "stock";
 	}
 
-	public String addproduct1(Model model,Product product,MultipartFile file) {
-		  
-	    try {
-	    
-	        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-	      File file1 = new File(localtion, fileName);
-	      product.setImage(fileName);
-	     if(file1.exists()) {
-	    	 model.addAttribute("file", "File đã tồn tại");
-	     }
-	     productRepository.save(product);
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	      model.addAttribute("message", "upload failed");
-	    }
-	    return "stock";
-	  }
+	public String addproduct1(Model model, Product product, MultipartFile file) {
+
+		try {
+
+			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+			File file1 = new File(localtion, fileName);
+			product.setImage(fileName);
+			if (file1.exists()) {
+				model.addAttribute("file", "File đã tồn tại");
+			}
+			productRepository.save(product);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("message", "upload failed");
+		}
+		return "stock";
+	}
+
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 
 //    
