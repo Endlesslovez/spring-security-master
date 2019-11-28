@@ -71,6 +71,10 @@ public class MainController {
 		return "admin";
 	}
 
+	@GetMapping("/index")
+	public String index2() {
+		return "index2";
+	}
 	@GetMapping("/403")
 	public String accessDenied() {
 		return "403";
