@@ -61,66 +61,10 @@
 	</nav>
 	<article>
 		<h2>QUẢN LÝ TỒN KHO</h2>
+		
 		<div class="row">
 			<div class="col">
-			
-						<form th:object="${product}" th:action="@{/stock}" th:method="POST"
-					action="stock.html">
-					<table>
-						<tr>
-							<td>Tên sản phẩm</td>
-							<td>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<button class="btn btn-outline-secondary dropdown-toggle"
-											type="button" data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">Dropdown</button>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#">Action</a> <a
-												class="dropdown-item" href="#">Another action</a> <a
-												class="dropdown-item" href="#">Something else here</a>
-											<div role="separator" class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Separated link</a>
-										</div>
-									</div>
-									<input type="text" class="form-control"
-										aria-label="Text input with dropdown button">
-								</div>
-							</td>
-							<td>Nhãn hiệu</td>
-							<td><div class="input-group mb-3">
-									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon"
-										th:field="*{brand}">
-										<option value="">Chọn Nhãn Hiệu</option>
-										<option th:each="country : ${brand}" th:value="${country.id}"
-											th:text="${country.name}" th:name="brandid" />
-									</select>
 
-
-								</div></td>
-							<td>Loại sản phẩm</td>
-							<td><div class="input-group mb-3">
-									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon"
-										name="productType" th:field="*{productType}">
-										<option value="">Chọn Loại Sản Phẩm</option>
-										<option th:each="country : ${protype}"
-											th:value="${country.id}" th:text="${country.typeName}" />
-									</select>
-								</div></td>
-							<td>Ngày hết hạn</td>
-							<td><div class="input-group mb-3">
-
-									<input type="date" class="form-control" placeholder="Username"
-										aria-label="Username" aria-describedby="basic-addon1">
-								</div></td>
-							<td><button type="submit" class="btn btn-success">Tìm
-									kiếm</button></td>
-
-						</tr>
-					</table>
-				</form> 
 				<span th:text="${mgs}"></span>
 				<table class="table table-striped">
 					<thead>
@@ -163,8 +107,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<form th:object="${product}" th:action="@{/stock}" th:method="POST"
-					action="stock.html">
+				<form th:object="${product}" th:action="@{/stock}" th:method="POST">
 					<div class="modal fade" id="exampleModal" tabindex="-1"
 						role="dialog" aria-labelledby="exampleModalLabel"
 						aria-hidden="true">
@@ -187,6 +130,7 @@
 																		th:field="*{name}">
 
 																</div>
+															
 															</td>
 														</tr>
 														<tr>
@@ -199,6 +143,7 @@
 																		th:field="*{price}">
 
 																</div>
+															
 															</td>
 														</tr>
 														<tr>
@@ -211,7 +156,7 @@
 																		<option value="">Chọn Nhãn Hiệu</option>
 																		<option th:each="country : ${brand}"
 																			th:value="${country.id}" th:text="${country.name}"
-																			th:name="brandid" />
+																			th:name="brand" />
 																	</select>
 
 
