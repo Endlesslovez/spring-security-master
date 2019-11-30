@@ -44,23 +44,11 @@ public class StockChange {
 	@Column(name = "stock_total_id")
 	private long stockTotalId;
 	
-	@Column(name = "stock_total_detail_id")
-	private long stockTotalDetailId;
-	
+
 	private String updateDate;
 
 	 
-    public long getStockTotalDetailId() {
-		return stockTotalDetailId;
-	}
-
-
-	public void setStockTotalDetailId(long stockTotalDetailId) {
-		this.stockTotalDetailId = stockTotalDetailId;
-	}
-
-
-	@PrePersist
+    @PrePersist
     public void prePersist(){
        LocalDate formattedString=LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");

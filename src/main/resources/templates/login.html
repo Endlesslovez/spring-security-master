@@ -4,6 +4,15 @@
 <title>Giải pháp quản lý kho hàng</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script>
+
 <!--===============================================================================================-->
 <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 <!--===============================================================================================-->
@@ -37,7 +46,7 @@
 				</div>
 
 				<form class="login100-form validate-form" th:action="@{/login}"
-					onsubmit=" return validateForm()" method="POST">
+					onsubmit=" return validateForm()" onclick="" method="POST">
 					<span class="login100-form-title" style="margin-left: -100px;">
 						ĐĂNG NHẬP</span>
 					<div id="login" style="color: red"></div>
@@ -51,16 +60,14 @@
 					</div>
 					<div class="emailerror" id="emailerror" style="color: red"></div>
 					<div class="wrap-input100 validate-input">
-						<input class="input100" type="password" name="password"
-							id="password" placeholder="Password"> <span
-							class="focus-input100"></span> <span class="symbol-input100">
-							<i class="fa fa-eye" aria-hidden="true"></i>
-						</span>
-
+				 
+						<input class="input100" type="password" name="password" 
+							id="password" placeholder="Password" >
+						<span class="symbol-input100 reveal" onclick=""><i class="fa fa-eye-slash"></i></span> 
 					</div>
 					<div class="passerror" id="passerror" style="color: red"></div>
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit">Đăng nhập</button>
+						<button class="login100-form-btn">Đăng nhập</button>
 					</div>
 
 					<div class="text-center p-t-12">
@@ -81,29 +88,40 @@
 
 
 	<script type="text/javascript">
+	
 		function validateForm() {
-		
+
 			var username = document.getElementById('email').value;
 			var password = document.getElementById('password').value;
-			
+
 			document.getElementById("emailerror").innerText = "";
 			document.getElementById("passerror").innerText = "";
 			document.getElementById("login").innerText = "";
-			
+
 			if (username == '') {
 				document.getElementById("emailerror").innerText = "Tài khoản không được để trống";
 			} else if (password == '') {
 				document.getElementById("passerror").innerText = "Password không được để trống";
-			} else if (username != "leanhvu86@gmail.com") {
+			} else if (username != "minhnxph06906@fpt.edu.vn") {
 
 				document.getElementById("login").innerText = "Đăng nhập thất bại";
 			} else {
-				
+
 				return true;
 			}
 
 			return false;
 		}
+	</script>
+	<script type="text/javascript">
+	$(".reveal").on('click',function() {
+	    var $pwd = $(".pwd");
+	    if ($pwd.attr('type') === 'password') {
+	        $pwd.attr('type', 'text');
+	    } else {
+	        $pwd.attr('type', 'password');
+	    }
+	});
 	</script>
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>

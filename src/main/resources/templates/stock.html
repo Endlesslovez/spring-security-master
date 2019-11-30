@@ -136,9 +136,9 @@
 	</nav>
 	<article>
 		<h2>QUẢN LÝ TỒN KHO</h2>
+		
 		<div class="row">
 			<div class="col">
-
 				<form th:object="${product}" th:action="@{/stock}" th:method="POST"
 					action="stock.html">
 					<table>
@@ -238,8 +238,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<form th:object="${product}" th:action="@{/stock}" th:method="POST"
-					action="stock.html">
+				<form th:object="${product}" th:action="@{/stock}" th:method="POST">
 					<div class="modal fade" id="exampleModal" tabindex="-1"
 						role="dialog" aria-labelledby="exampleModalLabel"
 						aria-hidden="true">
@@ -262,6 +261,7 @@
 																		th:field="*{name}">
 
 																</div>
+															
 															</td>
 														</tr>
 														<tr>
@@ -274,6 +274,7 @@
 																		th:field="*{price}">
 
 																</div>
+															
 															</td>
 														</tr>
 														<tr>
@@ -286,7 +287,7 @@
 																		<option value="">Chọn Nhãn Hiệu</option>
 																		<option th:each="country : ${brand}"
 																			th:value="${country.id}" th:text="${country.name}"
-																			th:name="brandid" />
+																			th:name="brand" />
 																	</select>
 
 

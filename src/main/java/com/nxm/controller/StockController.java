@@ -83,6 +83,7 @@ public class StockController {
 
 	@Autowired
 	private ProductTypeService proTypeRepository;
+
 	@Autowired
 	private ProductRepository productRepository;
 
@@ -313,6 +314,7 @@ public class StockController {
 		Long longId = Long.parseLong(brand);
 		Brand brand1 = brandService.findBrandById(longId);
 
+
 		Long longIdpro = Long.parseLong(productType);
 		ProductType productType2 = protypeService.findProductById(longIdpro);
 		product.setName(name);
@@ -321,6 +323,7 @@ public class StockController {
 		product.setBrand(brand1);
 		product.setProductType(productType2);
 		if (service.create(product) == true) {
+	
 			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
@@ -341,7 +344,12 @@ public class StockController {
 			model.addAttribute("mgs", "Thêm mới không thàng công");
 			return "stock";
 		}
+
+		
 	}
+
+	
+
 
 	@PostMapping("/importExcel")
 	public String mapReapExcelDatatoDB(HttpServletRequest httpServletRequest, HttpServletResponse response,
@@ -778,6 +786,7 @@ public class StockController {
 		}
 		return "stock";
 	}
+
 
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 

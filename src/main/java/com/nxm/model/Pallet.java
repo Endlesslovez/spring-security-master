@@ -12,7 +12,7 @@ public class Pallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
-    private Integer id;
+    private long id;
 
     @Column(name = "col_areaid")
     private String areaId;
@@ -24,11 +24,11 @@ public class Pallet {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "pallet")
     private Set<PalletPosition> palletPositions;
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
