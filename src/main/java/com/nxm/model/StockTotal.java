@@ -23,17 +23,17 @@ public class StockTotal {
     private long userCreateId;
 
     @Column(name = "col_datecount")
-    private long dateCount;
+    private String dateCount;
     
     @PrePersist
     public void prePersist(){
        LocalDate formattedString=LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         createDate = formattedString.format(formatter);
-        
       
     }
-
+    @Column(name = "col_total_count")
+    private long totalCount;
     @Column(name = "col_status")
     private int status;
     
@@ -42,6 +42,15 @@ public class StockTotal {
     
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "stockTotal")
     private Set<StockTotalDetail> stockTotalDetails;
+
+    
+	public long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(long totalCount) {
+		this.totalCount = totalCount;
+	}
 
 	public long getId() {
 		return id;
@@ -67,11 +76,11 @@ public class StockTotal {
 		this.userCreateId = userCreateId;
 	}
 
-	public long getDateCount() {
+	public String getDateCount() {
 		return dateCount;
 	}
 
-	public void setDateCount(long dateCount) {
+	public void setDateCount(String dateCount) {
 		this.dateCount = dateCount;
 	}
 

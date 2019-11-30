@@ -33,7 +33,17 @@ public class StockTotalDetailVO {
 	
 	private Long stockTotalDetailId;
 	
+	private Integer palletPoisitionId;
 	
+	
+	public Integer getPalletPoisitionId() {
+		return palletPoisitionId;
+	}
+
+	public void setPalletPoisitionId(Integer palletPoisitionId) {
+		this.palletPoisitionId = palletPoisitionId;
+	}
+
 	public String getBrandName() {
 		return brandName;
 	}

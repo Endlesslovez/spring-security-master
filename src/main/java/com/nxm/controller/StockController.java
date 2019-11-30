@@ -7,35 +7,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.aspectj.weaver.ast.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,18 +34,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nxm.model.Brand;
-import com.nxm.model.PalletPoisitionVO;
 import com.nxm.model.PalletPosition;
 import com.nxm.model.Product;
 import com.nxm.model.ProductType;
@@ -62,7 +51,6 @@ import com.nxm.model.StockChange;
 import com.nxm.model.StockTotal;
 import com.nxm.model.StockTotalDetail;
 import com.nxm.model.StockTotalDetailVO;
-import com.nxm.repository.PalletPoisitionRepository;
 import com.nxm.repository.ProductRepository;
 import com.nxm.repository.StockChangeRepository;
 import com.nxm.repository.StockTotalDetailRepository;
@@ -141,6 +129,7 @@ public class StockController {
 			for (StockChange stockChange : lststockChange) {
 				StockTotalDetailVO stockTotalDetailVO = new StockTotalDetailVO();
 				stockTotalDetailVO.setBrandId(Math.toIntExact(stockChange.getProduct().getBrand().getId()));
+				stockTotalDetailVO.setBrandName(stockChange.getProduct().getBrand().getName());
 				stockTotalDetailVO.setProductId(Math.toIntExact(stockChange.getProduct().getId()));
 				stockTotalDetailVO.setProductName(stockChange.getProduct().getName());
 				stockTotalDetailVO.setTypeOfProduct(Math.toIntExact(stockChange.getProduct().getProductType().getId()));
@@ -152,7 +141,7 @@ public class StockController {
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
 					String formattedString = localDate.format(formatter);
 					stockTotalDetailVO.setExpiredDate(formattedString);
-					stockTotalDetailVO.setPalletPositionId(stockTotalDetail.getPalletPosition().getId());
+					stockTotalDetailVO.setPalletPositionId((int) stockTotalDetail.getPalletPosition().getId());
 					stockTotalDetailVO.setStockTotalDetailId(stockTotalDetail.getId());
 				} else {
 					stockTotalDetailVO.setError("Bản ghi lỗi. Vui lòng báo lại quản trị viên");
@@ -368,6 +357,10 @@ public class StockController {
 			model.addAttribute("page", page);
 			return "stock";
 		}
+		List<StockChange> lstDelete = stockChangeRepository.findByStockTotalId(stockTotalNow.getId());
+		for(StockChange stockChange : lstDelete) {
+			stockChangeRepository.delete(stockChange);
+		}
 		ReadingFromExcelSheet readingFromExcelSheet = new ReadingFromExcelSheet();
 		XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
 		XSSFSheet worksheet = workbook.getSheetAt(0);
@@ -520,7 +513,7 @@ public class StockController {
 			if (msg.equals("")) {
 				StockTotalDetail stockTotalDetail = stockTotalDetailService
 						.findOne(stockTotalDetailVO.getStockTotalDetailId());
-				if (stockTotalDetail != null) {
+				if (stockTotalDetail != null&&stockTotalDetail.getProductStatus()==1) {
 					if (stockTotalDetail.getProduct().getId() != stockTotalDetailVO.getProductId()) {
 						stockTotalDetailVO.setError("Bản ghi tồn kho không tồn tại. Vui lòng xem lại Product_id");
 						lstFail.add(stockTotalDetailVO);
@@ -546,7 +539,7 @@ public class StockController {
 						stockChange.setStockTotalDetailId(stockTotalDetail.getId());
 						stockChange.setStockTotalId(stockTotalNow.getId());
 						stockChangeRepository.save(stockChange);
-						stockTotalDetail.setQuantity(stockTotalDetailVO.getQuantity() + quantityChange);
+						stockTotalDetail.setQuantity(stockTotalDetail.getQuantity() + quantityChange);
 						stockTotalDetail.setAvaiableQuantity(stockTotalDetail.getAvaiableQuantity() + quantityChange);
 						stockTotalDetailVO.setError("Số lượng thay đổi: " + quantityChange);
 						lstCompare.add(stockTotalDetailVO);
@@ -566,6 +559,27 @@ public class StockController {
 						count++;
 					}
 
+				}else if(stockTotalDetail != null&&stockTotalDetail.getProductStatus()==0){
+					StockChange stockChange = new StockChange();
+					stockChange.setStockTotalId(stockTotalNow.getId());
+					long quantityChange = stockTotalDetailVO.getQuantity() - stockTotalDetail.getQuantity();
+					stockChange.setQuantityChange(quantityChange);
+					Product product = productRepository.findOne((long) stockTotalDetailVO.getProductId());
+					stockChange.setProduct(product);
+					stockChange.setStockTotalDetailId(stockTotalDetail.getId());
+					stockChange.setStockTotalId(stockTotalNow.getId());
+					stockChangeRepository.save(stockChange);
+					stockTotalDetail.setQuantity(stockTotalDetail.getQuantity() + quantityChange);
+					stockTotalDetail.setAvaiableQuantity(stockTotalDetail.getAvaiableQuantity() + quantityChange);
+					stockTotalDetailVO.setError("Số lượng thay đổi: " + quantityChange);
+					lstCompare.add(stockTotalDetailVO);
+					LocalDate formattedString1 = LocalDate.now();
+					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MMMM-yyyy");
+					String updateDate = formattedString1.format(formatter1);
+					stockTotalDetail.setUpdateDate(updateDate);
+					stockTotalDetail.setStockTotal(stockTotalNow);
+					stockTotalDetail.setProductStatus(1);
+					stockTotalDetailRepository.save(stockTotalDetail);
 				} else {
 					stockTotalDetailVO.setError("Bản ghi tồn kho không tồn tại. Vui lòng xem lại Stotal_detail_id");
 					lstFail.add(stockTotalDetailVO);
@@ -583,7 +597,7 @@ public class StockController {
 			stockTotalRepository.save(stockTotalNow);
 		}
 		String chotkho = "";
-		List<StockTotalDetail> lstCount = stockTotalDetailService.findByStockTotalId(stockTotalNow.getId());
+		List<StockTotalDetail> lstCount = stockTotalDetailService.findByStockTotal(stockTotalNow);
 		if (lstCount != null && lstCount.size() >= stockTotalNow.getTotalCount() && lstFail.size() == 0) {
 			if (lstCompare.size() != 0) {
 				model.addAttribute("compare", "Chênh lệch: " + lstCompare.size());
@@ -598,7 +612,15 @@ public class StockController {
 			model.addAttribute("palletpositions", page.getContent());
 			model.addAttribute("page", page);
 		} else {
-			chotkho = "Chưa hoàn thành chốt kho";
+			chotkho = "Chưa hoàn thành chốt kho. Vui lòng kiểm tra file Excel chốt kho";
+			model.addAttribute("chotkho", chotkho);
+			model.addAttribute("brand", brandService.getAll());
+			model.addAttribute("protype", proTypeRepository.getAll());
+			model.addAttribute("product", new Product());
+			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
+			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
+			model.addAttribute("palletpositions", page.getContent());
+			model.addAttribute("page", page);
 			exportFile(httpServletRequest, response, "Bieu_mau_chot_kho_loi", lstFail);
 		}
 
@@ -706,7 +728,6 @@ public class StockController {
 				FileOutputStream out = new FileOutputStream(new File(fileOutName));
 				workbook.write(out);
 				out.close();
-				System.out.println("Successfully saved Selenium WebDriver TestNG result to Excel File!!!");
 
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -795,16 +816,8 @@ public class StockController {
 		// Vô hiệu hóa chốt kho cũ
 		StockTotal stockTotal = stockTotalService.findAvaiableRecord();
 		if (stockTotal != null) {
-			stockTotal.setStatus(0);
-			stockTotalRepository.save(stockTotal);
-
-			// Tạo bản ghi chốt kho mới
-			stockTotal = new StockTotal();
-			stockTotal.setStatus(2);
-			stockTotal.setUserCreateId(1);
-			stockTotal.setTotalCount(0);
-			stockTotalRepository.save(stockTotal);
-
+			
+			createNewStockTotal(stockTotal);
 			model.addAttribute("chotkho", "Bắt đầu kiểm kê kho");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
@@ -826,13 +839,25 @@ public class StockController {
 			return "stock";
 		}
 	}
+	@Transactional
+	public void createNewStockTotal(StockTotal stockTotal) {
+		long stock= stockTotal.getTotalCount();
+		stockTotal.setStatus(0);
+		stockTotalRepository.save(stockTotal);
 
+		// Tạo bản ghi chốt kho mới
+		stockTotal = new StockTotal();
+		stockTotal.setStatus(2);
+		stockTotal.setUserCreateId(1);
+		stockTotal.setTotalCount(stock);
+		stockTotalRepository.save(stockTotal);
+	}
 	@PostMapping("/acceptCheckStock")
 	public String acceptCheckStock(Model model, Pageable pageable) {
 
 		StockTotal stockTotal = stockTotalService.findNow();
 		if (stockTotal != null) {
-			List<StockTotalDetail> lstCount = stockTotalDetailService.findByStockTotalId(stockTotal.getId());
+			List<StockTotalDetail> lstCount = stockTotalDetailService.findByStockTotal(stockTotal);
 			if (lstCount != null && lstCount.size() >= stockTotal.getTotalCount()) {
 				stockTotal.setStatus(1);
 				stockTotalRepository.save(stockTotal);
@@ -848,7 +873,7 @@ public class StockController {
 				return "stock";
 				
 			}else {
-				model.addAttribute("chotkho", "Chưa hoàn thành kiểm kê kho");
+				model.addAttribute("chotkho", "Chưa hoàn thành chốt kho");
 				model.addAttribute("brand", brandService.getAll());
 				model.addAttribute("protype", proTypeRepository.getAll());
 				model.addAttribute("product", new Product());
@@ -872,6 +897,7 @@ public class StockController {
 		}
 
 	}
+
 //    
 //    @PostMapping("/uploadFile")
 //    public UploadFileResponse uploadFile1(@RequestParam("file") MultipartFile file) {
