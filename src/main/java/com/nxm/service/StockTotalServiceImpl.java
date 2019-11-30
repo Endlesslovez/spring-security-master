@@ -20,4 +20,8 @@ public class StockTotalServiceImpl implements StockTotalService {
 	public StockTotal findNow() {
 		return stockTotalRepository.findNow();
 	}
+	
+	public StockTotal findAvaiableRecord() {
+		return stockTotalRepository.findAvaiableRecord();
+	}
 }

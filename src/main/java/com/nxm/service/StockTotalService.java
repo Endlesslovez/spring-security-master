@@ -10,4 +10,5 @@ import com.nxm.model.StockTotalDetail;
 
 public interface StockTotalService {
     StockTotal findNow();
+    StockTotal findAvaiableRecord();
 }

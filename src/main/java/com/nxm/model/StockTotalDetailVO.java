@@ -28,12 +28,24 @@ public class StockTotalDetailVO {
 	
 	private String productName;
 	private Integer brandId;
-	
+	private String brandName;
 	private Integer typeOfProduct;
 	
 	private Long stockTotalDetailId;
 	
 	
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
+	}
+
+	public void setStockTotalDetailId(Long stockTotalDetailId) {
+		this.stockTotalDetailId = stockTotalDetailId;
+	}
+
 	public Long getStockTotalDetailId() {
 		return stockTotalDetailId;
 	}
