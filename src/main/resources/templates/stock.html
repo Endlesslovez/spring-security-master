@@ -32,6 +32,81 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
+<style>
+[type="file"] {
+	height: 0;
+	overflow: hidden;
+	width: 0;
+}
+
+[type="file"]+label {
+	background: #a2fca8;
+	border: none;
+	cursor: pointer;
+	display: inline-block;
+	font-family: 'Poppins', sans-serif;
+	font-size: inherit;
+	font-weight: 600;
+	margin: 2px;
+	outline: none;
+	padding: 3px 5%;
+	position: relative;
+	transition: all 0.3s;
+	vertical-align: middle;
+	&:
+	hover
+	{
+	background-color
+	:
+	darken(
+	gray
+	,
+	10%
+	);
+}
+
+.btn-3 {
+	background-color: silver;
+	border-radius: 0;
+	overflow: hidden; span { display : inline-block;
+	height: 100%;
+	transition: all 0.3s;
+	width: 100%;
+}
+
+&
+::before {
+	color: #fff;
+	content: "\f382";
+	font-family: "Font Awesome 5 Pro";
+	font-size: 130%;
+	height: 100%;
+	left: 0;
+	line-height: 2.6;
+	position: absolute;
+	top: -180%;
+	transition: all 0.3s;
+	width: 100%;
+}
+
+&
+:hover {
+	background-color: darken(whitesmoke, 30%);
+	span
+	{
+	transform
+	:
+	translateY(
+	300%
+	);
+}
+
+&
+::before {
+	top: 0;
+}
+}
+</style>
 </head>
 <body>
 	<!-- <div th:replace="/template/header :: header"></div> -->
@@ -343,6 +418,42 @@
 				</ul>
 			</div>
 		</div>
+		<div th:if="${chotkho}">
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1"
+				role="dialog" aria-labelledby="exampleModalCenterTitle"
+				aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="exampleModalCenterTitle"
+								th:text="${chotkho}"></h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<h3 class="modal-title" id="exampleModalCenterTitle"
+								th:text="${chotkho}"></h3>
+							<div th:if="${compare}" >
+							<h4 class="modal-title" id="exampleModalCenterTitle"
+								th:text="${compare}" style="color:red;"></h4>
+								
+								<form action="/exportExcelCompare" method="get"
+									style="width: 20%; float: left;">
+									<button class="btn btn-info" type="submit"
+										style="width: 100%; background-color: #a2fca8; color: black; font-weight: bold;" >Kiểm tra</button>
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Đóng</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row row-cols-3" style="margin-bottom: 3%;">
 			<div class="col">
 				<form action="/exportExcelCK" method="get"
@@ -353,15 +464,19 @@
 				</form>
 
 				<form th:action="@{/importExcel}" method="post"
-					enctype="multipart/form-data">
+					enctype="multipart/form-data" onsubmit="return validate()">
+					<div class="wrapper">
+						<input type="file" th:name="file" id="file" required="required" />
+						<label for="file" class="btn-3"><span>Mời chọn file</span></label>
+						<button th:type="submit"
+							style="width: 25%; background-color: #a2fca8; color: black; font-weight: bold;">Nhập
+							kiểm kê</button>
+					</div>
 
-					<input type="file" th:name="file"> <input th:type="submit"
-						value="Import"
-						style="width: 28%; background-color: #a2fca8; color: black; font-weight: bold;" />
 				</form>
 			</div>
 			<div class="col">
-				<form action="/exportExcel" method="get"
+				<form action="/acceptCheckStock" method="post"
 					style="width: 20%; float: right;">
 
 					<button class="btn btn-info" type="submit"
@@ -370,13 +485,14 @@
 				</form>
 			</div>
 
-			<form action="/exportExcel" method="get"
+			<form action="/startCheckStock" method="post"
 				style="width: 20%; float: right;">
 				<button class="btn btn-info" type="submit"
 					style="margin-left: 20%; width: 80%; background-color: #a2fca8; color: black; font-weight: bold;">KIỂM
 					KÊ KHO</button>
 			</form>
 		</div>
+
 	</article>
 	<div class="footer">Copyright &copy; Feature Solution Company
 		2019</div>
@@ -395,6 +511,21 @@
 	<script>
 		$('.js-tilt').tilt({
 			scale : 1.1
+		});
+		function validate() {
+
+			valid = true;
+
+			if ($("#file").val() == '') {
+				// your validation error action
+				valid = false;
+
+			}
+
+			return valid //true or false
+		};
+		$(window).on('load', function() {
+			$('#exampleModalCenter').modal('show');
 		});
 	</script>
 	<!--===============================================================================================-->

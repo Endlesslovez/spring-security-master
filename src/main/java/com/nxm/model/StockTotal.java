@@ -30,27 +30,26 @@ public class StockTotal {
        LocalDate formattedString=LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
         createDate = formattedString.format(formatter);
-        dateCount  = formattedString.format(formatter);
+
       
     }
-
+    @Column(name = "col_total_count")
+    private long totalCount;
     @Column(name = "col_status")
     private int status;
-    
-    @Column(name = "col_total_count")
-    private int totalCount;
+
    /* @OneToMany(fetch = FetchType.LAZY,mappedBy = "stockTotal")
     private Set<StockChange> stockChanges;*/
     
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "stockTotal")
     private Set<StockTotalDetail> stockTotalDetails;
 
-    
-	public int getTotalCount() {
+	public long getTotalCount() {
 		return totalCount;
 	}
 
-	public void setTotalCount(int totalCount) {
+	public void setTotalCount(long totalCount) {
+
 		this.totalCount = totalCount;
 	}
 

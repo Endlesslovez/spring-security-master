@@ -35,6 +35,10 @@ public class WareHouseDay {
 	@Column(name = "col_currentstock")
 	private long currentStock;
 
+	//sau khi kiểm kho thừa thiếu sẽ được lưu ở đây
+	@Column(name = "col_changestock")
+	private long changeStock;
+	
 	@Column(name = "col_createdate")
 	private String createDate;
 
@@ -48,6 +52,14 @@ public class WareHouseDay {
 	private Product product;
 
 
+
+	public long getChangeStock() {
+		return changeStock;
+	}
+
+	public void setChangeStock(long changeStock) {
+		this.changeStock = changeStock;
+	}
 
 	public long getId() {
 		return id;

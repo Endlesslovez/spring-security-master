@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.nxm.model.PalletPoisitionVO;
 import com.nxm.model.PalletPosition;
 import com.nxm.repository.PalletPoisitionRepository;
 

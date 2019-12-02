@@ -15,24 +15,22 @@ import com.nxm.repository.StockTotalRepository;
 @Service("stockTotalDetailService")
 public class StockTotalDetailServiceImpl implements StockTotalDetailService {
 
-
 	@Autowired
 	private StockTotalDetailRepository stockTotalDetailRepository;
 
-	@Override
-	public Page<StockTotalDetail> findAll(Pageable pageable){
-		 return stockTotalDetailRepository.findAll(pageable);
-	 }
-
-	@Override
-	public StockTotalDetail findOne(Long id) {
-		// TODO Auto-generated method stub
-		return stockTotalDetailRepository.findOne(id);
+	public Page<StockTotalDetail> findAll(Pageable pageable) {
+		return stockTotalDetailRepository.findAll(pageable);
 	}
 
 	@Override
-	public List<StockTotalDetail> findByStockTotalId(Long id) {
+	public List<StockTotalDetail> findByStockTotal(StockTotal id) {
 		// TODO Auto-generated method stub
-		return stockTotalDetailRepository.findByStockTotalId(id);
+		return stockTotalDetailRepository.findByStockTotal(id);
+	}
+
+	@Override
+	public StockTotalDetail findOne(long id) {
+		// TODO Auto-generated method stub
+		return stockTotalDetailRepository.findOne(id);
 	}
 }
