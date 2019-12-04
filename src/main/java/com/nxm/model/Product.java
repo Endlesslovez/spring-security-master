@@ -1,6 +1,10 @@
 package com.nxm.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.web.multipart.MultipartFile;
