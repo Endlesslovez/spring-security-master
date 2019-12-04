@@ -1,11 +1,15 @@
 package com.nxm.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,13 +20,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.nxm.model.Brand;
 import com.nxm.model.Product;
 import com.nxm.model.ProductType;
+import com.nxm.model.StockTotalDetail;
+import com.nxm.repository.BrandRepositoty;
+import com.nxm.repository.ProductRepository;
+import com.nxm.repository.ProductTypeRepository;
+import com.nxm.repository.StockTotalDetailRepository;
 import com.nxm.service.BrandService;
 import com.nxm.service.ProductService;
 import com.nxm.service.ProductTypeService;
+import com.nxm.service.StockTotalDetailService;
 
 @Controller
 public class ProductController {
+	@Autowired
+	private StockTotalDetailService service;
 
+	@Autowired
+	private ProductRepository productService;
+
+	@Autowired
+	private BrandRepositoty brandService;
+
+	@Autowired
+	private ProductTypeRepository productTypeService;
 //	@RequestMapping(value = "/stock", method = RequestMethod.POST)
 //	public String createproduct(@ModelAttribute("productvo") @Valid ProductVo vo, BindingResult result,
 //			final RedirectAttributes redirectAttributes, ModelMap map) {
@@ -64,4 +84,24 @@ public class ProductController {
 //			return "redirect:/stock";
 //		}
 //	}
+
+	@RequestMapping("/search")
+	public String search(@RequestParam("namebrand") String namebrand, @RequestParam("nameproduct") String nameproduct,
+			@RequestParam("typename") String typename, @RequestParam("expireddate") String expireddate, Model model) {
+
+		List<StockTotalDetail> list = new ArrayList<>();
+		List<StockTotalDetail> listStock = service.getStockDetail(namebrand, nameproduct, typename, expireddate);
+		if (listStock != null) {
+			for (StockTotalDetail stockTotalDetail : listStock) {
+				list.add(stockTotalDetail);
+			}
+			model.addAttribute("stockList1", list);
+		} else {
+			return "redirject:/stock";
+		}
+
+		return "stock";
+
+	}
+
 }
