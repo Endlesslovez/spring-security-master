@@ -19,6 +19,12 @@
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	href="vendor/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+
+
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	href="vendor/select2/select2.min.css">
@@ -105,6 +111,34 @@
 ::before {
 	top: 0;
 }
+
+}
+.
+table {
+	width: 100%;
+}
+
+table td, table th {
+	border: 1px solid grey;
+}
+
+table th {
+	background: #eee;
+}
+
+.pagination-div {
+	user-select: none;
+}
+
+.pagination-div span {
+	border-radius: 3px;
+	border: 1px solid #999;
+	display: inline-block;
+	float: left;
+}
+
+span.selected {
+	background: green;
 }
 </style>
 </head>
@@ -137,7 +171,6 @@
 	</nav>
 
 	<article>
-
 
 		<div class="row">
 			<div class="col">
@@ -392,12 +425,59 @@
 				</form>
 			</div>
 		</div>
-		<div th:if="${not #lists.isEmpty(palletpositions)}">
+
+		<form th:action="@{/findPoisition}" th:method="GET"
+			action="stock.html">
+			<table class="table table-striped">
+				<tr>
+					<td>Khu vực</td>
+					<td><div class="input-group mb-3">
+							<select class="custom-select" name="areaId" id="areaId">
+								<option th:value="A" th:text="A" />
+								<option th:value="B" th:text="B" />
+								<option th:value="C" th:text="C" />
+								<option th:value="D" th:text="D" />
+								<option th:value="E" th:text="E" />
+								<option th:value="F" th:text="F" />
+								<option th:value="G" th:text="G" />
+								<option th:value="H" th:text="H" />
+								<option th:value="I" th:text="I" />
+								<option th:value="J" th:text="J" />
+								<option th:value="K" th:text="K" />
+								<option th:value="L" th:text="L" />
+							</select>
+						</div></td>
+					<td>Dung lượng</td>
+					<td><div class="input-group mb-3">
+							<input type="text" class="form-control" placeholder="dung lượng"
+								name="percent" aria-label="product" id="percent"
+								aria-describedby="basic-addon1">
+						</div></td>
+					<td>Mặt hàng</td>
+					<td><div class="input-group mb-3">
+							<input type="text" class="form-control" placeholder="mã sản phẩm"
+								name="product" aria-label="product" id="product"
+								aria-describedby="basic-addon1">
+						</div></td>
+					<td>Mã vị trí</td>
+					<td><div class="input-group mb-3">
+							<input type="text" class="form-control" placeholder="mã vị trí"
+								name="paletPosition" aria-label="product" id="paletPosition"
+								aria-describedby="basic-addon1">
+						</div></td>
+					<td><button type="submit" class="btn btn-success"
+							id="findpoisiton">Tìm kiếm</button></td>
+
+				</tr>
+			</table>
+		</form>
+		<div th:if="${not #lists.isEmpty(page)}" class="row">
 			<h2
 				style="text-align: center; font-size: 40px; margin: 26px; color: blue;">DANH
 				SÁCH KHOANG CHỨA</h2>
-			<table class="table table-striped" style="text-align: center;">
-				<tr style="font-weight: 800; font-size: 12px;">
+			<table class="table table-striped">
+				<tr>
+
 					<th class="th">Số thứ tự</th>
 					<th class="th">Tên Khu vực</th>
 					<th class="th">Số Pallet</th>
@@ -405,49 +485,38 @@
 					<th class="th">Sức chứa</th>
 					<th class="th">Sản phẩm</th>
 				</tr>
-				<tr th:each="palletposition : ${palletpositions}"
-					style="font-size: 16px">
-					<td th:text="${palletposition.id}"></td>
-					<td th:text="${palletposition.pallet.areaId}"></td>
-					<td th:text="${palletposition.pallet.palletNumber}"></td>
-					<td th:text="${palletposition.id}"></td>
-					<td th:text="${100-palletposition.emptyPercent}"></td>
-					<td></td>
+
+				<tr th:each="palletposition, iStat : ${page.content}">
+					<td th:text="${palletposition.id}" />
+					<td th:text="${palletposition.areaId}" />
+					<td th:text="${palletposition.palletNumber}" />
+					<td th:text="${palletposition.id}" />
+					<td th:text="${palletposition.emptyPercent}" />
+
+					<td th:if="${palletposition.product}"
+						th:text="${palletposition.product}"></td>
+					<td th:unless="${palletposition.product}"></td>
 				</tr>
 			</table>
 
-		</div>
-
-		<!-- Pagination Bar -->
-		<div th:fragment='paginationbar'>
-			<div>
-				<ul class='pagination pagination-centered'>
-					<li th:class="${page.firstPage}?'disabled':''"><span
-						th:if='${page.firstPage}'>First</span> <a
-						th:if='${not page.firstPage}'
-						th:href='@{${page.url}(page=0,size=${page.size})}'>First</a></li>
-					<li th:class="${page.hasPreviousPage}? '' : 'disabled'"><span
-						th:if='${not page.hasPreviousPage}'>«</span> <a
-						th:if='${page.hasPreviousPage}'
-						th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'
-						title='Go to previous page'>«</a></li>
-					<li th:each='item : ${page.items}'
-						th:class="${item.current}? 'active' : ''"><span
-						th:if='${item.current}' th:text='${item.number}'>1</span> <a
-						th:if='${not item.current}'
-						th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'><span
-							th:text='${item.number}'>1</span></a></li>
-					<li th:class="${page.hasNextPage}? '' : 'disabled'"><span
-						th:if='${not page.hasNextPage}'>»</span> <a
-						th:if='${page.hasNextPage}'
-						th:href='@{${page.url}(page=${page.number},size=${page.size})}'
-						title='Go to next page'>»</a></li>
-					<li th:class="${page.lastPage}? 'disabled' : ''"><span
-						th:if='${page.lastPage}'>Last</span> <a
-						th:if='${not page.lastPage}'
-						th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>Last</a>
-					</li>
-				</ul>
+			<div class="pagination-div">
+				<span th:if="${page.hasPrevious()}"> <a
+					style="text-decoration: none; width: 5px; float: left;"
+					th:href="@{/stock(page=${page.number-1},size=${page.size})}">&laquo;</a>
+				</span>
+				<th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+					<span th:if="${page.number == i}" class="selected"
+						style="color: black; float: left; font-size: 10px; text-decoration: none; width: 3px;"
+						th:text="${i}+1"></span>
+					<span th:unless="${page.number == i}"> <a
+						style="color: black; float: left; text-decoration: none; font-size: 10px; width: 3px;"
+						th:href="@{/stock(page=${i},size=${page.size})}" th:text="${i}+1"></a>
+					</span>
+				</th:block>
+				<span th:if="${page.hasNext()}"> <a
+					style="color: black; float: left; padding: 3px 5px; text-decoration: none;"
+					th:href="@{/stock(page=${page.number+1},size=${page.size})}">&raquo;</a>
+				</span>
 			</div>
 		</div>
 		<div th:if="${chotkho}">
@@ -559,10 +628,66 @@
 		};
 		$(window).on('load', function() {
 			$('#exampleModalCenter').modal('show');
+			
+			var area = getCookie(area);
+			console.log(area);
+			var percent = getCookie(percent);
+			console.log(percent);
+			var product = getCookie(product);
+			console.log(product);
+			var paletPosition = getCookie(paletPosition);
+			console.log(paletPosition);
 		});
+		$('#findpoisiton').click(function() {
+			var area = $('#areaId').val();
+			var value = "";
+			value = area;
+			console.log(value);
+			var name = "area";
+			document.cookie = name + "=" + value
+			"; path=/";
+			var percent = $('#percent').val();
+			value = percent;
+			name = "percent";
+			document.cookie = name + "=" + value
+			"; path=/";
+			console.log(value);
+
+			var product = $('#product').val();
+			value = product;
+			name = "product";
+			document.cookie = name + "=" + value
+			"; path=/";
+			console.log(value);
+			var paletPosition = $('#paletPosition').val();
+			value = paletPosition;
+			name = "paletPosition";
+			document.cookie = name + "=" + value
+			"; path=/";
+			console.log(value);
+		});
+		function getCookie(c_name) {
+			if (document.cookie.length > 0) {
+				c_start = document.cookie.indexOf(c_name + "=");
+				if (c_start != -1) {
+					c_start = c_start + c_name.length + 1;
+					c_end = document.cookie.indexOf(";", c_start);
+					if (c_end == -1) {
+						c_end = document.cookie.length;
+					}
+					return unescape(document.cookie.substring(c_start, c_end));
+				}
+			}
+			return "";
+		};
 	</script>
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>

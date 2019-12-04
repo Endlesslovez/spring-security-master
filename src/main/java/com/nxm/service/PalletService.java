@@ -6,5 +6,6 @@ import com.nxm.model.Pallet;
 
 public interface PalletService  {
 
-	public Pallet findById(Integer id);
+	public Pallet findById(Long id);
+	
 }

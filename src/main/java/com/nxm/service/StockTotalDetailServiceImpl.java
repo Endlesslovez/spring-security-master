@@ -38,11 +38,10 @@ public class StockTotalDetailServiceImpl implements StockTotalDetailService {
 	}
 
 	@Override
-	public List<StockTotalDetail> getStockDetail(String idproduct, String idbrand, String idproductType, String expireddate) {
+
+	public List<StockTotalDetail> findRecord() {
 		// TODO Auto-generated method stub
-		return stockTotalDetailRepository.getStockDetail(idproduct, idbrand, idproductType, expireddate);
+		return stockTotalDetailRepository.findRecord();
 	}
 
-	
-	
 }

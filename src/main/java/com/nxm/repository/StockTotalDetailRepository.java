@@ -23,8 +23,7 @@ public interface StockTotalDetailRepository extends CrudRepository<StockTotalDet
 	@Query(value = "select u.* from tbl_stocktotaldetail u where u.col_stocktotal = ?1", nativeQuery = true)
 	List<StockTotalDetail> findByStockTotal(StockTotal stockTotal);
 
-	
-@Query(value = "select tsl.id,p.col_name,b.col_name,tp.col_type_name,tsl.col_expireddate from tbl_stocktotaldetail tsl join tbl_product p on tsl.col_product=p.id join tbl_brand b on b.id = p.col_brandid join tbl_product_type tp on p.product_type = tp.id where b.col_name = :namebrand and p.col_name =:nameproduct and tp.col_type_name = :typename and tsl.col_expireddate = :expireddate",nativeQuery = true )
-public List<StockTotalDetail> getStockDetail(@Param("namebrand") String namebrand,@Param("nameproduct") String nameproduct,@Param("typename") String typename,@Param("expireddate") String expireddate);
+	@Query(value = "select u.* from tbl_stocktotaldetail u where u.col_productstatus = 1", nativeQuery = true)
+	List<StockTotalDetail> findRecord();
 
 }

@@ -32,7 +32,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -44,6 +47,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nxm.model.Brand;
+import com.nxm.model.Pallet;
+import com.nxm.model.PalletPoisitonVo;
 import com.nxm.model.PalletPosition;
 import com.nxm.model.Product;
 import com.nxm.model.ProductType;
@@ -57,6 +62,7 @@ import com.nxm.repository.StockTotalDetailRepository;
 import com.nxm.repository.StockTotalRepository;
 import com.nxm.service.BrandService;
 import com.nxm.service.PalletPoisitionService;
+import com.nxm.service.PalletService;
 import com.nxm.service.ProductService;
 import com.nxm.service.ProductTypeService;
 import com.nxm.service.StockChangeService;
@@ -97,23 +103,353 @@ public class StockController {
 	private PalletPoisitionService palletPoisitionService;
 
 	@Autowired
+	private PalletService palletService;
+
+	@Autowired
 	private ProductService service;
 
 	@Autowired
 	private ProductTypeService protypeService;
 
 	@GetMapping("/stock")
-	public String stock(Model model, Pageable pageable) {
+	public String stock(Model model, @PageableDefault(size = 10) Pageable pageable,
+			@RequestParam(value = "areaId", required = false) String areaId,
+			@RequestParam(value = "percent", required = false) String percent,
+			@RequestParam(value = "product", required = false) String product,
+			@RequestParam(value = "paletPosition", required = false) String paletPosition) {
+		// String areaId = httpServletRequest.getParameter("username");
 		model.addAttribute("brand", brandService.getAll());
 		model.addAttribute("protype", proTypeRepository.getAll());
 		model.addAttribute("product", new Product());
-		model.addAttribute("productList", productRepository.findAll());
-		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-		Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-		PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-		model.addAttribute("palletpositions", page.getContent());
-		model.addAttribute("page", page);
+	
+		int page1 = pageable.getPageNumber();
+		int count = 10;
+		List<PalletPosition> temp = palletPoisitionService.findRecord();
+		List<PalletPoisitonVo> impiantos = this.filterByParam(temp, areaId, percent, product, paletPosition); // objects
+		int min = page1 * count;
+
+		int max = (page1 + 1) * count;
+		if (max > impiantos.size()) {
+			max = impiantos.size();
+		}
+		long total = (long) impiantos.size();
+
+		Page<PalletPoisitonVo> pageImpianto = new PageImpl<PalletPoisitonVo>(impiantos.subList(min, max), pageable,
+				total);
+		model.addAttribute("page", pageImpianto);
+		if (areaId != null && !areaId.equals("")) {
+			model.addAttribute("areaId", areaId);
+		}
+		if (percent != null && !percent.equals("")) {
+			model.addAttribute("percent", percent);
+		}
+		if (product != null && !product.equals("")) {
+			model.addAttribute("product", product);
+		}
+		if (paletPosition != null && !paletPosition.equals("")) {
+			model.addAttribute("paletPosition", paletPosition);
+		}
 		return "stock";
+	}
+
+	@GetMapping("/findPoisition")
+	public String findPoisition(Model model, @PageableDefault(size = 10) Pageable pageable,
+			@RequestParam(value = "areaId", required = false) String areaId,
+			@RequestParam(value = "percent", required = false) String percent,
+			@RequestParam(value = "product", required = false) String product,
+			@RequestParam(value = "paletPosition", required = false) String paletPosition) {
+		model.addAttribute("brand", brandService.getAll());
+		model.addAttribute("protype", proTypeRepository.getAll());
+		model.addAttribute("product", new Product());
+		int page1 = pageable.getPageNumber();
+		int count = 10;
+
+		List<PalletPosition> temp = palletPoisitionService.findRecord();
+		List<PalletPoisitonVo> impiantos = this.filterByParam(temp, areaId, percent, product, paletPosition); // returned
+																												// 30
+		if (impiantos != null && impiantos.size() > 0) {
+			int min = page1 * count;
+
+			int max = (page1 + 1) * count;
+			if (max > impiantos.size()) {
+				max = impiantos.size();
+			}
+			long total = (long) impiantos.size();
+
+			Page<PalletPoisitonVo> pageImpianto = new PageImpl<PalletPoisitonVo>(impiantos.subList(min, max), pageable,
+					total);
+			model.addAttribute("page", pageImpianto);
+			return "stock";
+		} else { // objects
+			return "stock";
+		}
+
+	}
+
+	private List<PalletPoisitonVo> filterByParam(final List<PalletPosition> palletPositions, String areaId,
+			String percent, String ProductId, String paletPoisiton) {
+		final List<PalletPoisitonVo> palletPoisitonVos = new ArrayList<>();
+		long percent1 = -1;
+		long productId = -1;
+		long palletpositionId = -1;
+		if (percent != null && !percent.equals("")) {
+			percent1 = Long.parseLong(percent);
+		}
+		if (ProductId != null && !ProductId.equals("")) {
+			productId = Long.parseLong(ProductId);
+		}
+		if (paletPoisiton != null && !paletPoisiton.equals("")) {
+			palletpositionId = Long.parseLong(paletPoisiton);
+		}
+		for (PalletPosition palletPosition : palletPositions) {
+			PalletPoisitonVo palletPoisitonVo = new PalletPoisitonVo();
+			if (areaId != null && !areaId.equals("")) {
+				if (areaId.equals(palletPosition.getPallet().getAreaId()) && percent1 >= 0
+						&& palletPosition.getEmptyPercent() == percent1) {
+					if (productId > 0) {
+						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
+
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
+										&& stockTotalDetail.getProduct().getId() == productId) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+									palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+									palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+									palletPoisitonVo.setId(palletPosition.getId());
+									palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+									palletPoisitonVo.setProduct(product);
+									palletPoisitonVos.add(palletPoisitonVo);
+								}
+							}
+
+						} else {
+
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
+										&& stockTotalDetail.getProduct().getId() == productId) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+									palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+									palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+									palletPoisitonVo.setId(palletPosition.getId());
+									palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+									palletPoisitonVo.setProduct(product);
+									palletPoisitonVos.add(palletPoisitonVo);
+								}
+							}
+
+						}
+					} else if (percent1 >= 0 && palletPosition.getEmptyPercent() == percent1) {
+						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
+							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+							palletPoisitonVo.setId(palletPosition.getId());
+							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+								}
+							}
+							palletPoisitonVo.setProduct(product);
+							palletPoisitonVos.add(palletPoisitonVo);
+						} else {
+							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+							palletPoisitonVo.setId(palletPosition.getId());
+							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+								}
+							}
+							palletPoisitonVo.setProduct(product);
+							palletPoisitonVos.add(palletPoisitonVo);
+						}
+					}
+				} else if (areaId.equals(palletPosition.getPallet().getAreaId()) && percent1 < 0) {
+					if (productId > 0) {
+						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
+
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
+										&& stockTotalDetail.getProduct().getId() == productId) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+									palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+									palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+									palletPoisitonVo.setId(palletPosition.getId());
+									palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+									palletPoisitonVo.setProduct(product);
+									palletPoisitonVos.add(palletPoisitonVo);
+								}
+							}
+
+						} else {
+
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
+										&& stockTotalDetail.getProduct().getId() == productId) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+
+								}
+							}
+							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+							palletPoisitonVo.setId(palletPosition.getId());
+							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+							palletPoisitonVo.setProduct(product);
+							palletPoisitonVos.add(palletPoisitonVo);
+						}
+					} else if (percent1 >= 0 && palletPosition.getEmptyPercent() == percent1) {
+						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
+							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+							palletPoisitonVo.setId(palletPosition.getId());
+							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+								}
+							}
+							palletPoisitonVo.setProduct(product);
+							palletPoisitonVos.add(palletPoisitonVo);
+						} else {
+							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+							palletPoisitonVo.setId(palletPosition.getId());
+							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+							// get values from contact entity and set them in contactDto
+							// e.g. contactDto.setContactId(contact.getContactId());
+
+							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+							String product = "";
+							for (StockTotalDetail stockTotalDetail : temp) {
+								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+									product += stockTotalDetail.getProduct().getName() + "; ";
+								}
+							}
+							palletPoisitonVo.setProduct(product);
+							palletPoisitonVos.add(palletPoisitonVo);
+						}
+					} else {
+						palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+						palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+						palletPoisitonVo.setId(palletPosition.getId());
+						palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+						// get values from contact entity and set them in contactDto
+						// e.g. contactDto.setContactId(contact.getContactId());
+
+						List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+						String product = "";
+						for (StockTotalDetail stockTotalDetail : temp) {
+							if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+								product += stockTotalDetail.getProduct().getName() + "; ";
+							}
+						}
+						palletPoisitonVo.setProduct(product);
+						palletPoisitonVos.add(palletPoisitonVo);
+					}
+				}
+			} else {
+				if ("A".equals(palletPosition.getPallet().getAreaId())) {
+					palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+					palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+					palletPoisitonVo.setId(palletPosition.getId());
+					palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+					// get values from contact entity and set them in contactDto
+					// e.g. contactDto.setContactId(contact.getContactId());
+
+					List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+					String product = "";
+					for (StockTotalDetail stockTotalDetail : temp) {
+						if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+							product += stockTotalDetail.getProduct().getName() + "; ";
+						}
+					}
+					palletPoisitonVo.setProduct(product);
+					palletPoisitonVos.add(palletPoisitonVo);
+				}
+			}
+		}
+		return palletPoisitonVos;
+	}
+
+	private PalletPoisitonVo convertToContactDto(final PalletPosition palletPosition) {
+		final PalletPoisitonVo palletPoisitonVo = new PalletPoisitonVo();
+		palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+		palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+		palletPoisitonVo.setId(palletPosition.getId());
+		palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+		// get values from contact entity and set them in contactDto
+		// e.g. contactDto.setContactId(contact.getContactId());
+
+		List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+		String product = "";
+		for (StockTotalDetail stockTotalDetail : temp) {
+			if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+				product += stockTotalDetail.getProduct().getName() + "; ";
+			}
+		}
+		palletPoisitonVo.setProduct(product);
+		return palletPoisitonVo;
+	}
+
+	private List<PalletPoisitonVo> convertToContactDtos(final List<PalletPosition> palletPositions) {
+		final List<PalletPoisitonVo> palletPoisitonVos = new ArrayList<>();
+		for (PalletPosition palletPosition : palletPositions) {
+			PalletPoisitonVo palletPoisitonVo = new PalletPoisitonVo();
+			palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+			palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+			palletPoisitonVo.setId(palletPosition.getId());
+			palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+			// get values from contact entity and set them in contactDto
+			// e.g. contactDto.setContactId(contact.getContactId());
+
+			List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+			String product = "";
+			for (StockTotalDetail stockTotalDetail : temp) {
+				if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+					product += stockTotalDetail.getProduct().getName() + "; ";
+				}
+			}
+			palletPoisitonVo.setProduct(product);
+			palletPoisitonVos.add(palletPoisitonVo);
+		}
+
+		return palletPoisitonVos;
 	}
 
 	@GetMapping("/exportExcelCompare")
@@ -301,10 +637,9 @@ public class StockController {
 	public String addproduct(@ModelAttribute Product product, @RequestParam("name") String name,
 			@RequestParam("brand") String brand, @RequestParam("price") Integer price,
 			@RequestParam("productType") String productType, @RequestParam("packageType") String packageType,
-			Model model, Pageable pageable) {
+			Model model, @PageableDefault(size = 10) Pageable pageable) {
 		Long longId = Long.parseLong(brand);
 		Brand brand1 = brandService.findBrandById(longId);
-
 
 		Long longIdpro = Long.parseLong(productType);
 		ProductType productType2 = protypeService.findProductById(longIdpro);
@@ -319,14 +654,14 @@ public class StockController {
 			model.addAttribute("mgs", "Thêm mới thật bại");
 		}
 		if (service.create(product) == true) {
-	
+
 			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			return "stock";
 		} else {
@@ -334,23 +669,19 @@ public class StockController {
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			model.addAttribute("mgs", "Thêm mới không thàng công");
 			return "stock";
 		}
 
-		
 	}
-
-	
-
 
 	@PostMapping("/importExcel")
 	public String mapReapExcelDatatoDB(HttpServletRequest httpServletRequest, HttpServletResponse response,
-			@RequestParam("file") MultipartFile reapExcelDataFile, Model model, Pageable pageable)
-			throws IOException, IllegalStateException {
+			@RequestParam("file") MultipartFile reapExcelDataFile, Model model,
+			@PageableDefault(size = 10) Pageable pageable) throws IOException, IllegalStateException {
 		StockTotal stockTotalNow = stockTotalService.findNow();
 		if (stockTotalNow == null) {
 			String chotkho = "Kho đang hoạt động! Vui lòng liên hệ quản lý để kiểm kê kho";
@@ -359,13 +690,13 @@ public class StockController {
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			return "stock";
 		}
 		List<StockChange> lstDelete = stockChangeRepository.findByStockTotalId(stockTotalNow.getId());
-		for(StockChange stockChange : lstDelete) {
+		for (StockChange stockChange : lstDelete) {
 			stockChangeRepository.delete(stockChange);
 		}
 		ReadingFromExcelSheet readingFromExcelSheet = new ReadingFromExcelSheet();
@@ -520,7 +851,7 @@ public class StockController {
 			if (msg.equals("")) {
 				StockTotalDetail stockTotalDetail = stockTotalDetailService
 						.findOne(stockTotalDetailVO.getStockTotalDetailId());
-				if (stockTotalDetail != null&&stockTotalDetail.getProductStatus()==1) {
+				if (stockTotalDetail != null && stockTotalDetail.getProductStatus() == 1) {
 					if (stockTotalDetail.getProduct().getId() != stockTotalDetailVO.getProductId()) {
 						stockTotalDetailVO.setError("Bản ghi tồn kho không tồn tại. Vui lòng xem lại Product_id");
 						lstFail.add(stockTotalDetailVO);
@@ -566,7 +897,7 @@ public class StockController {
 						count++;
 					}
 
-				}else if(stockTotalDetail != null&&stockTotalDetail.getProductStatus()==0){
+				} else if (stockTotalDetail != null && stockTotalDetail.getProductStatus() == 0) {
 					StockChange stockChange = new StockChange();
 					stockChange.setStockTotalId(stockTotalNow.getId());
 					long quantityChange = stockTotalDetailVO.getQuantity() - stockTotalDetail.getQuantity();
@@ -615,8 +946,8 @@ public class StockController {
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 		} else {
 			chotkho = "Chưa hoàn thành chốt kho. Vui lòng kiểm tra file Excel chốt kho";
@@ -625,8 +956,8 @@ public class StockController {
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			exportFile(httpServletRequest, response, "Bieu_mau_chot_kho_loi", lstFail);
 		}
@@ -696,22 +1027,25 @@ public class StockController {
 								}
 								cell.setCellStyle(style);
 							} else if (cellIndex == 5) {
-								if (stockTotalDetailVO.getExpiredDate() != null&&stockTotalDetailVO.getExpiredDate().equals("")) {
+								if (stockTotalDetailVO.getExpiredDate() != null
+										&& stockTotalDetailVO.getExpiredDate().equals("")) {
 									cell.setCellValue(stockTotalDetailVO.getExpiredDate());
 								}
 								cell.setCellStyle(style);
 							} else if (cellIndex == 6) {
-								if (stockTotalDetailVO.getPalletPositionId()!=null&&stockTotalDetailVO.getPalletPositionId() >0) {
+								if (stockTotalDetailVO.getPalletPositionId() != null
+										&& stockTotalDetailVO.getPalletPositionId() > 0) {
 									long id = stockTotalDetailVO.getPalletPositionId();
 									cell.setCellValue(id);
-								
+
 								}
 								cell.setCellStyle(style);
 							} else if (cellIndex == 7) {
-								if (stockTotalDetailVO.getStockTotalDetailId()!=null&&stockTotalDetailVO.getStockTotalDetailId() >0) {
+								if (stockTotalDetailVO.getStockTotalDetailId() != null
+										&& stockTotalDetailVO.getStockTotalDetailId() > 0) {
 									long id = stockTotalDetailVO.getStockTotalDetailId();
 									cell.setCellValue(id);
-									
+
 								}
 								cell.setCellStyle(style);
 							} else if (cellIndex == 8) {
@@ -720,7 +1054,7 @@ public class StockController {
 									Font font = workbook.createFont();
 									font.setColor(IndexedColors.RED.getIndex());
 									style.setFont(font);
-									
+
 								}
 								cell.setCellStyle(style);
 							}
@@ -815,23 +1149,22 @@ public class StockController {
 		return "stock";
 	}
 
-
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 
 	@PostMapping("/startCheckStock")
-	public String startCheckStock(Model model, Pageable pageable) {
+	public String startCheckStock(Model model, @PageableDefault(size = 10) Pageable pageable) {
 		// Vô hiệu hóa chốt kho cũ
 		StockTotal stockTotal = stockTotalService.findAvaiableRecord();
 		if (stockTotal != null) {
-			
+
 			createNewStockTotal(stockTotal);
 			model.addAttribute("chotkho", "Bắt đầu kiểm kê kho");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			return "stock";
 		} else {
@@ -840,15 +1173,16 @@ public class StockController {
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			return "stock";
 		}
 	}
+
 	@Transactional
 	public void createNewStockTotal(StockTotal stockTotal) {
-		long stock= stockTotal.getTotalCount();
+		long stock = stockTotal.getTotalCount();
 		stockTotal.setStatus(0);
 		stockTotalRepository.save(stockTotal);
 
@@ -859,8 +1193,9 @@ public class StockController {
 		stockTotal.setTotalCount(stock);
 		stockTotalRepository.save(stockTotal);
 	}
+
 	@PostMapping("/acceptCheckStock")
-	public String acceptCheckStock(Model model, Pageable pageable) {
+	public String acceptCheckStock(Model model, @PageableDefault(size = 10) Pageable pageable) {
 
 		StockTotal stockTotal = stockTotalService.findNow();
 		if (stockTotal != null) {
@@ -874,31 +1209,31 @@ public class StockController {
 				model.addAttribute("protype", proTypeRepository.getAll());
 				model.addAttribute("product", new Product());
 				Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-				PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-				model.addAttribute("palletpositions", page.getContent());
+
+				Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 				model.addAttribute("page", page);
 				return "stock";
-				
-			}else {
+
+			} else {
 				model.addAttribute("chotkho", "Chưa hoàn thành chốt kho");
 				model.addAttribute("brand", brandService.getAll());
 				model.addAttribute("protype", proTypeRepository.getAll());
 				model.addAttribute("product", new Product());
 				Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-				PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-				model.addAttribute("palletpositions", page.getContent());
+
+				Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 				model.addAttribute("page", page);
 				return "stock";
 			}
-			
+
 		} else {
 			model.addAttribute("chotkho", "Hiện chưa bắt đầu kiểm kê kho");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-			PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
-			model.addAttribute("palletpositions", page.getContent());
+
+			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
 			model.addAttribute("page", page);
 			return "stock";
 		}
@@ -950,4 +1285,6 @@ public class StockController {
 //                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 //                .body(resource);
 //    }
+//	model.addAttribute("productList", productRepository.findAll());
+//	model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
 }

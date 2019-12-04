@@ -13,11 +13,12 @@ import com.nxm.model.StockTotal;
 import com.nxm.model.StockTotalDetail;
 
 public interface StockTotalDetailService {
+
     Page<StockTotalDetail> findAll(Pageable pageable);
 
     List<StockTotalDetail> findByStockTotal(StockTotal id);
     StockTotalDetail findOne(long id);
- 
-  
-  List<StockTotalDetail> getStockDetail(String namebrand, String nameproduct, String typename,String expireddate);
+
+    public List<StockTotalDetail> findRecord();
+
 }
