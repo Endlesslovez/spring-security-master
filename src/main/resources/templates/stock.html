@@ -121,52 +121,47 @@
 		</form>
 	</header>
 
-	<nav class="site-header sticky-top py-1" style="position: relative;">
+	<nav class="site-header sticky-top py-1"
+		style="position: relative; font-family: 'Archivo Black', sans-serif; background: #31b573;">
 		<div
 			class="container d-flex flex-column flex-md-row justify-content-between"
 			style="max-width: 80%; margin-left: 0px;">
-			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ TỒN KHO</a>
-			<span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN
-				LÝ NHẬP XUẤT</a> <span></span> <a class="py-2 d-none d-md-inline-block"
-				href="#">BÁO CÁO TỒN KHO</a> <span></span> <a
-				class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
+			<a class="py-2 d-none d-md-inline-block" th:href="@{/stock}">QUẢN
+				LÝ TỒN KHO</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ NHẬP XUẤT</a> <span></span> <a
+				class="py-2 d-none d-md-inline-block" href="#">BÁO CÁO TỒN KHO</a> <span></span>
+			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
 				LƯỢNG</a> <span></span> <a class="py-2 d-none d-md-inline-block"
 				href="#">QUẢN LÝ TÀI KHOẢN</a> <span></span>
 		</div>
 	</nav>
+
 	<article>
-		<h2>QUẢN LÝ TỒN KHO</h2>
-		
+
+
 		<div class="row">
 			<div class="col">
-				<form th:object="${product}" th:action="@{/stock}" th:method="POST"
-					action="stock.html">
-					<table>
+				<form th:action="@{/search}" th:method="POST" action="stock.html"
+					style="margin-top: 29px;">
+
+					<table style="width: 100%; text-align: center;">
 						<tr>
-							<td>Tên sản phẩm</td>
-							<td>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<button class="btn btn-outline-secondary dropdown-toggle"
-											type="button" data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">Dropdown</button>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#">Action</a> <a
-												class="dropdown-item" href="#">Another action</a> <a
-												class="dropdown-item" href="#">Something else here</a>
-											<div role="separator" class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Separated link</a>
-										</div>
-									</div>
-									<input type="text" class="form-control"
-										aria-label="Text input with dropdown button">
-								</div>
-							</td>
-							<td>Nhãn hiệu</td>
+							<td style="text-align: center; padding-bottom: 10px">Tên sản
+								phẩm</td>
 							<td><div class="input-group mb-3">
 									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon"
-										th:field="*{brand}">
+										aria-label="Example select with button addon" name="nameproduct">
+										<option value="">Chọn sản phẩm</option>
+										<option th:each="country1 : ${productList}"
+											th:value="${country1.id}" th:text="${country1.name}"
+											th:name="productId" />
+									</select>
+								</div></td>
+							<td style="text-align: center; padding-bottom: 10px">Nhãn
+								hiệu</td>
+							<td><div class="input-group mb-3">
+									<select class="custom-select" id="inputGroupSelect03"
+										aria-label="Example select with button addon" name="namebrand">
 										<option value="">Chọn Nhãn Hiệu</option>
 										<option th:each="country : ${brand}" th:value="${country.id}"
 											th:text="${country.name}" th:name="brandid" />
@@ -174,32 +169,36 @@
 
 
 								</div></td>
-							<td>Loại sản phẩm</td>
+							<td style="text-align: center; padding-bottom: 10px">Loại
+								sản phẩm</td>
 							<td><div class="input-group mb-3">
 									<select class="custom-select" id="inputGroupSelect03"
 										aria-label="Example select with button addon"
-										name="productType" th:field="*{productType}">
+										name="typename">
 										<option value="">Chọn Loại Sản Phẩm</option>
 										<option th:each="country : ${protype}"
 											th:value="${country.id}" th:text="${country.typeName}" />
 									</select>
 								</div></td>
-							<td>Ngày hết hạn</td>
+							<td style="text-align: center; padding-bottom: 10px">Ngày
+								hết hạn</td>
 							<td><div class="input-group mb-3">
 
 									<input type="date" class="form-control" placeholder="Username"
-										aria-label="Username" aria-describedby="basic-addon1">
+										aria-label="Username" aria-describedby="basic-addon1"
+										name="expireddate">
 								</div></td>
-							<td><button type="submit" class="btn btn-success">Tìm
-									kiếm</button></td>
-
-						</tr>
+							<td style="padding-left: 10px"><button type="submit"
+									class="btn btn-success"
+									style="height: 28px; margin-bottom: 10px;">Tìm kiếm</button></td>
 					</table>
 				</form>
 				<span th:text="${mgs}"></span>
-				<table class="table table-striped">
+				<h2 style="text-align: center; margin: 24px; font-size: 39px;">QUẢN
+					LÝ TỒN KHO</h2>
+				<table class="table table-striped" style="text-align: center;">
 					<thead>
-						<tr>
+						<tr style="font-weight: 800; font-size: 12px;">
 							<th scope="col">Mã sản phẩm</th>
 							<th scope="col">Tên sản phẩm</th>
 							<th scope="col">Nhản hiệu sản phẩm</th>
@@ -219,16 +218,44 @@
 					</thead>
 					<tbody>
 
-						<tr>
-							<td scope="col"></td>
+						<tr th:each="stocktotaldetail : ${stockTotalDetail}"
+							style="font-size: 16px">
+							<td scope="col" th:text="${stocktotaldetail.id}"></td>
+							<td th:text="${stocktotaldetail.product.name}"></td>
+							<td th:text="${stocktotaldetail.product.brand.name}"></td>
+							<td th:text="${stocktotaldetail.product.productType.typeName}"></td>
+							<td th:text="${stocktotaldetail.expiredDate}"></td>
+							<td th:text="${stocktotaldetail.avaiableQuantity}"></td>
+							<td
+								th:text="${stocktotaldetail.avaiableQuantity * stocktotaldetail.product.price}"></td>
 							<td></td>
+							<td th:text="${stocktotaldetail.palletPosition.id}"></td>
+							<td>
+								<form>
+									<a class="btn btn-light"> <span class="fa fa-retweet "></span>
+									</a>
+								</form>
+							</td>
+							<td><form action="@{combo}">
+									<button type="button" class="btn btn-danger">
+										<i class="fa fa-edit"></i>
+									</button>
+								</form></td>
+						</tr>
+
+
+						<tr th:each="stocktotaldetail : ${stockList1}"
+							th:if="${not #lists.isEmpty(search)}" style="font-size: 16px">
+							<td scope="col" th:text="${stocktotaldetail.id}"></td>
+							<td th:text="${stocktotaldetail.product.name}"></td>
+							<td th:text="${stocktotaldetail.product.brand.name}"></td>
+							<td th:text="${stocktotaldetail.product.productType.typeName}"></td>
+							<td th:text="${stocktotaldetail.expiredDate}"></td>
+							<td th:text="${stocktotaldetail.avaiableQuantity}"></td>
+							<td
+								th:text="${stocktotaldetail.avaiableQuantity * stocktotaldetail.product.price}"></td>
 							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td th:text="${stocktotaldetail.palletPosition.id}"></td>
 							<td></td>
 							<td><form action="@{combo}">
 									<button type="button" class="btn btn-danger">
@@ -236,7 +263,9 @@
 									</button>
 								</form></td>
 						</tr>
+
 					</tbody>
+
 				</table>
 				<form th:object="${product}" th:action="@{/stock}" th:method="POST">
 					<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -261,7 +290,7 @@
 																		th:field="*{name}">
 
 																</div>
-															
+
 															</td>
 														</tr>
 														<tr>
@@ -274,7 +303,7 @@
 																		th:field="*{price}">
 
 																</div>
-															
+
 															</td>
 														</tr>
 														<tr>
@@ -364,9 +393,11 @@
 			</div>
 		</div>
 		<div th:if="${not #lists.isEmpty(palletpositions)}">
-			<h2>DANH SÁCH KHOANG CHỨA</h2>
-			<table class="table table-striped">
-				<tr>
+			<h2
+				style="text-align: center; font-size: 40px; margin: 26px; color: blue;">DANH
+				SÁCH KHOANG CHỨA</h2>
+			<table class="table table-striped" style="text-align: center;">
+				<tr style="font-weight: 800; font-size: 12px;">
 					<th class="th">Số thứ tự</th>
 					<th class="th">Tên Khu vực</th>
 					<th class="th">Số Pallet</th>
@@ -374,7 +405,8 @@
 					<th class="th">Sức chứa</th>
 					<th class="th">Sản phẩm</th>
 				</tr>
-				<tr th:each="palletposition : ${palletpositions}">
+				<tr th:each="palletposition : ${palletpositions}"
+					style="font-size: 16px">
 					<td th:text="${palletposition.id}"></td>
 					<td th:text="${palletposition.pallet.areaId}"></td>
 					<td th:text="${palletposition.pallet.palletNumber}"></td>
@@ -435,14 +467,15 @@
 						<div class="modal-body">
 							<h3 class="modal-title" id="exampleModalCenterTitle"
 								th:text="${chotkho}"></h3>
-							<div th:if="${compare}" >
-							<h4 class="modal-title" id="exampleModalCenterTitle"
-								th:text="${compare}" style="color:red;"></h4>
-								
+							<div th:if="${compare}">
+								<h4 class="modal-title" id="exampleModalCenterTitle"
+									th:text="${compare}" style="color: red;"></h4>
+
 								<form action="/exportExcelCompare" method="get"
 									style="width: 20%; float: left;">
 									<button class="btn btn-info" type="submit"
-										style="width: 100%; background-color: #a2fca8; color: black; font-weight: bold;" >Kiểm tra</button>
+										style="width: 100%; background-color: #a2fca8; color: black; font-weight: bold;">Kiểm
+										tra</button>
 								</form>
 							</div>
 						</div>
