@@ -38,7 +38,7 @@ public class StockTotalDetail {
 	private long avaiableQuantity;
 
 	@Column(name = "col_expireddate")
-	private LocalDate expiredDate;
+	private String expiredDate;
 
 	@Column(name = "col_productstatus")
 	private int productStatus;
@@ -116,10 +116,10 @@ public class StockTotalDetail {
 	public void setAvaiableQuantity(long avaiableQuantity) {
 		this.avaiableQuantity = avaiableQuantity;
 	}
-	public LocalDate getExpiredDate() {
+	public String getExpiredDate() {
 		return expiredDate;
 	}
-	public void setExpiredDate(LocalDate expiredDate) {
+	public void setExpiredDate(String expiredDate) {
 		this.expiredDate = expiredDate;
 	}
 	public int getProductStatus() {
