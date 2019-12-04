@@ -50,6 +50,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 	private ProductRepository productRepository;
 
 	@Autowired
+
 	private PasswordEncoder passwordEncoder;
 
 	@Override
@@ -76,7 +77,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		 * user.setRoles(roles); userRepository.save(user); } //end 1
 		 */
 
-	/*	//Lưu pallet_poisition begin 2
+		//Lưu pallet_poisition begin 2
 	  Integer pallet_id = 1;
 		for (int i = 0; i < 45; i++) {
 			Pallet palletTemp = palletRepository.findOne(pallet_id);
@@ -108,12 +109,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 			pallet_id++;
 		}
 		// end 2
-		*/
+		
 
-		
-	 	/*StockTotal stockTotal = stockTotalService.findAvaiableRecord();
-		
-		StockTotalDetail stockTotalDetail = new StockTotalDetail();
+	StockTotal stockTotal = stockTotalService.findNow();
+	StockTotalDetail stockTotalDetail = new StockTotalDetail();
 		Product product = productRepository.findOne((long) 4);
 		stockTotalDetail.setProduct(product);
 		stockTotalDetail.setQuantity(100);
@@ -128,21 +127,5 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		stockTotalDetail.setProductStatus(1);
 		stockTotalDetail.setUserCreateId(1);
 		stockTotalDetailRepository.save(stockTotalDetail);
-		stockTotalDetail = new StockTotalDetail();
-		Product product1 = productRepository.findOne((long) 5);
-		stockTotalDetail.setProduct(product1);
-		stockTotalDetail.setQuantity(100);
-		stockTotalDetail.setAvaiableQuantity(100);
-		String time2 = "2020-01-01";
-		// convert String to LocalDateTime
-		LocalDate localDateTime1 = LocalDate.parse(time2);
-		// parse it to a specified format
-		stockTotalDetail.setExpiredDate(localDateTime1);
-		stockTotalDetail.setPalletPosition(palletPoisitionRepository.findOne((long)4));
-		stockTotalDetail.setStockTotal(stockTotal);
-		stockTotalDetail.setProductStatus(1);
-		stockTotalDetail.setUserCreateId(1);
-		stockTotalDetailRepository.save(stockTotalDetail);*/
-	}
 
 }

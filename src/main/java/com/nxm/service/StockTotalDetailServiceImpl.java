@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.nxm.model.StockTotal;
 import com.nxm.model.StockTotalDetail;
 import com.nxm.repository.StockTotalDetailRepository;
+import com.nxm.repository.StockTotalRepository;
 
 @Service("stockTotalDetailService")
 public class StockTotalDetailServiceImpl implements StockTotalDetailService {
