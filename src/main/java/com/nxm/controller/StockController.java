@@ -107,6 +107,8 @@ public class StockController {
 		model.addAttribute("brand", brandService.getAll());
 		model.addAttribute("protype", proTypeRepository.getAll());
 		model.addAttribute("product", new Product());
+		model.addAttribute("productList", productRepository.findAll());
+		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
 		Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
 		PageWrapper<PalletPosition> page = new PageWrapper<>(palletPoisitionPage, "/stock");
 		model.addAttribute("palletpositions", page.getContent());
@@ -137,9 +139,9 @@ public class StockController {
 				StockTotalDetail stockTotalDetail = stockTotalDetailService
 						.findOne(stockChange.getStockTotalDetailId());
 				if (stockTotalDetail != null) {
-					LocalDate localDate = stockTotalDetail.getExpiredDate();// For reference
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
-					String formattedString = localDate.format(formatter);
+//					LocalDate localDate = stockTotalDetail.getExpiredDate();// For reference
+//					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
+					String formattedString = stockTotalDetail.getExpiredDate();
 					stockTotalDetailVO.setExpiredDate(formattedString);
 					stockTotalDetailVO.setPalletPositionId((int) stockTotalDetail.getPalletPosition().getId());
 					stockTotalDetailVO.setStockTotalDetailId(stockTotalDetail.getId());
@@ -208,9 +210,9 @@ public class StockController {
 								}
 								cell.setCellStyle(style);
 							} else if (cellIndex == 5) {
-								LocalDate localDate = stockTotalDetail.getExpiredDate();// For reference
-								DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
-								String formattedString = localDate.format(formatter);
+//								LocalDate localDate = stockTotalDetail.getExpiredDate();// For reference
+//								DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
+								String formattedString = stockTotalDetail.getExpiredDate();
 								cell.setCellValue(formattedString);
 								cell.setCellStyle(style);
 							} else if (cellIndex == 6) {
@@ -297,7 +299,7 @@ public class StockController {
 
 	@PostMapping("/stock")
 	public String addproduct(@ModelAttribute Product product, @RequestParam("name") String name,
-			@RequestParam("brand") String brand, @RequestParam("price") int price,
+			@RequestParam("brand") String brand, @RequestParam("price") Integer price,
 			@RequestParam("productType") String productType, @RequestParam("packageType") String packageType,
 			Model model, Pageable pageable) {
 		Long longId = Long.parseLong(brand);
@@ -309,8 +311,13 @@ public class StockController {
 		product.setName(name);
 		product.setPackageType(packageType);
 		product.setPrice(price);
+		String proceString =price.toString();
 		product.setBrand(brand1);
 		product.setProductType(productType2);
+		
+		if(name==null||brand==null||proceString==null||productType==null||packageType==null) {
+			model.addAttribute("mgs", "Thêm mới thật bại");
+		}
 		if (service.create(product) == true) {
 	
 			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
@@ -520,9 +527,9 @@ public class StockController {
 						countFail++;
 						continue;
 					}
-					LocalDate localDate = stockTotalDetail.getExpiredDate();// For reference
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
-					String formattedString = localDate.format(formatter);
+//					LocalDate localDate = stockTotalDetail.getExpiredDate();// For reference
+//					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
+					String formattedString = stockTotalDetail.getExpiredDate();
 					if (!formattedString.equals(stockTotalDetailVO.getExpiredDate())) {
 						stockTotalDetailVO.setError("Bản ghi tồn kho không tồn tại. Vui lòng xem lại Ngày hết hạn");
 						lstFail.add(stockTotalDetailVO);
