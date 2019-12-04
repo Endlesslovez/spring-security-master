@@ -1,5 +1,8 @@
 package com.nxm.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,10 @@ public class PalletServiceImpl implements PalletService {
 
 	@Override
 	public Pallet findById(Integer id) {
+		Optional<Pallet> temp = palletRepository.findById(id);
 		
-		return palletRepository.findOne(id);
+		Pallet pallet =temp.get();
+		return pallet;
 	}
 
 }

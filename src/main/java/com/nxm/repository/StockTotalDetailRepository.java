@@ -19,4 +19,6 @@ public interface StockTotalDetailRepository extends CrudRepository<StockTotalDet
 	@Query(value = "select u.* from tbl_stocktotaldetail u where u.col_stocktotal = ?1", nativeQuery = true)
 	List<StockTotalDetail> findByStockTotal(StockTotal stockTotal);
 
+	@Query(value = "select u.* from tbl_stocktotaldetail u where u.col_productstatus = 1", nativeQuery = true)
+	List<StockTotalDetail> findRecord();
 }

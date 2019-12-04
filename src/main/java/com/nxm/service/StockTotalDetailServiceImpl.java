@@ -32,4 +32,10 @@ public class StockTotalDetailServiceImpl implements StockTotalDetailService {
 		// TODO Auto-generated method stub
 		return stockTotalDetailRepository.findOne(id);
 	}
+
+	@Override
+	public List<StockTotalDetail> findRecord() {
+		// TODO Auto-generated method stub
+		return stockTotalDetailRepository.findRecord();
+	}
 }
