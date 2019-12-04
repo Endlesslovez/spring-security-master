@@ -28,30 +28,30 @@ import com.nxm.service.StockTotalService;
 @Component
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
 
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private RoleRepository roleRepository;
-
-	@Autowired
-	private PalletRepository palletRepository;
-
-	@Autowired
-	private PalletPoisitionRepository palletPoisitionRepository;
-
-	@Autowired
-	private StockTotalService stockTotalService;
-	
-	@Autowired
-	private StockTotalDetailRepository stockTotalDetailRepository;
-	
-	@Autowired
-	private ProductRepository productRepository;
-
-	@Autowired
-
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private UserRepository userRepository;
+//
+//	@Autowired
+//	private RoleRepository roleRepository;
+//
+//	@Autowired
+//	private PalletRepository palletRepository;
+//
+//	@Autowired
+//	private PalletPoisitionRepository palletPoisitionRepository;
+//
+//	@Autowired
+//	private StockTotalService stockTotalService;
+//	
+//	@Autowired
+//	private StockTotalDetailRepository stockTotalDetailRepository;
+//	
+//	@Autowired
+//	private ProductRepository productRepository;
+//
+//	@Autowired
+//
+//	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
@@ -78,57 +78,57 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		 */
 
 		//Lưu pallet_poisition begin 2
-	  Integer pallet_id = 1;
-		for (int i = 0; i < 45; i++) {
-			Pallet palletTemp = palletRepository.findOne(pallet_id);
-			if (palletTemp != null) {
-				System.out.println(palletTemp);
-				for (int hor = 0; hor < 4; hor++) {
-					for (int ver = 0; ver < 3; ver++) {
-						PalletPosition palletPositionTemp = new PalletPosition();
-						palletPositionTemp.setPallet(palletTemp);
-						if (hor == 0) {
-							palletPositionTemp.setHorizontalAxis("A");
-						} else if (hor == 1) {
-							palletPositionTemp.setHorizontalAxis("B");
-						} else if (hor == 2) {
-							palletPositionTemp.setHorizontalAxis("C");
-						} else if (hor == 3) {
-							palletPositionTemp.setHorizontalAxis("D");
-						}
-
-						palletPositionTemp.setVerticalAxis(Integer.toString(ver+ 1) );
-						palletPositionTemp.setEmptyPercent(0);
-						palletPoisitionRepository.save(palletPositionTemp);
-						System.out.println("Id pallet: "+palletPositionTemp.getPallet().getId()+"  hor: " + palletPositionTemp.getHorizontalAxis() + " ver: "+palletPositionTemp.getVerticalAxis()+" percent: "+palletPositionTemp.getEmptyPercent());
-					}
-
-				}
-
-			}
-			pallet_id++;
-		}
-		// end 2
-		
-		
-	StockTotal stockTotal = stockTotalService.findNow();
-		
-		StockTotalDetail stockTotalDetail = new StockTotalDetail();
-		Product product = productRepository.findOne((long) 3);
-		stockTotalDetail.setProduct(product);
-		stockTotalDetail.setQuantity(100);
-		stockTotalDetail.setAvaiableQuantity(100);
-		String time1 = "2020-01-01";
-		// convert String to LocalDateTime
-		LocalDate localDateTime = LocalDate.parse(time1);
-		// parse it to a specified format
-		stockTotalDetail.setExpiredDate(localDateTime);
-		stockTotalDetail.setPalletPosition(palletPoisitionRepository.findOne(3));
-		stockTotalDetail.setStockTotal(stockTotal);
-		stockTotalDetail.setProductStatus(1);
-		stockTotalDetail.setUserCreateId(1);
-		stockTotalDetailRepository.save(stockTotalDetail);
-	
+//	  Integer pallet_id = 1;
+//		for (int i = 0; i < 45; i++) {
+//			Pallet palletTemp = palletRepository.findOne(pallet_id);
+//			if (palletTemp != null) {
+//				System.out.println(palletTemp);
+//				for (int hor = 0; hor < 4; hor++) {
+//					for (int ver = 0; ver < 3; ver++) {
+//						PalletPosition palletPositionTemp = new PalletPosition();
+//						palletPositionTemp.setPallet(palletTemp);
+//						if (hor == 0) {
+//							palletPositionTemp.setHorizontalAxis("A");
+//						} else if (hor == 1) {
+//							palletPositionTemp.setHorizontalAxis("B");
+//						} else if (hor == 2) {
+//							palletPositionTemp.setHorizontalAxis("C");
+//						} else if (hor == 3) {
+//							palletPositionTemp.setHorizontalAxis("D");
+//						}
+//
+//						palletPositionTemp.setVerticalAxis(Integer.toString(ver+ 1) );
+//						palletPositionTemp.setEmptyPercent(0);
+//						palletPoisitionRepository.save(palletPositionTemp);
+//						System.out.println("Id pallet: "+palletPositionTemp.getPallet().getId()+"  hor: " + palletPositionTemp.getHorizontalAxis() + " ver: "+palletPositionTemp.getVerticalAxis()+" percent: "+palletPositionTemp.getEmptyPercent());
+//					}
+//
+//				}
+//
+//			}
+//			pallet_id++;
+//		}
+//		// end 2
+//		
+//		
+//	StockTotal stockTotal = stockTotalService.findNow();
+//		
+//		StockTotalDetail stockTotalDetail = new StockTotalDetail();
+//		Product product = productRepository.findOne((long) 3);
+//		stockTotalDetail.setProduct(product);
+//		stockTotalDetail.setQuantity(100);
+//		stockTotalDetail.setAvaiableQuantity(100);
+//		String time1 = "2020-01-01";
+//		// convert String to LocalDateTime
+//		LocalDate localDateTime = LocalDate.parse(time1);
+//		// parse it to a specified format
+//		stockTotalDetail.setExpiredDate(localDateTime);
+//		stockTotalDetail.setPalletPosition(palletPoisitionRepository.findOne(3));
+//		stockTotalDetail.setStockTotal(stockTotal);
+//		stockTotalDetail.setProductStatus(1);
+//		stockTotalDetail.setUserCreateId(1);
+//		stockTotalDetailRepository.save(stockTotalDetail);
+//	
 	}
 
 }
