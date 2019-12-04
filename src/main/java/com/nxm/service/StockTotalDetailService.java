@@ -14,4 +14,5 @@ public interface StockTotalDetailService {
 
     List<StockTotalDetail> findByStockTotal(StockTotal id);
     StockTotalDetail findOne(long id);
+    public List<StockTotalDetail> findRecord();
 }

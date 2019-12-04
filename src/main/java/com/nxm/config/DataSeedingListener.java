@@ -78,7 +78,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		 */
 
 		//Lưu pallet_poisition begin 2
-	  Integer pallet_id = 1;
+		/*Long pallet_id = (long) 1;
 		for (int i = 0; i < 45; i++) {
 			Pallet palletTemp = palletRepository.findOne(pallet_id);
 			if (palletTemp != null) {
@@ -107,11 +107,11 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
 			}
 			pallet_id++;
-		}
+		}*/
 		// end 2
 		
 
-	StockTotal stockTotal = stockTotalService.findNow();
+	/*StockTotal stockTotal = stockTotalService.findNow();
 	StockTotalDetail stockTotalDetail = new StockTotalDetail();
 		Product product = productRepository.findOne((long) 4);
 		stockTotalDetail.setProduct(product);
@@ -126,6 +126,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		stockTotalDetail.setStockTotal(stockTotal);
 		stockTotalDetail.setProductStatus(1);
 		stockTotalDetail.setUserCreateId(1);
-		stockTotalDetailRepository.save(stockTotalDetail);
-
+		stockTotalDetailRepository.save(stockTotalDetail);*/
+	}
 }

@@ -17,7 +17,7 @@ public class PalletServiceImpl implements PalletService {
 
 
 	@Override
-	public Pallet findById(Integer id) {
+	public Pallet findById(Long id) {
 		Optional<Pallet> temp = palletRepository.findById(id);
 		
 		Pallet pallet =temp.get();

@@ -11,9 +11,9 @@ import com.nxm.model.Pallet;
 import com.nxm.model.StockTotalDetail;
 
 @Repository(value = "palletRepository")
-public interface PalletRepository extends CrudRepository<Pallet, Integer> {
+public interface PalletRepository extends CrudRepository<Pallet, Long> {
 	
-	Optional<Pallet> findById(Integer id);
+	Optional<Pallet> findById(Long id);
 	
 	@Query(value = "select  u.* from tbl_pallet u ", nativeQuery = true)
 	List<Pallet> findRecords();
