@@ -111,11 +111,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		*/
 
 		
-	/* begin 3
-	 * 	StockTotal stockTotal = stockTotalService.findNow();
+	 	/*StockTotal stockTotal = stockTotalService.findAvaiableRecord();
 		
 		StockTotalDetail stockTotalDetail = new StockTotalDetail();
-		Product product = productRepository.findOne((long) 3);
+		Product product = productRepository.findOne((long) 4);
 		stockTotalDetail.setProduct(product);
 		stockTotalDetail.setQuantity(100);
 		stockTotalDetail.setAvaiableQuantity(100);
@@ -124,13 +123,26 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		LocalDate localDateTime = LocalDate.parse(time1);
 		// parse it to a specified format
 		stockTotalDetail.setExpiredDate(localDateTime);
-		stockTotalDetail.setPalletPosition(palletPoisitionRepository.findOne(3));
+		stockTotalDetail.setPalletPosition(palletPoisitionRepository.findOne((long)5));
 		stockTotalDetail.setStockTotal(stockTotal);
 		stockTotalDetail.setProductStatus(1);
 		stockTotalDetail.setUserCreateId(1);
 		stockTotalDetailRepository.save(stockTotalDetail);
-		//end 3
-		*/
+		stockTotalDetail = new StockTotalDetail();
+		Product product1 = productRepository.findOne((long) 5);
+		stockTotalDetail.setProduct(product1);
+		stockTotalDetail.setQuantity(100);
+		stockTotalDetail.setAvaiableQuantity(100);
+		String time2 = "2020-01-01";
+		// convert String to LocalDateTime
+		LocalDate localDateTime1 = LocalDate.parse(time2);
+		// parse it to a specified format
+		stockTotalDetail.setExpiredDate(localDateTime1);
+		stockTotalDetail.setPalletPosition(palletPoisitionRepository.findOne((long)4));
+		stockTotalDetail.setStockTotal(stockTotal);
+		stockTotalDetail.setProductStatus(1);
+		stockTotalDetail.setUserCreateId(1);
+		stockTotalDetailRepository.save(stockTotalDetail);*/
 	}
 
 }
