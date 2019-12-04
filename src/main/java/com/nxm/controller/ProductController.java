@@ -90,7 +90,7 @@ public class ProductController {
 			@RequestParam("typename") String typename, @RequestParam("expireddate") String expireddate, Model model) {
 
 		List<StockTotalDetail> list = new ArrayList<>();
-		List<StockTotalDetail> listStock = service.getStockDetail(namebrand, nameproduct, typename, expireddate);
+		/*List<StockTotalDetail> listStock = service.getStockDetail(namebrand, nameproduct, typename, expireddate);
 		if (listStock != null) {
 			for (StockTotalDetail stockTotalDetail : listStock) {
 				list.add(stockTotalDetail);
@@ -99,7 +99,7 @@ public class ProductController {
 		} else {
 			return "redirject:/stock";
 		}
-
+*/
 		return "stock";
 
 	}
