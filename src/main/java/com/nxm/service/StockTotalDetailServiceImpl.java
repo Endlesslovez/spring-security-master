@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.nxm.model.Brand;
+import com.nxm.model.Product;
+import com.nxm.model.ProductType;
 import com.nxm.model.StockTotal;
 import com.nxm.model.StockTotalDetail;
 import com.nxm.repository.StockTotalDetailRepository;
@@ -33,4 +36,13 @@ public class StockTotalDetailServiceImpl implements StockTotalDetailService {
 		// TODO Auto-generated method stub
 		return stockTotalDetailRepository.findOne(id);
 	}
+
+	@Override
+	public List<StockTotalDetail> getStockDetail(String idproduct, String idbrand, String idproductType, String expireddate) {
+		// TODO Auto-generated method stub
+		return stockTotalDetailRepository.getStockDetail(idproduct, idbrand, idproductType, expireddate);
+	}
+
+	
+	
 }
