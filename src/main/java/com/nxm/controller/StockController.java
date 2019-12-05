@@ -121,7 +121,9 @@ public class StockController {
 		model.addAttribute("brand", brandService.getAll());
 		model.addAttribute("protype", proTypeRepository.getAll());
 		model.addAttribute("product", new Product());
-	
+		model.addAttribute("productList", productRepository.findAll());
+		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+		model.addAttribute("pallet", palletPoisitionService.getAllPalletPoisitions(pageable));
 		int page1 = pageable.getPageNumber();
 		int count = 10;
 		List<PalletPosition> temp = palletPoisitionService.findRecord();
@@ -1285,6 +1287,5 @@ public class StockController {
 //                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 //                .body(resource);
 //    }
-//	model.addAttribute("productList", productRepository.findAll());
-//	model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+
 }
