@@ -89,6 +89,7 @@ public class ProductController {
 	public String search(@RequestParam("namebrand") String namebrand, @RequestParam("nameproduct") String nameproduct,
 			@RequestParam("typename") String typename, @RequestParam("expireddate") String expireddate, Model model) {
 
+
 		List<StockTotalDetail> list = new ArrayList<>();
 		/*List<StockTotalDetail> listStock = service.getStockDetail(namebrand, nameproduct, typename, expireddate);
 		if (listStock != null) {
@@ -100,6 +101,7 @@ public class ProductController {
 			return "redirject:/stock";
 		}
 */
+
 		return "stock";
 
 	}

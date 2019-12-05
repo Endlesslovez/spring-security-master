@@ -126,7 +126,7 @@ public class StockController {
 		model.addAttribute("product", new Product());
 		model.addAttribute("productList", productRepository.findAll());
 		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-		
+
 		return "stock";
 	}
 
@@ -1146,6 +1146,5 @@ public class StockController {
 //                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 //                .body(resource);
 //    }
-//	model.addAttribute("productList", productRepository.findAll());
-//	model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+
 }

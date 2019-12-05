@@ -171,8 +171,8 @@ span.selected {
 	</nav>
 
 	<article>
-	<h2 style="text-align: center; margin: 24px; font-size: 39px;">QUẢN
-					LÝ TỒN KHO</h2>
+		<h2 style="text-align: center; margin: 24px; font-size: 39px;">QUẢN
+			LÝ TỒN KHO</h2>
 		<div class="row">
 			<div class="col">
 				<form th:action="@{/search}" th:method="POST" action="stock.html"
@@ -184,7 +184,8 @@ span.selected {
 								phẩm</td>
 							<td><div class="input-group mb-3">
 									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon" name="nameproduct">
+										aria-label="Example select with button addon"
+										name="nameproduct">
 										<option value="">Chọn sản phẩm</option>
 										<option th:each="country1 : ${productList}"
 											th:value="${country1.id}" th:text="${country1.name}"
@@ -207,8 +208,7 @@ span.selected {
 								sản phẩm</td>
 							<td><div class="input-group mb-3">
 									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon"
-										name="typename">
+										aria-label="Example select with button addon" name="typename">
 										<option value="">Chọn Loại Sản Phẩm</option>
 										<option th:each="country : ${protype}"
 											th:value="${country.id}" th:text="${country.typeName}" />
@@ -228,7 +228,7 @@ span.selected {
 					</table>
 				</form>
 				<span th:text="${mgs}"></span>
-			
+
 				<table class="table table-striped" style="text-align: center;">
 					<thead>
 						<tr style="font-weight: 800; font-size: 12px;">
@@ -264,11 +264,13 @@ span.selected {
 							<td></td>
 							<td th:text="${stocktotaldetail.palletPosition.id}"></td>
 							<td>
+
 								<!-- <form th:action="@{/findPoisition/}+${{stocktotaldetail.id}}" th:method="GET">
 									<button class="btn btn-light" type="submit"> <span class="fa fa-retweet "></span>
 									</button>
 								</form> -->
 								<a class="btn btn-light" th:href="${'/findPoisition/' + stocktotaldetail.id}"><span class="fa fa-retweet "></span></a> 
+
 							</td>
 							<td><form action="@{combo}">
 									<button type="button" class="btn btn-danger">
@@ -426,6 +428,7 @@ span.selected {
 				</form>
 			</div>
 		</div>
+
 		<div th:if="${chotkho}">
 			<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 				role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -459,6 +462,45 @@ span.selected {
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">Đóng</button>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="exampleModalLong" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLongTitle"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle" style="    margin-left: 30%;
+    font-size: 23px;">DANH SÁCH
+							VỊ TRÍ</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<table style="text-align: center;">
+						<thead>
+							<tr>
+								<th>Mã vị trí</th>
+								<th>Vị trí</th>
+								<th>Dung lượng</th>
+								<th>Chọn</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each=" palletlist : ${pallet}">
+								<td th:text="${palletlist.id}"></td>
+								<td th:text="${palletlist.pallet.palletNumber}"></td>
+								<td th:text="${palletlist.emptyPercent}"></td>
+								<td><input type="checkbox" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="modal-footer" style="    padding-right: 43%;">
+						
+						<button type="button" class="btn btn-primary">Xác nhận</button>
 					</div>
 				</div>
 			</div>
@@ -535,7 +577,7 @@ span.selected {
 		};
 		$(window).on('load', function() {
 			$('#exampleModalCenter').modal('show');
-			
+
 			var area = getCookie(area);
 			console.log(area);
 			var percent = getCookie(percent);
