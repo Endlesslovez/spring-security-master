@@ -366,7 +366,7 @@ public class StockController {
 	@GetMapping("/exportExcelCK")
 	public void downloadFile(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 
-		String fileName = "F:/Spring framework/qlphanmem/template/Bieu_mau_chot_kho.xlsx";
+		String fileName = "src/main/resources/excel/Bieu_mau_chot_kho.xlsx";
 		String fileOutName = "";
 		try {
 			// Code to download
@@ -443,7 +443,7 @@ public class StockController {
 				}
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm");
 				LocalDateTime now = LocalDateTime.now();
-				fileOutName = "F:/Spring framework/qlphanmem/Excel/Bieu_mau_chot_kho1" + dtf.format(now) + ".xlsx";
+				fileOutName = "src/main/resources/excel/Bieu_mau_chot_kho1" + dtf.format(now) + ".xlsx";
 				FileOutputStream out = new FileOutputStream(new File(fileOutName));
 				workbook.write(out);
 				out.close();
@@ -836,7 +836,7 @@ public class StockController {
 		if (list.size() == 0) {
 			return;
 		}
-		String fileName = "F:/Spring framework/qlphanmem/template/" + filetype + ".xlsx";
+		String fileName = "src/main/resources/excel/" + filetype + ".xlsx";
 		String fileOutName = "";
 		try {
 			// Code to download
@@ -931,7 +931,7 @@ public class StockController {
 				}
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm");
 				LocalDateTime now = LocalDateTime.now();
-				fileOutName = "F:/Spring framework/qlphanmem/Excel/" + filetype + dtf.format(now) + ".xlsx";
+				fileOutName = "F://" + filetype + dtf.format(now) + ".xlsx";
 				FileOutputStream out = new FileOutputStream(new File(fileOutName));
 				workbook.write(out);
 				out.close();

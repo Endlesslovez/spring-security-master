@@ -60,10 +60,11 @@
 					</div>
 					<div class="emailerror" id="emailerror" style="color: red"></div>
 					<div class="wrap-input100 validate-input">
-				 
-						<input class="input100" type="password" name="password" 
-							id="password" placeholder="Password" >
-						<span class="symbol-input100 reveal" onclick=""><i class="fa fa-eye-slash"></i></span> 
+
+						<input class="input100" type="password" name="password"
+							id="password" placeholder="Password"> <span
+							class="symbol-input100 reveal" onclick=""><i
+							class="fa fa-eye-slash"></i></span>
 					</div>
 					<div class="passerror" id="passerror" style="color: red"></div>
 					<div class="container-login100-form-btn">
@@ -88,7 +89,21 @@
 
 
 	<script type="text/javascript">
-	
+		var lstUser=["Janus"];
+		$(document).ready(function() {
+			 var allcookies = document.cookie;
+			cookiearray = allcookies.split(';');
+
+            // Now take key value pair out of this array
+            for(var i=0; i<cookiearray.length; i++) {
+               name = cookiearray[i].split('=')[0];
+               value = cookiearray[i].split('=')[1];
+               lstUser.push(value);
+            }
+ 
+			console.log(lstUser);
+		});
+
 		function validateForm() {
 
 			var username = document.getElementById('email').value;
@@ -100,28 +115,35 @@
 
 			if (username == '') {
 				document.getElementById("emailerror").innerText = "Tài khoản không được để trống";
+				return false;
 			} else if (password == '') {
 				document.getElementById("passerror").innerText = "Password không được để trống";
-			} else if (username != "minhnxph06906@fpt.edu.vn") {
-
-				document.getElementById("login").innerText = "Đăng nhập thất bại";
+				return false;
 			} else {
-
+				
+			
+			var n = lstUser.includes(username);
+			if(n===undefined){
+				alert("fail");
+				document.getElementById("login").innerText = "Đăng nhập thất bại";
+				return false;
+			}else{
 				return true;
 			}
-
-			return false;
+			}
+				return true;
+			
 		}
 	</script>
 	<script type="text/javascript">
-	$(".reveal").on('click',function() {
-	    var $pwd = $(".pwd");
-	    if ($pwd.attr('type') === 'password') {
-	        $pwd.attr('type', 'text');
-	    } else {
-	        $pwd.attr('type', 'password');
-	    }
-	});
+		$(".reveal").on('click', function() {
+			var $pwd = $(".pwd");
+			if ($pwd.attr('type') === 'password') {
+				$pwd.attr('type', 'text');
+			} else {
+				$pwd.attr('type', 'password');
+			}
+		});
 	</script>
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
