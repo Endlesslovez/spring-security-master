@@ -171,8 +171,8 @@ span.selected {
 	</nav>
 
 	<article>
-	<h2 style="text-align: center; margin: 24px; font-size: 39px;">QUẢN
-					LÝ TỒN KHO</h2>
+		<h2 style="text-align: center; margin: 24px; font-size: 39px;">QUẢN
+			LÝ TỒN KHO</h2>
 		<div class="row">
 			<div class="col">
 				<form th:action="@{/search}" th:method="POST" action="stock.html"
@@ -184,7 +184,8 @@ span.selected {
 								phẩm</td>
 							<td><div class="input-group mb-3">
 									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon" name="nameproduct">
+										aria-label="Example select with button addon"
+										name="nameproduct">
 										<option value="">Chọn sản phẩm</option>
 										<option th:each="country1 : ${productList}"
 											th:value="${country1.id}" th:text="${country1.name}"
@@ -207,8 +208,7 @@ span.selected {
 								sản phẩm</td>
 							<td><div class="input-group mb-3">
 									<select class="custom-select" id="inputGroupSelect03"
-										aria-label="Example select with button addon"
-										name="typename">
+										aria-label="Example select with button addon" name="typename">
 										<option value="">Chọn Loại Sản Phẩm</option>
 										<option th:each="country : ${protype}"
 											th:value="${country.id}" th:text="${country.typeName}" />
@@ -228,7 +228,7 @@ span.selected {
 					</table>
 				</form>
 				<span th:text="${mgs}"></span>
-			
+
 				<table class="table table-striped" style="text-align: center;">
 					<thead>
 						<tr style="font-weight: 800; font-size: 12px;">
@@ -265,7 +265,9 @@ span.selected {
 							<td th:text="${stocktotaldetail.palletPosition.id}"></td>
 							<td>
 								<form>
-									<a class="btn btn-light"> <span class="fa fa-retweet "></span>
+									<a class="btn btn-light" data-toggle="modal"
+										data-target="#exampleModalLong"> <span
+										class="fa fa-retweet "></span>
 									</a>
 								</form>
 							</td>
@@ -425,14 +427,14 @@ span.selected {
 				</form>
 			</div>
 		</div>
-			<h2
-				style="text-align: center; font-size: 40px; margin: 26px; color: blue">DANH
-				SÁCH KHOANG CHỨA</h2>
-	<form th:action="@{/findPoisition}" th:method="GET" action="stock.html"
-					style="margin-top: 29px;">
-	<table style="    width: 100%;">
+		<h2
+			style="text-align: center; font-size: 40px; margin: 26px; color: blue">DANH
+			SÁCH KHOANG CHỨA</h2>
+		<form th:action="@{/findPoisition}" th:method="GET"
+			action="stock.html" style="margin-top: 29px;">
+			<table style="width: 100%;">
 				<tr>
-					<td style="    padding-bottom: 9px;text-align: center;">Khu vực</td>
+					<td style="padding-bottom: 9px; text-align: center;">Khu vực</td>
 					<td><div class="input-group mb-3">
 							<select class="custom-select" name="areaId" id="areaId">
 								<option th:value="A" th:text="A" />
@@ -449,34 +451,35 @@ span.selected {
 								<option th:value="L" th:text="L" />
 							</select>
 						</div></td>
-					<td  style="    padding-bottom: 9px;text-align: center;">Dung lượng</td>
+					<td style="padding-bottom: 9px; text-align: center;">Dung
+						lượng</td>
 					<td><div class="input-group mb-3">
 							<input type="text" class="form-control" placeholder="dung lượng"
 								name="percent" aria-label="product" id="percent"
 								aria-describedby="basic-addon1">
 						</div></td>
-					<td  style="    padding-bottom: 9px;text-align: center;">Mặt hàng</td>
+					<td style="padding-bottom: 9px; text-align: center;">Mặt hàng</td>
 					<td><div class="input-group mb-3">
 							<input type="text" class="form-control" placeholder="mã sản phẩm"
 								name="product" aria-label="product" id="product"
 								aria-describedby="basic-addon1">
 						</div></td>
-					<td  style="    padding-bottom: 9px;text-align: center;">Mã vị trí</td>
+					<td style="padding-bottom: 9px; text-align: center;">Mã vị trí</td>
 					<td><div class="input-group mb-3">
 							<input type="text" class="form-control" placeholder="mã vị trí"
 								name="paletPosition" aria-label="product" id="paletPosition"
 								aria-describedby="basic-addon1">
 						</div></td>
 					<td style="padding-left: 10px"><button type="submit"
-									class="btn btn-success"
-									style="height: 28px; margin-bottom: 10px;">Tìm kiếm</button></td>
+							class="btn btn-success"
+							style="height: 28px; margin-bottom: 10px;">Tìm kiếm</button></td>
 
 				</tr>
 			</table>
-				</form>
-	
+		</form>
+
 		<div th:if="${not #lists.isEmpty(page)}" class="row">
-		
+
 			<table class="table table-striped">
 				<tr>
 
@@ -558,6 +561,45 @@ span.selected {
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="exampleModalLong" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLongTitle"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle" style="    margin-left: 30%;
+    font-size: 23px;">DANH SÁCH
+							VỊ TRÍ</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<table style="text-align: center;">
+						<thead>
+							<tr>
+								<th>Mã vị trí</th>
+								<th>Vị trí</th>
+								<th>Dung lượng</th>
+								<th>Chọn</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each=" palletlist : ${pallet}">
+								<td th:text="${palletlist.id}"></td>
+								<td th:text="${palletlist.pallet.palletNumber}"></td>
+								<td th:text="${palletlist.emptyPercent}"></td>
+								<td><input type="checkbox" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="modal-footer" style="    padding-right: 43%;">
+						
+						<button type="button" class="btn btn-primary">Xác nhận</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row row-cols-3" style="margin-bottom: 3%;">
 			<div class="col">
 				<form action="/exportExcelCK" method="get"
@@ -630,7 +672,7 @@ span.selected {
 		};
 		$(window).on('load', function() {
 			$('#exampleModalCenter').modal('show');
-			
+
 			var area = getCookie(area);
 			console.log(area);
 			var percent = getCookie(percent);
