@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Giải pháp quản lý kho hàng</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+
+
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<style>
+[type="file"] {
+	height: 0;
+	overflow: hidden;
+	width: 0;
+}
+
+[type="file"]+label {
+	background: #a2fca8;
+	border: none;
+	cursor: pointer;
+	display: inline-block;
+	font-family: 'Poppins', sans-serif;
+	font-size: inherit;
+	font-weight: 600;
+	margin: 2px;
+	outline: none;
+	padding: 3px 5%;
+	position: relative;
+	transition: all 0.3s;
+	vertical-align: middle;
+	&:
+	hover
+	{
+	background-color
+	:
+	darken(
+	gray
+	,
+	10%
+	);
+}
+
+.btn-3 {
+	background-color: silver;
+	border-radius: 0;
+	overflow: hidden; span { display : inline-block;
+	height: 100%;
+	transition: all 0.3s;
+	width: 100%;
+}
+
+&
+::before {
+	color: #fff;
+	content: "\f382";
+	font-family: "Font Awesome 5 Pro";
+	font-size: 130%;
+	height: 100%;
+	left: 0;
+	line-height: 2.6;
+	position: absolute;
+	top: -180%;
+	transition: all 0.3s;
+	width: 100%;
+}
+
+&
+:hover {
+	background-color: darken(whitesmoke, 30%);
+	span
+	{
+	transform
+	:
+	translateY(
+	300%
+	);
+}
+
+&
+::before {
+	top: 0;
+}
+
+}
+.
+table {
+	width: 100%;
+}
+
+table td, table th {
+	border: 1px solid grey;
+}
+
+table th {
+	background: #eee;
+}
+
+.pagination-div {
+	user-select: none;
+}
+
+.pagination-div span {
+	border-radius: 3px;
+	border: 1px solid #999;
+	display: inline-block;
+	float: left;
+}
+
+span.selected {
+	background: green;
+}
+</style>
+</head>
+<body>
+	<!-- <div th:replace="/template/header :: header"></div> -->
+	<header class="header">
+		<img src="/images/logo.png" alt="" class="img-header"> <a
+			style="top: 11px; position: absolute; right: 120px; color: white;"><span
+			sec:authentication="name"></span></a>
+		<form action="#" th:action="@{/logout}" method="POST"
+			class="btn-logout">
+
+			<button type="submit" class="btn_logout">ĐĂNG XUẤT</button>
+		</form>
+	</header>
+
+	<nav class="site-header sticky-top py-1"
+		style="position: relative; font-family: 'Archivo Black', sans-serif; background: #31b573;">
+		<div
+			class="container d-flex flex-column flex-md-row justify-content-between"
+			style="max-width: 80%; margin-left: 0px;">
+			<a class="py-2 d-none d-md-inline-block" th:href="@{/stock}">QUẢN
+				LÝ TỒN KHO</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ NHẬP XUẤT</a> <span></span> <a
+				class="py-2 d-none d-md-inline-block" href="#">BÁO CÁO TỒN KHO</a> <span></span>
+			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
+				LƯỢNG</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ TÀI KHOẢN</a> <span></span>
+		</div>
+	</nav>
+
+	<article>
+			<h2
+				style="text-align: center; font-size: 40px; margin: 26px; color: blue">DANH
+				SÁCH KHOANG CHỨA</h2>
+	<form th:action="@{/findPoisition}" th:method="GET" action="stock.html"
+					style="margin-top: 29px;">
+	<table style="    width: 100%;">
+				<tr>
+					<td style="    padding-bottom: 9px;text-align: center;">Khu vực</td>
+					<td><div class="input-group mb-3">
+							<select class="custom-select" name="areaId" id="areaId">
+								<option th:value="A" th:text="A" />
+								<option th:value="B" th:text="B" />
+								<option th:value="C" th:text="C" />
+								<option th:value="D" th:text="D" />
+								<option th:value="E" th:text="E" />
+								<option th:value="F" th:text="F" />
+								<option th:value="G" th:text="G" />
+								<option th:value="H" th:text="H" />
+								<option th:value="I" th:text="I" />
+								<option th:value="J" th:text="J" />
+								<option th:value="K" th:text="K" />
+								<option th:value="L" th:text="L" />
+							</select>
+						</div></td>
+					<td  style="    padding-bottom: 9px;text-align: center;">Dung lượng</td>
+					<td><div class="input-group mb-3">
+							<input type="text" class="form-control" placeholder="dung lượng"
+								name="percent" aria-label="product" id="percent"
+								aria-describedby="basic-addon1">
+						</div></td>
+					<td  style="    padding-bottom: 9px;text-align: center;">Vị trí</td>
+					<td><div class="input-group mb-3">
+							<select class="custom-select" name="paletPosition" id="paletPosition">
+								<option th:value="1" th:text="1" />
+								<option th:value="2" th:text="2" />
+								<option th:value="3" th:text="3" />
+								<option th:value="4" th:text="4" />
+							</select>
+						</div></td>
+					<td style="padding-left: 10px"><button type="submit"
+									class="btn btn-success"
+									style="height: 28px; margin-bottom: 10px;">Tìm kiếm</button></td>
+
+				</tr>
+			</table>
+				</form>
+		<a th:if="not ${id}" th:text="${id}"></a>
+		<div th:if="${not #lists.isEmpty(page)}" class="row">
+		
+			<table class="table table-striped">
+				<tr>
+
+					<th class="th">Số thứ tự</th>
+					<th class="th">Tên Khu vực</th>
+					<th class="th">Số Pallet</th>
+					<th class="th">Pallet position id</th>
+					<th class="th">Sức chứa</th>
+					<th class="th">Sản phẩm</th>
+				</tr>
+
+				<tr th:each="palletposition, iStat : ${page.content}">
+					<td th:text="${palletposition.id}" />
+					<td th:text="${palletposition.areaId}" />
+					<td th:text="${palletposition.palletNumber}" />
+					<td th:text="${palletposition.id}" />
+					<td th:text="${palletposition.emptyPercent}" />
+
+					<td th:if="${palletposition.product}"
+						th:text="${palletposition.product}"></td>
+					<td th:unless="${palletposition.product}"></td>
+				</tr>
+			</table>
+
+			<div class="pagination-div">
+				<span th:if="${page.hasPrevious()}"> <a
+					style="text-decoration: none; width: 5px; float: left;"
+					th:href="@{/stock(page=${page.number-1},size=${page.size})}">&laquo;</a>
+				</span>
+				<th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+					<span th:if="${page.number == i}" class="selected"
+						style="color: black; float: left; font-size: 10px; text-decoration: none; width: 3px;"
+						th:text="${i}+1"></span>
+					<span th:unless="${page.number == i}"> <a
+						style="color: black; float: left; text-decoration: none; font-size: 10px; width: 3px;"
+						th:href="@{/stock(page=${i},size=${page.size})}" th:text="${i}+1"></a>
+					</span>
+				</th:block>
+				<span th:if="${page.hasNext()}"> <a
+					style="color: black; float: left; padding: 3px 5px; text-decoration: none;"
+					th:href="@{/stock(page=${page.number+1},size=${page.size})}">&raquo;</a>
+				</span>
+			</div>
+		</div>
+	</article>
+	<div class="footer">Copyright &copy; Feature Solution Company
+		2019</div>
+
+
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+	<script>
+		$('.js-tilt').tilt({
+			scale : 1.1
+		});
+		function validate() {
+
+			valid = true;
+
+			if ($("#file").val() == '') {
+				// your validation error action
+				valid = false;
+
+			}
+
+			return valid //true or false
+		};
+		$(window).on('load', function() {
+			$('#exampleModalCenter').modal('show');
+			
+			var area = getCookie(area);
+			console.log(area);
+			var percent = getCookie(percent);
+			console.log(percent);
+			var product = getCookie(product);
+			console.log(product);
+			var paletPosition = getCookie(paletPosition);
+			console.log(paletPosition);
+		});
+		$('#findpoisiton').click(function() {
+			var area = $('#areaId').val();
+			var value = "";
+			value = area;
+			console.log(value);
+			var name = "area";
+			document.cookie = name + "=" + value
+			"; path=/";
+			var percent = $('#percent').val();
+			value = percent;
+			name = "percent";
+			document.cookie = name + "=" + value
+			"; path=/";
+			console.log(value);
+
+			var product = $('#product').val();
+			value = product;
+			name = "product";
+			document.cookie = name + "=" + value
+			"; path=/";
+			console.log(value);
+			var paletPosition = $('#paletPosition').val();
+			value = paletPosition;
+			name = "paletPosition";
+			document.cookie = name + "=" + value
+			"; path=/";
+			console.log(value);
+		});
+		function getCookie(c_name) {
+			if (document.cookie.length > 0) {
+				c_start = document.cookie.indexOf(c_name + "=");
+				if (c_start != -1) {
+					c_start = c_start + c_name.length + 1;
+					c_end = document.cookie.indexOf(";", c_start);
+					if (c_end == -1) {
+						c_end = document.cookie.length;
+					}
+					return unescape(document.cookie.substring(c_start, c_end));
+				}
+			}
+			return "";
+		};
+	</script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
+</html>

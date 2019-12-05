@@ -42,7 +42,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -123,52 +126,22 @@ public class StockController {
 		model.addAttribute("product", new Product());
 		model.addAttribute("productList", productRepository.findAll());
 		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-		model.addAttribute("pallet", palletPoisitionService.getAllPalletPoisitions(pageable));
-		int page1 = pageable.getPageNumber();
-		int count = 10;
-		List<PalletPosition> temp = palletPoisitionService.findRecord();
-		List<PalletPoisitonVo> impiantos = this.filterByParam(temp, areaId, percent, product, paletPosition); // objects
-		int min = page1 * count;
 
-		int max = (page1 + 1) * count;
-		if (max > impiantos.size()) {
-			max = impiantos.size();
-		}
-		long total = (long) impiantos.size();
-
-		Page<PalletPoisitonVo> pageImpianto = new PageImpl<PalletPoisitonVo>(impiantos.subList(min, max), pageable,
-				total);
-		model.addAttribute("page", pageImpianto);
-		if (areaId != null && !areaId.equals("")) {
-			model.addAttribute("areaId", areaId);
-		}
-		if (percent != null && !percent.equals("")) {
-			model.addAttribute("percent", percent);
-		}
-		if (product != null && !product.equals("")) {
-			model.addAttribute("product", product);
-		}
-		if (paletPosition != null && !paletPosition.equals("")) {
-			model.addAttribute("paletPosition", paletPosition);
-		}
 		return "stock";
 	}
 
-	@GetMapping("/findPoisition")
-	public String findPoisition(Model model, @PageableDefault(size = 10) Pageable pageable,
+	@RequestMapping(value="/findPoisition/{id}", method = RequestMethod.GET)
+	public String findPoisition(Model model, @PageableDefault(size = 10) Pageable pageable,@PathVariable("id") long id,
 			@RequestParam(value = "areaId", required = false) String areaId,
 			@RequestParam(value = "percent", required = false) String percent,
 			@RequestParam(value = "product", required = false) String product,
 			@RequestParam(value = "paletPosition", required = false) String paletPosition) {
-		model.addAttribute("brand", brandService.getAll());
-		model.addAttribute("protype", proTypeRepository.getAll());
-		model.addAttribute("product", new Product());
 		int page1 = pageable.getPageNumber();
 		int count = 10;
-
+	
 		List<PalletPosition> temp = palletPoisitionService.findRecord();
 		List<PalletPoisitonVo> impiantos = this.filterByParam(temp, areaId, percent, product, paletPosition); // returned
-																												// 30
+		model.addAttribute("id",id);																										// 30
 		if (impiantos != null && impiantos.size() > 0) {
 			int min = page1 * count;
 
@@ -181,9 +154,9 @@ public class StockController {
 			Page<PalletPoisitonVo> pageImpianto = new PageImpl<PalletPoisitonVo>(impiantos.subList(min, max), pageable,
 					total);
 			model.addAttribute("page", pageImpianto);
-			return "stock";
+			return "findPoisition";
 		} else { // objects
-			return "stock";
+			return "findPoisition";
 		}
 
 	}
@@ -208,164 +181,60 @@ public class StockController {
 			if (areaId != null && !areaId.equals("")) {
 				if (areaId.equals(palletPosition.getPallet().getAreaId()) && percent1 >= 0
 						&& palletPosition.getEmptyPercent() == percent1) {
-					if (productId > 0) {
-						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
+					if (palletpositionId > 0 && palletPosition.getPallet().getPalletNumber() == palletpositionId) {
+						palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+						palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+						palletPoisitonVo.setId(palletPosition.getId());
+						palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+						// get values from contact entity and set them in contactDto
+						// e.g. contactDto.setContactId(contact.getContactId());
 
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
-										&& stockTotalDetail.getProduct().getId() == productId) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-									palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-									palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-									palletPoisitonVo.setId(palletPosition.getId());
-									palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-									palletPoisitonVo.setProduct(product);
-									palletPoisitonVos.add(palletPoisitonVo);
-								}
+						List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+						String product = "";
+						for (StockTotalDetail stockTotalDetail : temp) {
+							if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+								product += stockTotalDetail.getProduct().getName() + "; ";
 							}
-
-						} else {
-
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
-										&& stockTotalDetail.getProduct().getId() == productId) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-									palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-									palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-									palletPoisitonVo.setId(palletPosition.getId());
-									palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-									palletPoisitonVo.setProduct(product);
-									palletPoisitonVos.add(palletPoisitonVo);
-								}
-							}
-
 						}
-					} else if (percent1 >= 0 && palletPosition.getEmptyPercent() == percent1) {
-						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
-							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-							palletPoisitonVo.setId(palletPosition.getId());
-							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
+						palletPoisitonVo.setProduct(product);
+						palletPoisitonVos.add(palletPoisitonVo);
+					} else {
+						palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+						palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+						palletPoisitonVo.setId(palletPosition.getId());
+						palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+						// get values from contact entity and set them in contactDto
+						// e.g. contactDto.setContactId(contact.getContactId());
 
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-								}
+						List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+						String product = "";
+						for (StockTotalDetail stockTotalDetail : temp) {
+							if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+								product += stockTotalDetail.getProduct().getName() + "; ";
 							}
-							palletPoisitonVo.setProduct(product);
-							palletPoisitonVos.add(palletPoisitonVo);
-						} else {
-							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-							palletPoisitonVo.setId(palletPosition.getId());
-							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-								}
-							}
-							palletPoisitonVo.setProduct(product);
-							palletPoisitonVos.add(palletPoisitonVo);
 						}
+						palletPoisitonVo.setProduct(product);
+						palletPoisitonVos.add(palletPoisitonVo);
 					}
+
 				} else if (areaId.equals(palletPosition.getPallet().getAreaId()) && percent1 < 0) {
-					if (productId > 0) {
-						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
+					if (palletpositionId > 0 && palletPosition.getPallet().getPalletNumber() == palletpositionId) {
+						palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
+						palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
+						palletPoisitonVo.setId(palletPosition.getId());
+						palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
+						// get values from contact entity and set them in contactDto
+						// e.g. contactDto.setContactId(contact.getContactId());
 
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
-										&& stockTotalDetail.getProduct().getId() == productId) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-									palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-									palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-									palletPoisitonVo.setId(palletPosition.getId());
-									palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-									palletPoisitonVo.setProduct(product);
-									palletPoisitonVos.add(palletPoisitonVo);
-								}
+						List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
+						String product = "";
+						for (StockTotalDetail stockTotalDetail : temp) {
+							if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
+								product += stockTotalDetail.getProduct().getName() + "; ";
 							}
-
-						} else {
-
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()
-										&& stockTotalDetail.getProduct().getId() == productId) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-
-								}
-							}
-							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-							palletPoisitonVo.setId(palletPosition.getId());
-							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-							palletPoisitonVo.setProduct(product);
-							palletPoisitonVos.add(palletPoisitonVo);
 						}
-					} else if (percent1 >= 0 && palletPosition.getEmptyPercent() == percent1) {
-						if (palletpositionId > 0 && palletPosition.getId() == palletpositionId) {
-							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-							palletPoisitonVo.setId(palletPosition.getId());
-							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-								}
-							}
-							palletPoisitonVo.setProduct(product);
-							palletPoisitonVos.add(palletPoisitonVo);
-						} else {
-							palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
-							palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
-							palletPoisitonVo.setId(palletPosition.getId());
-							palletPoisitonVo.setPalletNumber(palletPosition.getPallet().getPalletNumber());
-							// get values from contact entity and set them in contactDto
-							// e.g. contactDto.setContactId(contact.getContactId());
-
-							List<StockTotalDetail> temp = stockTotalDetailService.findRecord();
-							String product = "";
-							for (StockTotalDetail stockTotalDetail : temp) {
-								if (stockTotalDetail.getPalletPosition().getId() == palletPosition.getId()) {
-									product += stockTotalDetail.getProduct().getName() + "; ";
-								}
-							}
-							palletPoisitonVo.setProduct(product);
-							palletPoisitonVos.add(palletPoisitonVo);
-						}
+						palletPoisitonVo.setProduct(product);
+						palletPoisitonVos.add(palletPoisitonVo);
 					} else {
 						palletPoisitonVo.setAreaId(palletPosition.getPallet().getAreaId());
 						palletPoisitonVo.setEmptyPercent(palletPosition.getEmptyPercent());
@@ -648,11 +517,11 @@ public class StockController {
 		product.setName(name);
 		product.setPackageType(packageType);
 		product.setPrice(price);
-		String proceString =price.toString();
+		String proceString = price.toString();
 		product.setBrand(brand1);
 		product.setProductType(productType2);
-		
-		if(name==null||brand==null||proceString==null||productType==null||packageType==null) {
+
+		if (name == null || brand == null || proceString == null || productType == null || packageType == null) {
 			model.addAttribute("mgs", "Thêm mới thật bại");
 		}
 		if (service.create(product) == true) {
@@ -661,19 +530,17 @@ public class StockController {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			return "stock";
 		} else {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			model.addAttribute("mgs", "Thêm mới không thàng công");
 			return "stock";
 		}
@@ -691,10 +558,9 @@ public class StockController {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			return "stock";
 		}
 		List<StockChange> lstDelete = stockChangeRepository.findByStockTotalId(stockTotalNow.getId());
@@ -947,20 +813,18 @@ public class StockController {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 		} else {
 			chotkho = "Chưa hoàn thành chốt kho. Vui lòng kiểm tra file Excel chốt kho";
 			model.addAttribute("chotkho", chotkho);
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			exportFile(httpServletRequest, response, "Bieu_mau_chot_kho_loi", lstFail);
 		}
 
@@ -1164,20 +1028,18 @@ public class StockController {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			return "stock";
 		} else {
 			model.addAttribute("chotkho", "Hiện tại đã kiểm kê kho.");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			return "stock";
 		}
 	}
@@ -1210,10 +1072,9 @@ public class StockController {
 				model.addAttribute("brand", brandService.getAll());
 				model.addAttribute("protype", proTypeRepository.getAll());
 				model.addAttribute("product", new Product());
-				Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-				Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-				model.addAttribute("page", page);
+				model.addAttribute("productList", productRepository.findAll());
+				model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+				
 				return "stock";
 
 			} else {
@@ -1221,10 +1082,9 @@ public class StockController {
 				model.addAttribute("brand", brandService.getAll());
 				model.addAttribute("protype", proTypeRepository.getAll());
 				model.addAttribute("product", new Product());
-				Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-				Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-				model.addAttribute("page", page);
+				model.addAttribute("productList", productRepository.findAll());
+				model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+				
 				return "stock";
 			}
 
@@ -1233,10 +1093,9 @@ public class StockController {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
-			Page<PalletPosition> palletPoisitionPage = palletPoisitionService.getAllPalletPoisitions(pageable);
-
-			Page<PalletPoisitonVo> page = palletPoisitionPage.map(this::convertToContactDto);
-			model.addAttribute("page", page);
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			
 			return "stock";
 		}
 
