@@ -350,7 +350,7 @@ public class StockController {
 //					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
 					String formattedString = stockTotalDetail.getExpiredDate();
 					stockTotalDetailVO.setExpiredDate(formattedString);
-					stockTotalDetailVO.setPalletPositionId((int) stockTotalDetail.getPalletPosition().getId());
+					stockTotalDetailVO.setPalletPositionId((Long) stockTotalDetail.getPalletPosition().getId());
 					stockTotalDetailVO.setStockTotalDetailId(stockTotalDetail.getId());
 				} else {
 					stockTotalDetailVO.setError("Bản ghi lỗi. Vui lòng báo lại quản trị viên");
@@ -521,27 +521,23 @@ public class StockController {
 		product.setBrand(brand1);
 		product.setProductType(productType2);
 
-		if (name == null || brand == null || proceString == null || productType == null || packageType == null) {
-			model.addAttribute("mgs", "Thêm mới thật bại");
-		}
-		if (service.create(product) == true) {
-
-			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
+		if (name.length() == 0|| brand.length() == 0|| proceString.length() == 0|| productType.length() == 0|| packageType.length() == 0) {
+			model.addAttribute("mgs", "Lưu sản phẩm thất bại");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
 			return "stock";
-		} else {
+		}else {
+			service.create(product);
+			model.addAttribute("mgs", "Lưu sản phẩm thành công");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
 			
-			model.addAttribute("mgs", "Thêm mới không thàng công");
 			return "stock";
 		}
 
@@ -677,7 +673,7 @@ public class StockController {
 					value = readingFromExcelSheet.getCellValue(cell);
 					if (!value.equals("")) {
 						try {
-							stockTotalDetailVO.setPalletPositionId((int) Math.round(Double.parseDouble(value)));
+							stockTotalDetailVO.setPalletPositionId((Long) Math.round(Double.parseDouble(value)));
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
 							msg += "Vị trí không hợp lệ";
