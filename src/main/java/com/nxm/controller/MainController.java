@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,12 +31,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nxm.model.Brand;
 import com.nxm.model.Product;
 import com.nxm.model.ProductType;
 import com.nxm.model.StockTotalDetail;
+import com.nxm.model.User;
 import com.nxm.repository.ProductRepository;
 import com.nxm.repository.UserRepository;
 import com.nxm.service.BrandService;
@@ -44,7 +51,6 @@ import com.nxm.service.StockTotalDetailService;
 @Controller
 public class MainController {
 
-
 	@Autowired
 	private UserRepository userRepository;
 
@@ -54,8 +60,6 @@ public class MainController {
 	@Autowired
 	private StockTotalDetailService stockTotalDetailService;
 
-
-	
 	@GetMapping("/")
 	public String index(Model model, Pageable pageable) {
 		Page<StockTotalDetail> stockTotalDetailPage = stockTotalDetailService.findAll(pageable);
@@ -75,13 +79,26 @@ public class MainController {
 	public String index2() {
 		return "index2";
 	}
+
 	@GetMapping("/403")
 	public String accessDenied() {
 		return "403";
 	}
 
 	@GetMapping("/login")
-	public String getLogin() {
+	public String getLogin(Model model,HttpServletResponse response) {
+		List<User> list = userRepository.findAllUser();
+		int i=0;
+		for(User user : list) {
+			Cookie cookie = new Cookie("user"+i, user.getEmail());
+	        //set the expiration time
+	        //1 hour = 60 seconds x 60 minutes
+	        cookie.setMaxAge(60 * 60);
+	        //add the cookie to the  response
+	        response.addCookie(cookie);
+	        i++;
+		}
+		
 		return "login";
 	}
 
@@ -114,14 +131,14 @@ public class MainController {
 			HSSFWorkbook workbook = new HSSFWorkbook();
 			HSSFSheet sheet = workbook.createSheet("Danh Sách Nhân Viên");
 			HSSFFont font = workbook.createFont();
-	        font.setBold(true);
-	       // font.setItalic(true);
-	 
-	        // Font Height
-	        font.setFontHeightInPoints((short) 10);
-	 
-	        // Font Color
-	        font.setColor(IndexedColors.WHITE.index);
+			font.setBold(true);
+			// font.setItalic(true);
+
+			// Font Height
+			font.setFontHeightInPoints((short) 10);
+
+			// Font Color
+			font.setColor(IndexedColors.WHITE.index);
 			HSSFCellStyle style = workbook.createCellStyle();
 			style.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
 			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -130,9 +147,9 @@ public class MainController {
 			rowhead.createCell(0).setCellValue("");
 			rowhead.createCell(1).setCellValue("");
 			rowhead.createCell(2).setCellValue("Danh sách sản phẩm");
-			
+
 			rowhead.createCell(3).setCellValue("");
-			
+
 			HSSFRow row1 = sheet.createRow((short) 1);
 			row1.createCell(0).setCellValue("No.");
 			row1.createCell(1).setCellValue("Mã sản phẩm");
@@ -197,5 +214,3 @@ public class MainController {
 	}
 
 }
-
-
