@@ -2,481 +2,364 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Giải pháp quản lý kho hàng</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title>Giải pháp quản lý kho hàng</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css"
+	integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt"
+	crossorigin="anonymous">
+<!--===============================================================================================-->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
 </head>
 
 <body>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"
+		integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+
 	<!-- <div th:replace="/template/header :: header"></div> -->
 	<header class="header">
-		<img src="/images/logo.png" alt="" class="img-header"> <a
-			style="top: 11px; position: absolute; right: 120px; color: white;"><span
-				sec:authentication="name"></span></a>
-		<form action="#" th:action="@{/logout}" method="POST" class="btn-logout">
+		<img src="/images/logo.png" alt="" class="img-header">
+		<h4 style="position: absolute; right: 10%; top: 10%; color: #31b573;">
+			XIN CHÀO&#160;&#160;&#160;<span sec:authentication="name"></span>
+		</h4>
+		<form action="#" th:action="@{/logout}" method="POST"
+			class="btn-logout">
 
-			<button type="submit" class="btn btn-outline-primary" style="color: white; width: 75%;">ĐĂNG XUẤT</button>
+			<button type="submit" class="btn_logout">ĐĂNG XUẤT</button>
 
 		</form>
 	</header>
 
-	<nav class="site-header sticky-top py-1" style="position: relative; font-family: 'Archivo Black', sans-serif;">
-		<div class="container d-flex flex-column flex-md-row justify-content-between"
+	<nav class="site-header sticky-top py-1"
+		style="position: relative; font-family: 'Archivo Black', sans-serif; background: #31b573;">
+		<div
+			class="container d-flex flex-column flex-md-row justify-content-between"
 			style="max-width: 80%; margin-left: 0px;">
-			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ TỒN
-				KHO</a> <span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN
-				LÝ NHẬP XUẤT</a> <span></span> <a class="py-2 d-none d-md-inline-block" href="#">BÁO CÁO TỒN KHO</a>
-			<span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
-				LƯỢNG</a> <span></span> <a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ TÀI KHOẢN</a>
-			<span></span>
+			<a class="py-2 d-none d-md-inline-block" th:href="@{/stock}">QUẢN
+				LÝ TỒN KHO</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ NHẬP XUẤT</a> <span></span> <a
+				class="py-2 d-none d-md-inline-block" href="#">BÁO CÁO TỒN KHO</a> <span></span>
+			<a class="py-2 d-none d-md-inline-block" href="#">QUẢN LÝ DUNG
+				LƯỢNG</a> <span></span> <a class="py-2 d-none d-md-inline-block"
+				href="#">QUẢN LÝ TÀI KHOẢN</a> <span></span>
 		</div>
 	</nav>
-	<article>
-		<div class="container" style="width:100%;">>
-			<div class="row">
-				<div class="col">
-
-					<h2 class="table-title">DANH SÁCH SẢN PHẨM SẮP HẾT HẠN SỬ DỤNG</h2>
-					<div>
 
 
-						<table class="table" style="border: black 1px solid;">
-							<tr style="background: #00ff00215255218;">
-								<th class="th">MÃ SẢN PHẨM</th>
-								<th class="th">TÊN SẢN PHẨM</th>
-								<th class="th">SỐ LƯỢNG</th>
-								<th class="th">TỔNG TIỀN</th>
-								<th class="th">NGÀY HẾT HẠN</th>
-								<th class="th">TRẠNG THÁI</th>
-								<!--<th class="th"><a class="btn btn-info btn-sm" >Thêm tuyến</a></th>-->
-							</tr>
-							<tr style="background: #fca094; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 5</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #fca094; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 5</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #fca094; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 6</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #ff8000; color: white;">
-								<td>SP001</td>
-								<td>IPHONE XI</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #ff8000; color: white;">
-								<td>SP001</td>
-								<td>IPHONE XI</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE X</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 8</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE X</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 8</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE X</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
+	<div class="container-fluid" style="margin-top: 20px">
 
-						</table>
-
-					</div>
-					<div th:if="${not #lists.isEmpty(routes)}">
+		<div class="row">
+			<div class="col-6">
 
 
-						<table class="table table-striped">
-							<tr>
-								<th class="th">MÃ SẢN PHẨM</th>
-								<th class="th">TÊN SẢN PHẨM</th>
-								<th class="th">SỐ LƯỢNG</th>
-								<th class="th">TỔNG TIỀN</th>
-								<th class="th">NGÀY HẾT HẠN</th>
-								<th class="th">TRẠNG THÁI</th>
-								<!--<th class="th"><a class="btn btn-info btn-sm" >Thêm tuyến</a></th>-->
-							</tr>
-							<tr th:each="routeRail : ${routes}">
-								<td th:text="${routeRail.routeId}"></td>
-								<td th:text="${routeRail.nameRoute}">Name</td>
-								<td th:text="${routeRail.lstStation}">Last Name</td>
-								<td th:text="${routeRail.createDate}">Email</td>
-								<td th:text="${routeRail.updateDate}">Phone</td>
-								<td th:text="${routeRail.status}">Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-						</table>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th colspan="6"
+								style="text-align: center; background: #79f382; color: white;">DANH
+								SÁCH SẢN PHẨM SẮP HẾT HẠN SỬ DỤNG</th>
+						</tr>
+						<tr>
 
-					</div>
-
-					<!-- Pagination Bar -->
-					<div th:fragment='paginationbar'>
-						<div>
-							<ul class='pagination pagination-centered'>
-								<li th:class="${page.firstPage}?'disabled':''"><span
-										th:if='${page.firstPage}'>First</span> <a th:if='${not page.firstPage}'
-										th:href='@{${page.url}(page=0,size=${page.size})}'>First</a></li>
-								<li th:class="${page.hasPreviousPage}? '' : 'disabled'"><span
-										th:if='${not page.hasPreviousPage}'>«</span> <a th:if='${page.hasPreviousPage}'
-										th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'
-										title='Go to previous page'>«</a></li>
-								<li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''"><span
-										th:if='${item.current}' th:text='${item.number}'>1</span> <a
-										th:if='${not item.current}'
-										th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'><span
-											th:text='${item.number}'>1</span></a></li>
-								<li th:class="${page.hasNextPage}? '' : 'disabled'"><span
-										th:if='${not page.hasNextPage}'>»</span> <a th:if='${page.hasNextPage}'
-										th:href='@{${page.url}(page=${page.number},size=${page.size})}'
-										title='Go to next page'>»</a></li>
-								<li th:class="${page.lastPage}? 'disabled' : ''"><span
-										th:if='${page.lastPage}'>Last</span> <a th:if='${not page.lastPage}'
-										th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>Last</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<h2 class="table-title">DANH SÁCH SẢN PHẨM SẮP HẾT TỒN KHO</h2>
-					<div>
+							<th>Mã sản phẩm</th>
+							<th>Tên sản phẩm</th>
+							<th>Số lượng</th>
+							<th>Tổng tiền</th>
+							<th>Ngày hết hạn</th>
+							<th>Trạng thái</th>
 
 
-						<table class="table" style="border: black 1px solid;">
-							<tr class="table-tr-title" style="background: #00ff00215255218;">
-								<th class="th">MÃ SẢN PHẨM</th>
-								<th class="th">TÊN SẢN PHẨM</th>
-								<th class="th">SỐ LƯỢNG</th>
-								<th class="th">TỔNG TIỀN</th>
-								<th class="th">NGÀY HẾT HẠN</th>
-								<th class="th">TRẠNG THÁI</th>
-								<!--<th class="th"><a class="btn btn-info btn-sm" >Thêm tuyến</a></th>-->
-							</tr>
-							<tr style="background: #fca094; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 10</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #fca094; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 10</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #fca094; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 10</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #ff8000; color: white;">
-								<td>SP001</td>
-								<td>IPHONE XI</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #ff8000; color: white;">
-								<td>SP001</td>
-								<td>IPHONE XI</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE X</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 8</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE X</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE 8</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-							<tr style="background: #0091d7; color: white;">
-								<td>SP001</td>
-								<td>IPHONE X</td>
-								<td>2</td>
-								<td>100000000</td>
-								<td>30/12/2019</td>
-								<td>Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="background: #c8facc;">
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
 
-						</table>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
 
-					</div>
-					<div th:if="${not #lists.isEmpty(routes)}">
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
 
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
 
-						<table class="table table-striped">
-							<tr>
-								<th class="th">MÃ SẢN PHẨM</th>
-								<th class="th">TÊN SẢN PHẨM</th>
-								<th class="th">SỐ LƯỢNG</th>
-								<th class="th">TỔNG TIỀN</th>
-								<th class="th">NGÀY HẾT HẠN</th>
-								<th class="th">TRẠNG THÁI</th>
-								<!--<th class="th"><a class="btn btn-info btn-sm" >Thêm tuyến</a></th>-->
-							</tr>
-							<tr th:each="routeRail : ${routes}">
-								<td th:text="${routeRail.routeId}"></td>
-								<td th:text="${routeRail.nameRoute}">Name</td>
-								<td th:text="${routeRail.lstStation}">Last Name</td>
-								<td th:text="${routeRail.createDate}">Email</td>
-								<td th:text="${routeRail.updateDate}">Phone</td>
-								<td th:text="${routeRail.status}">Active</td>
-								<!-- <td><a class="btn btn-info btn-sm">Chi tiết</a> <a
-                                class="btn btn-danger btn-sm" >Delete</a>
-                        </td>-->
-							</tr>
-						</table>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
 
-					</div>
-					<!-- Pagination Bar -->
-					<div th:fragment='paginationbar'>
-						<div>
-							<ul class='pagination pagination-centered'>
-								<li th:class="${page.firstPage}?'disabled':''"><span
-										th:if='${page.firstPage}'>First</span> <a th:if='${not page.firstPage}'
-										th:href='@{${page.url}(page=0,size=${page.size})}'>First</a></li>
-								<li th:class="${page.hasPreviousPage}? '' : 'disabled'"><span
-										th:if='${not page.hasPreviousPage}'>«</span> <a th:if='${page.hasPreviousPage}'
-										th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'
-										title='Go to previous page'>«</a></li>
-								<li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''"><span
-										th:if='${item.current}' th:text='${item.number}'>1</span> <a
-										th:if='${not item.current}'
-										th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'><span
-											th:text='${item.number}'>1</span></a></li>
-								<li th:class="${page.hasNextPage}? '' : 'disabled'"><span
-										th:if='${not page.hasNextPage}'>»</span> <a th:if='${page.hasNextPage}'
-										th:href='@{${page.url}(page=${page.number},size=${page.size})}'
-										title='Go to next page'>»</a></li>
-								<li th:class="${page.lastPage}? 'disabled' : ''"><span
-										th:if='${page.lastPage}'>Last</span> <a th:if='${not page.lastPage}'
-										th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>Last</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>Samsung</td>
+							<td>10</td>
+							<td>2010101</td>
+							<td>12/12/2010</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+
+						</tr>
+
+					</tbody>
+				</table>
+
 			</div>
-			<div class="row" style="margin-bottom:3%;">
-				<div class="col"></div>
-				<div class="col"></div>
-				<div class="col">
-					<form action="/exportExcel" method="get">
+			<div class="col-6">
 
-						<select style="width:70%;" id="typeOflst" name="typeOflst">
-							<option value="1">Ds Hết hạn</option>
-							<option value="2">Ds Hết hàng</option>
-						</select><button class="btn btn-info" type="submit" style="margin-left: 5px;width:28%;">Xuất
-							Excel</button></form>
-				</div>
+
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th colspan="6"
+								style="text-align: center; background: #79f382; color: white;">DANH
+								SÁCH SẢN PHẨM SẮP HẾT TỒN KHO</th>
+						</tr>
+						<tr>
+							<th>Mã sản phẩm</th>
+							<th>Tên sản phẩm</th>
+							<th>Số lượng</th>
+							<th>Tổng tiền</th>
+							<th>Ngày hết hạn</th>
+							<th>Trạng thái</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td>SP001</td>
+							<td>SamSung</td>
+							<td>3</td>
+							<td>1211212</td>
+							<td>12/12/2019</td>
+							<td><button class="btn btn-danger" style="width: 57%">Unfollow</button></td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+						</tr>
+						<tr>
+							<td colspan="6">
+								<form action="/exportExcel" method="get">
+
+									<select
+										style="width: 70%; font-size: medium; background: #a2fca8; height: 40px; border: 1px solid; border-radius: 9px;"
+										id="typeOflst" name="typeOflst" class="">
+										<option value="1">Danh sách Hết hạn</option>
+										<option value="2">Danh sách Hết hàng</option>
+									</select>
+									<button class="btn btn-success" type="submit"
+										style="margin-left: 5px; width: 28%; background-color: #a2fca8; color: black; font-weight: bold; border-radius: 8px; height: 39px; margin-bottom: 9px;">XUẤT
+										EXCEL</button>
+								</form>
+
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
 			</div>
+
 		</div>
+		<div class="row"
+			style="background: #d7ffda; text-align: center; font-size: 20px;">
+			<div class="col">Copyright @ Feature</div>
+		</div>
+	</div>
 
-
-	</article>
-	<<<<<<< HEAD <footer
-		style="background: rgb(215, 255, 218);font-family: 'Myriad Pro';font-style: 'Regular';font-size: 14pt; text-align:center;">
-		Copyright &copy; Feature Solution Company
-		=======
-		<footer class="footer">Copyright &copy; Feature Solution Company
-			>>>>>>> d0f7c11f4ec8277c0429e5d34fd5b74268a8fa04
-			2019</footer>
-
-
-
-		<!--===============================================================================================-->
-		<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-		<!--===============================================================================================-->
-		<script src="vendor/bootstrap/js/popper.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-		<!--===============================================================================================-->
-		<script src="vendor/select2/select2.min.js"></script>
-		<!--===============================================================================================-->
-		<script src="vendor/tilt/tilt.jquery.min.js"></script>
-		<script>
-			$('.js-tilt').tilt({
-				scale: 1.1
-			})
-		</script>
-		<!--===============================================================================================-->
-		<script src="js/main.js"></script>
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-			crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-			crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-			crossorigin="anonymous"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+	<script>
+		$('.js-tilt').tilt({
+			scale : 1.1
+		});
+	</script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
 </body>
 
 </html>

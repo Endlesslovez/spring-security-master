@@ -122,9 +122,9 @@ public class MainController {
 		String typeOflst = httpServletRequest.getParameter("typeOflst");
 		String fileName;
 		if (typeOflst.equals("1")) {
-			fileName = "F:/download/QLPM/DsSanPhamHethan.xls";
+			fileName = "src/main/resources/excel/DsSanPhamHethan.xls";
 		} else {
-			fileName = "F:/download/QLPM/DsSanPhamHetHang.xls";
+			fileName = "src/main/resources/excel/DsSanPhamHetHang.xls";
 		}
 		try {
 

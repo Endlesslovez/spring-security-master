@@ -22,7 +22,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 	@Override
 	public ProductType findProductById(Long id) {
 
-		return 	repositoty.findProductTypeById(id);
+		return 	repositoty.findOne(id);
 	}
 
 }

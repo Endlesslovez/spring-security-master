@@ -1,14 +1,9 @@
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 <
-style
->
-@import
-	url('https://fonts.googleapis.com/css?family=Public+Sans&display=swap')
-	;
-
-</
-style>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Alatsi&display=swap');
+</style>
 	/*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/ * {
 	margin: 0px;
@@ -57,6 +52,45 @@ ul, li {
 input {
 	outline: none;
 	border: none;
+}
+
+.tr-table-lv1 {
+	transition: transform .2s;
+	background: #ffaaaa;
+}
+
+.tr-table-lv1:hover {
+	transform: scale(1.2);
+	/* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+	z-index: 99;
+	background: white;
+	color: red;
+}
+
+.tr-table-lv2 {
+	transition: transform .2s;
+	background: #ffd1a4;
+}
+
+.tr-table-lv2:hover {
+	transform: scale(1.2);
+	/* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+	z-index: 99;
+	background: white;
+	color: red;
+}
+
+.tr-table-lv3 {
+	transition: transform .2s;
+	background: #9ddfff;
+}
+
+.tr-table-lv3:hover {
+	transform: scale(1.2);
+	/* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+	z-index: 99;
+	background: white;
+	color: red;
 }
 
 textarea {
@@ -226,7 +260,7 @@ iframe {
 }
 
 .login100-form-title {
-	font-family: 'Archivo Black', sans-serif;
+	font-family: 'Alatsi', sans-serif;
 	font-size: 24px;
 	color: #333333;
 	line-height: 1.2;
@@ -247,7 +281,7 @@ iframe {
 
 .img-login {
 	position: absolute;
-	max-width: 5%;
+	max-width: 3%;
 	top: 5%;
 	left: 2%;
 }
@@ -340,7 +374,7 @@ keyframes anim-shadow {to { box-shadow:0px0px70px25px;
 }
 
 .login100-form-btn {
-	font-family: 'Public Sans', sans-serif;
+font-family: 'Alatsi', sans-serif;
 	font-size: 15px;
 	line-height: 1.5;
 	color: #fff;
@@ -466,7 +500,7 @@ header {
 	width: 100%;
 	position: relative;
 	min-height: 50px;
-	background-color: #acfc98;
+	background-color: #dadada;
 }
 
 .btn-logout {
@@ -487,15 +521,30 @@ header {
 }
 
 #navbarNavAltMarkup {
-	background-color: #80ff00;
+	background-color: #31b573;
 	color: white;
 }
 
 .table-title {
 	margin-top: 5%;
-	color: #ff8000;
+	background: #31b573;
+	color: white;
 	text-align: center;
-	margin-bottom: 5%;
+	width: 100%;
+}
+
+.tfooter {
+	background: #31b573;
+	color: white;
+	text-align: center;
+	width: 100%;
+	height: 5%;
+}
+
+.btn_logout {
+	color: white;
+	back-ground: #20754a;
+	width: 75%;
 }
 
 .footer-login {
@@ -520,26 +569,21 @@ header {
 	font-family: "Myriad Pro";
 	font-style: "Regular";
 	font-size: 14pt;
-	
 }
-/* //new */
+/* //menu khong được xóa*/
 .site-header {
-	background-color: #75ea00;
+	background-color: #00ff40;
 	padding: 20px 10px;
 }
 
 .site-header a {
 	color: #ffffff;
 	transition: ease-in-out color 0.15s;
-}
-
-.site-header a:hover {
-	color: #a4f9d0;
 	text-decoration: none;
 }
 
 .header-nav-item {
-	font-size: 8px;
+	font-size: 16px;
 	font-weight: 300;
 	padding: 8px;
 	cursor: pointer;
@@ -552,15 +596,39 @@ a:link {
 
 a:hover {
 	text-decoration: none;
-	color: #00ffff;
+	color: #ffffff;
 }
 
-a:focus, a:active {
-	color: #ffffff;
+a:focus {
 	text-decoration: none;
 }
 
+a:active {
+	color: #00ffff;
+	text-decoration: none;
+}
+
+a {
+	text-decoration: none;
+	transition: color 0.1s, background-color 0.1s;
+}
+
+a {
+	text-decoration: none;
+	position: relative;
+	display: block;
+	padding: 16px 0;
+	margin: 0 12px;
+	letter-spacing: 1px;
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 900;
+	text-transform: uppercase;
+	transition: color 0.1s, background-color 0.1s, padding 0.2s ease-in;
+}
+
 a::before {
+	text-decoration: none;
 	content: "";
 	display: block;
 	position: absolute;
@@ -568,15 +636,13 @@ a::before {
 	left: 0;
 	height: 3px;
 	width: 100%;
-	background-color: #80ffff;
+	background-color: #ffffff;
 	transform-origin: right top;
 	transform: scale(0, 1);
 	transition: color 0.1s, transform 0.2s ease-out;
 }
 
 a:hover::before, a:focus::before {
-	text-decoration: none;
-	color: white;
 	transform-origin: left top;
 	transform: scale(1, 1);
 }
@@ -625,7 +691,6 @@ nav.bootsnav .dropdown.megamenu-fw .dropdown-menu {
 
 /* Navbar
 =================================*/
-
 nav.navbar.bootsnav {
 	margin-bottom: 0;
 	-moz-border-radius: 0px;
@@ -647,6 +712,8 @@ nav.navbar.bootsnav ul.nav li.megamenu-fw>a:hover, nav.navbar.bootsnav ul.nav li
 	nav.navbar.bootsnav ul.nav li.active>a:hover, nav.navbar.bootsnav ul.nav li.active>a:focus,
 	nav.navbar.bootsnav ul.nav li.active>a {
 	background-color: transparent;
+	color: #ffffff;
+	text-decoration: none;
 }
 
 nav.navbar.bootsnav .navbar-toggle {
@@ -679,6 +746,7 @@ ul.menu-col li a {
 
 ul.menu-col li a:hover, ul.menu-col li a:focus {
 	text-decoration: none;
+	color: #6f6f6f;
 }
 
 /* Navbar Full
@@ -1927,6 +1995,7 @@ body.on-side .wrap-sticky nav.navbar.bootsnav.sticked {
 	}
 }
 
+/* send mail */
 .form-sendmail {
 	margin-top: 28px;
 }
@@ -1936,11 +2005,19 @@ body.on-side .wrap-sticky nav.navbar.bootsnav.sticked {
 }
 
 .quenmatkhau {
-	font-family: 'Public Sans', sans-serif;
+	font-family: 'Alatsi', sans-serif;
 	color: black;
+	margin-left: 24%;
 }
 
 .d-md-inline-block {
 	font-weight: bold;
 }
 
+footer {
+	background: rgb(215, 255, 218);
+	font-family: 'Myriad Pro';
+	font-style: 'Regular';
+	font-size: 14pt;
+	text-align: center;
+}

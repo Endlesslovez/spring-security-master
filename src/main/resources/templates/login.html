@@ -46,7 +46,7 @@
 				</div>
 
 				<form class="login100-form validate-form" th:action="@{/login}"
-					onsubmit="validateForm()" method="POST">
+					onsubmit=" return validateForm()" onclick="" method="POST">
 					<span class="login100-form-title" style="margin-left: -100px;">
 						ĐĂNG NHẬP</span>
 					<div id="login" style="color: red"></div>
@@ -68,7 +68,7 @@
 					</div>
 					<div class="passerror" id="passerror" style="color: red"></div>
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit">Đăng nhập</button>
+						<button class="login100-form-btn">Đăng nhập</button>
 					</div>
 
 					<div class="text-center p-t-12">
@@ -86,7 +86,6 @@
 	</div>
 	<div class="footer-login">Copyright &copy; Feature Solution
 		Company 2019</div>
-
 
 
 	<script type="text/javascript">
@@ -146,7 +145,6 @@
 			}
 		});
 	</script>
-
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 	<!--===============================================================================================-->

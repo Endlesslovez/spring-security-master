@@ -8,13 +8,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-@Entity(name = "tbl_product_type")
+@Entity
+@Table(name = "tbl_product_type")
 public class ProductType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true,nullable = false)
-    @JsonIgnore
+	@Column(unique = true, nullable = false)
     private Long id;
 
     @Column(name = "col_type_name")

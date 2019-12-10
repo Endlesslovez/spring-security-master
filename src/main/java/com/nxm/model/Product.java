@@ -14,7 +14,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-@Entity(name = "tbl_product")
+@Entity
+@Table(name = "tbl_product")
 public class Product implements Serializable {
 
 	/**

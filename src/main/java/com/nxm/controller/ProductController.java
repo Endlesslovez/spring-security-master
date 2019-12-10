@@ -85,25 +85,5 @@ public class ProductController {
 //		}
 //	}
 
-	@RequestMapping("/search")
-	public String search(@RequestParam("namebrand") String namebrand, @RequestParam("nameproduct") String nameproduct,
-			@RequestParam("typename") String typename, @RequestParam("expireddate") String expireddate, Model model) {
-
-
-		List<StockTotalDetail> list = new ArrayList<>();
-		/*List<StockTotalDetail> listStock = service.getStockDetail(namebrand, nameproduct, typename, expireddate);
-		if (listStock != null) {
-			for (StockTotalDetail stockTotalDetail : listStock) {
-				list.add(stockTotalDetail);
-			}
-			model.addAttribute("stockList1", list);
-		} else {
-			return "redirject:/stock";
-		}
-*/
-
-		return "stock";
-
-	}
-
+	
 }

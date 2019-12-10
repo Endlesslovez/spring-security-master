@@ -2,13 +2,12 @@ package com.nxm.model;
 
 import javax.persistence.*;
 
-
-
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Entity(name = "tbl_stocktotaldetail")
-public class StockTotalDetail {
+public class StockTotalDetail  implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -141,5 +140,15 @@ public class StockTotalDetail {
 		this.product = product;
 	}
 
+	@Transient
+	public static final String findQuery = "from tbl_stocktotaldetail std join tbl_product p on p.id = std.col_product  \r\n" + 
+			"	join tbl_brand b on b.id = p.col_brandid \r\n" + 
+			"	join tbl_product_type ty on ty.id = p.product_type \r\n" + 
+			"	where p.col_name = :productName and b.col_name = :brandName and ty.col_type_name = :productType";
+
+	public static String getFindquery() {
+		return findQuery;
+	}
+	
 	
 }

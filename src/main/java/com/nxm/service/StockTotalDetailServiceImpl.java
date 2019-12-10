@@ -44,4 +44,16 @@ public class StockTotalDetailServiceImpl implements StockTotalDetailService {
 		return stockTotalDetailRepository.findRecord();
 	}
 
+	@Override
+	public List<StockTotalDetail> findByQuery(String productName, String brandName, String productType) {
+		// TODO Auto-generated method stub
+		return stockTotalDetailRepository.findByQuery(productName, brandName, productType);
+	}
+
+	@Override
+	public List<StockTotalDetail> findAllNow() {
+		// TODO Auto-generated method stub
+		return stockTotalDetailRepository.findAllNow();
+	}
+
 }

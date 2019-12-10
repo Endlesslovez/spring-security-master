@@ -27,7 +27,7 @@ public class BrandServiceImpl implements BrandService{
 	@Override
 	public Brand findBrandById(Long id ) {
 		// TODO Auto-generated method stub
-		return repository.findByBrandById(id);
+		return repository.findOne(id);
 	}
 
 }

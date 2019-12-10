@@ -4,6 +4,15 @@
 <title>Giải pháp quản lý kho hàng</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script>
+
 <!--===============================================================================================-->
 <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 <!--===============================================================================================-->
@@ -37,29 +46,27 @@
 				</div>
 
 				<form class="login100-form validate-form" th:action="@{/login}"
-					method="POST">
+					onsubmit=" return validateForm()" onclick="" method="POST">
 					<span class="login100-form-title" style="margin-left: -100px;">
-						ĐĂNG NHẬP</span> 
-						<span th:text="${login}"></span>
-					<div class="wrap-input100 validate-input"
-						data-validate="Valid email is required: ex@abc.xyz">
-					
-						<input class="input100" type="text" name="username"
-							placeholder="Email" required min="1"> <span class="focus-input100" ></span>
+						ĐĂNG NHẬP</span>
+					<div id="login" style="color: red"></div>
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="email" id="email"
+							placeholder="Email"> <span class="focus-input100"></span>
 						<span class="symbol-input100"> <i class="fa fa-envelope"
 							aria-hidden="true"></i>
 						</span>
+
 					</div>
-				<span th:text="${username}"></span>
-					<div class="wrap-input100 validate-input"
-						data-validate="Password is required">
+					<div class="emailerror" id="emailerror" style="color: red"></div>
+					<div class="wrap-input100 validate-input">
+
 						<input class="input100" type="password" name="password"
-							placeholder="Password" required min="1"> <span class="focus-input100"></span>
-						<span class="symbol-input100"> <i class="fa fa-eye"
-							aria-hidden="true"></i>
-						</span>
+							id="password" placeholder="Password"> <span
+							class="symbol-input100 reveal" onclick=""><i
+							class="fa fa-eye-slash"></i></span>
 					</div>
-					<span th:text="${password}"></span>
+					<div class="passerror" id="passerror" style="color: red"></div>
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">Đăng nhập</button>
 					</div>
@@ -81,7 +88,63 @@
 		Company 2019</div>
 
 
+	<script type="text/javascript">
+		var lstUser=["Janus"];
+		$(document).ready(function() {
+			 var allcookies = document.cookie;
+			cookiearray = allcookies.split(';');
 
+            // Now take key value pair out of this array
+            for(var i=0; i<cookiearray.length; i++) {
+               name = cookiearray[i].split('=')[0];
+               value = cookiearray[i].split('=')[1];
+               lstUser.push(value);
+            }
+ 
+			console.log(lstUser);
+		});
+
+		function validateForm() {
+
+			var username = document.getElementById('email').value;
+			var password = document.getElementById('password').value;
+
+			document.getElementById("emailerror").innerText = "";
+			document.getElementById("passerror").innerText = "";
+			document.getElementById("login").innerText = "";
+
+			if (username == '') {
+				document.getElementById("emailerror").innerText = "Tài khoản không được để trống";
+				return false;
+			} else if (password == '') {
+				document.getElementById("passerror").innerText = "Password không được để trống";
+				return false;
+			} else {
+				
+			
+			var n = lstUser.includes(username);
+			if(n===undefined){
+				alert("fail");
+				document.getElementById("login").innerText = "Đăng nhập thất bại";
+				return false;
+			}else{
+				return true;
+			}
+			}
+				return true;
+			
+		}
+	</script>
+	<script type="text/javascript">
+		$(".reveal").on('click', function() {
+			var $pwd = $(".pwd");
+			if ($pwd.attr('type') === 'password') {
+				$pwd.attr('type', 'text');
+			} else {
+				$pwd.attr('type', 'password');
+			}
+		});
+	</script>
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 	<!--===============================================================================================-->

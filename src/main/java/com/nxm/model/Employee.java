@@ -24,7 +24,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY
     )
     @Column(name = "employee_id", nullable = false)
-    private int id;
+    private long id;
 
     @Column(name = "employee_name", nullable = false)
     private String name;
@@ -86,11 +86,11 @@ public class Employee {
         this.name = name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

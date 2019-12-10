@@ -6,7 +6,7 @@ public class StockTotalDetailVO {
 
 	private Integer id;
 
-	private Long palletPositionId;
+	private Integer palletPositionId;
 
 	private long quantity;
 
@@ -104,11 +104,11 @@ public class StockTotalDetailVO {
 		this.id = id;
 	}
 
-	public Long getPalletPositionId() {
+	public Integer getPalletPositionId() {
 		return palletPositionId;
 	}
 
-	public void setPalletPositionId(Long palletPositionId) {
+	public void setPalletPositionId(Integer palletPositionId) {
 		this.palletPositionId = palletPositionId;
 	}
 

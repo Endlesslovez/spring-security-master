@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -116,32 +117,225 @@ public class StockController {
 
 	@GetMapping("/stock")
 	public String stock(Model model, @PageableDefault(size = 10) Pageable pageable,
-			@RequestParam(value = "areaId", required = false) String areaId,
-			@RequestParam(value = "percent", required = false) String percent,
-			@RequestParam(value = "product", required = false) String product,
-			@RequestParam(value = "paletPosition", required = false) String paletPosition) {
+			@RequestParam(value = "nameproduct", required = false) String nameproduct,
+			@RequestParam(value = "namebrand", required = false) String namebrand,
+			@RequestParam(value = "typename", required = false) String typename,
+			@RequestParam(value = "expireddate", required = false) String expireddate, HttpServletRequest request) {
 		// String areaId = httpServletRequest.getParameter("username");
+		model.addAttribute("brand", brandService.getAll());
+		List<ProductType> lst = proTypeRepository.getAll();
+		model.addAttribute("protype", lst);
+		model.addAttribute("product", new Product());
+		model.addAttribute("productList", productRepository.findAll());
+		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+		StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+		int status = 1;
+		if (stockTotalNow != null) {
+			model.addAttribute("status", status);
+		}
+		Cookie[] cookies = request.getCookies();
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("productId")) {
+					nameproduct = cookie.getValue();
+					System.out.println(nameproduct);
+				} else if (cookie.getName().equals("brandId")) {
+					namebrand = cookie.getValue();
+					System.out.println(namebrand);
+				} else if (cookie.getName().equals("typeProductId")) {
+					typename = cookie.getValue();
+					System.out.println(typename);
+				} else if (cookie.getName().equals("expriedDate")) {
+					expireddate = cookie.getValue();
+					System.out.println(expireddate);
+				}
+
+			}
+		}
+		List<StockTotalDetail> impiantos = new ArrayList<>();
+		if (nameproduct != null && namebrand != null && typename != null && expireddate != null) {
+			long productId = Long.parseLong(nameproduct);
+			long brandId = Long.parseLong(namebrand);
+			long typeProductId = Long.parseLong(typename);
+			Product product = productRepository.findOne(productId);
+			Brand brand = brandService.findBrandById(brandId);
+			ProductType productType = proTypeRepository.findProductById(typeProductId);
+			if (product != null && brand != null && productType != null) {
+				impiantos = stockTotalDetailService.findByQuery(product.getName(), brand.getName(),
+						productType.getTypeName());
+			}
+		} else {
+			impiantos = stockTotalDetailService.findAllNow();
+		}
+
+		int page1 = pageable.getPageNumber();
+		int count = 10;
+
+		if (impiantos != null && impiantos.size() > 0) {
+			int min = page1 * count;
+
+			int max = (page1 + 1) * count;
+			if (max > impiantos.size()) {
+				max = impiantos.size();
+			}
+			long total = (long) impiantos.size();
+
+			Page<StockTotalDetail> pageImpianto = new PageImpl<StockTotalDetail>(impiantos.subList(min, max), pageable,
+					total);
+			model.addAttribute("page", pageImpianto);
+			return "stock";
+
+		} else {
+			Page<StockTotalDetail> pageImpianto = new PageImpl<StockTotalDetail>(impiantos, pageable, (long) 0);
+			model.addAttribute("page", pageImpianto);
+			String chotkho = "Không tìm thấy tồn kho sản phẩm bạn tìm kiếm";
+			model.addAttribute("chotkho", chotkho);
+			return "stock";
+		}
+	}
+
+	@RequestMapping("/search")
+	public String search(@RequestParam(value = "nameproduct", required = false) String nameproduct,
+			@RequestParam(value = "namebrand", required = false) String namebrand,
+			@RequestParam(value = "typename", required = false) String typename,
+			@RequestParam(value = "expireddate", required = false) String expireddate, Model model,
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest request, HttpServletResponse response) {
+
 		model.addAttribute("brand", brandService.getAll());
 		model.addAttribute("protype", proTypeRepository.getAll());
 		model.addAttribute("product", new Product());
 		model.addAttribute("productList", productRepository.findAll());
-		model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
 
-		return "stock";
+		StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+		int status = 1;
+		if (stockTotalNow != null) {
+			model.addAttribute("status", status);
+		}
+		if (nameproduct == null && namebrand == null && typename == null && expireddate == null) {
+			Cookie[] cookies = request.getCookies();
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("productId")) {
+						cookie.setMaxAge(0);
+					} else if (cookie.getName().equals("brandId")) {
+						cookie.setMaxAge(0);
+					} else if (cookie.getName().equals("typeProductId")) {
+						cookie.setMaxAge(0);
+					} else if (cookie.getName().equals("expriedDate")) {
+						cookie.setMaxAge(0);
+					}
+
+				}
+			}
+		} else {
+			Cookie[] cookies = request.getCookies();
+
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("productId")) {
+						cookie.setValue(nameproduct);
+						cookie.setMaxAge(0);
+						Cookie cookie1 = new Cookie("productId", nameproduct);
+				        //set the expiration time
+				        //1 hour = 60 seconds x 60 minutes
+				        cookie1.setMaxAge(60 * 60);
+				        //add the cookie to the  response
+				        response.addCookie(cookie1);
+						System.out.println(nameproduct);
+					} else if (cookie.getName().equals("brandId")) {
+						cookie.setValue(namebrand);
+						cookie.setMaxAge(0);
+						Cookie cookie1 = new Cookie("brandId", namebrand);
+				        //set the expiration time
+				        //1 hour = 60 seconds x 60 minutes
+				        cookie1.setMaxAge(60 * 60);
+				        //add the cookie to the  response
+				        response.addCookie(cookie1);
+						System.out.println(namebrand);
+					} else if (cookie.getName().equals("typeProductId")) {
+						cookie.setValue(typename);
+						cookie.setMaxAge(0);
+						Cookie cookie1 = new Cookie("typeProductId", typename);
+				        //set the expiration time
+				        //1 hour = 60 seconds x 60 minutes
+				        cookie1.setMaxAge(60 * 60);
+				        //add the cookie to the  response
+				        response.addCookie(cookie1);
+						System.out.println(typename);
+					} else if (cookie.getName().equals("expriedDate")) {
+						cookie.setValue(expireddate);
+						cookie.setMaxAge(0);
+						Cookie cookie1 = new Cookie("expriedDate", expireddate);
+				        //set the expiration time
+				        //1 hour = 60 seconds x 60 minutes
+				        cookie1.setMaxAge(60 * 60);
+				        //add the cookie to the  response
+				        response.addCookie(cookie1);
+						System.out.println(expireddate);
+					}
+
+				}
+			}
+		}
+
+		List<StockTotalDetail> impiantos = new ArrayList<>();
+		if (nameproduct != null && namebrand != null && typename != null && expireddate != null) {
+			long productId = Long.parseLong(nameproduct);
+			long brandId = Long.parseLong(namebrand);
+			long typeProductId = Long.parseLong(typename);
+			Product product = productRepository.findOne(productId);
+			Brand brand = brandService.findBrandById(brandId);
+			ProductType productType = proTypeRepository.findProductById(typeProductId);
+			if (product != null && brand != null && productType != null) {
+				impiantos = stockTotalDetailService.findByQuery(product.getName(), brand.getName(),
+						productType.getTypeName());
+			}
+		} else {
+			impiantos = stockTotalDetailService.findAllNow();
+		}
+
+		int page1 = pageable.getPageNumber();
+		int count = 10;
+
+		if (impiantos != null && impiantos.size() > 0) {
+			int min = page1 * count;
+
+			int max = (page1 + 1) * count;
+			if (max > impiantos.size()) {
+				max = impiantos.size();
+			}
+			long total = (long) impiantos.size();
+
+			Page<StockTotalDetail> pageImpianto = new PageImpl<StockTotalDetail>(impiantos.subList(min, max), pageable,
+					total);
+			model.addAttribute("page", pageImpianto);
+			String chotkho = "Thông tin tồn kho sản phẩm bạn tìm kiếm như sau";
+			model.addAttribute("chotkho", chotkho);
+			return "stock";
+
+		} else {
+			Page<StockTotalDetail> pageImpianto = new PageImpl<StockTotalDetail>(impiantos, pageable, (long) 0);
+			model.addAttribute("page", pageImpianto);
+			String chotkho = "Không tìm thấy tồn kho sản phẩm bạn tìm kiếm";
+			model.addAttribute("chotkho", chotkho);
+			return "stock";
+		}
 	}
 
-	@RequestMapping(value="/findPoisition/{id}", method = RequestMethod.GET)
-	public String findPoisition(Model model, @PageableDefault(size = 10) Pageable pageable,@PathVariable("id") long id,
+	@RequestMapping(value = "/findPoisition/{id}", method = RequestMethod.GET)
+	public String findPoisition(Model model, @PageableDefault(size = 10) Pageable pageable, @PathVariable("id") long id,
 			@RequestParam(value = "areaId", required = false) String areaId,
 			@RequestParam(value = "percent", required = false) String percent,
 			@RequestParam(value = "product", required = false) String product,
 			@RequestParam(value = "paletPosition", required = false) String paletPosition) {
 		int page1 = pageable.getPageNumber();
 		int count = 10;
-	
+
 		List<PalletPosition> temp = palletPoisitionService.findRecord();
 		List<PalletPoisitonVo> impiantos = this.filterByParam(temp, areaId, percent, product, paletPosition); // returned
-		model.addAttribute("id",id);																										// 30
+		model.addAttribute("id", id); // 30
 		if (impiantos != null && impiantos.size() > 0) {
 			int min = page1 * count;
 
@@ -350,7 +544,7 @@ public class StockController {
 //					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-LLLL-yyyy");
 					String formattedString = stockTotalDetail.getExpiredDate();
 					stockTotalDetailVO.setExpiredDate(formattedString);
-					stockTotalDetailVO.setPalletPositionId((Long) stockTotalDetail.getPalletPosition().getId());
+					stockTotalDetailVO.setPalletPositionId((int) stockTotalDetail.getPalletPosition().getId());
 					stockTotalDetailVO.setStockTotalDetailId(stockTotalDetail.getId());
 				} else {
 					stockTotalDetailVO.setError("Bản ghi lỗi. Vui lòng báo lại quản trị viên");
@@ -521,23 +715,36 @@ public class StockController {
 		product.setBrand(brand1);
 		product.setProductType(productType2);
 
-		if (name.length() == 0|| brand.length() == 0|| proceString.length() == 0|| productType.length() == 0|| packageType.length() == 0) {
-			model.addAttribute("mgs", "Lưu sản phẩm thất bại");
+		if (name == null || brand == null || proceString == null || productType == null || packageType == null) {
+			model.addAttribute("mgs", "Thêm mới thật bại");
+		}
+		if (service.create(product) == true) {
+
+			model.addAttribute("mgs", "Thêm mới thành công sản phẩm");
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+			int status = 1;
+			if (stockTotalNow != null) {
+				model.addAttribute("status", status);
+			}
 			return "stock";
-		}else {
-			service.create(product);
-			model.addAttribute("mgs", "Lưu sản phẩm thành công");
+		} else {
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
+			StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+			int status = 1;
+			if (stockTotalNow != null) {
+				model.addAttribute("status", status);
+			}
+			model.addAttribute("mgs", "Thêm mới không thàng công");
+
 			return "stock";
 		}
 
@@ -556,8 +763,23 @@ public class StockController {
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
+			int status = 1;
+			model.addAttribute("status", status);
 			return "stock";
+		}
+		if (reapExcelDataFile.getInputStream() == null) {
+			String chotkho = "Vui lòng kiểm tra nhập file Excel! ";
+			model.addAttribute("chotkho", chotkho);
+			model.addAttribute("brand", brandService.getAll());
+			model.addAttribute("protype", proTypeRepository.getAll());
+			model.addAttribute("product", new Product());
+			model.addAttribute("productList", productRepository.findAll());
+			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
+			return "stock";
+		}
+		int status = 1;
+		if (stockTotalNow != null) {
+			model.addAttribute("status", status);
 		}
 		List<StockChange> lstDelete = stockChangeRepository.findByStockTotalId(stockTotalNow.getId());
 		for (StockChange stockChange : lstDelete) {
@@ -673,7 +895,7 @@ public class StockController {
 					value = readingFromExcelSheet.getCellValue(cell);
 					if (!value.equals("")) {
 						try {
-							stockTotalDetailVO.setPalletPositionId((Long) Math.round(Double.parseDouble(value)));
+							stockTotalDetailVO.setPalletPositionId((int) Math.round(Double.parseDouble(value)));
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
 							msg += "Vị trí không hợp lệ";
@@ -804,14 +1026,14 @@ public class StockController {
 			if (lstCompare.size() != 0) {
 				model.addAttribute("compare", "Chênh lệch: " + lstCompare.size());
 			}
-			chotkho = "Hoàn thành chốt kho";
+			chotkho = "Hoàn thành chốt kho. Vui lòng duyệt kiểm kê để kho tiếp tục hoạt động";
 			model.addAttribute("chotkho", chotkho);
 			model.addAttribute("brand", brandService.getAll());
 			model.addAttribute("protype", proTypeRepository.getAll());
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
+			return "stock";
 		} else {
 			chotkho = "Chưa hoàn thành chốt kho. Vui lòng kiểm tra file Excel chốt kho";
 			model.addAttribute("chotkho", chotkho);
@@ -820,10 +1042,9 @@ public class StockController {
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
+
 			exportFile(httpServletRequest, response, "Bieu_mau_chot_kho_loi", lstFail);
 		}
-
 		return "stock";
 	}
 
@@ -1008,6 +1229,11 @@ public class StockController {
 			e.printStackTrace();
 			model.addAttribute("message", "upload failed");
 		}
+		StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+		int status = 1;
+		if (stockTotalNow != null) {
+			model.addAttribute("status", status);
+		}
 		return "stock";
 	}
 
@@ -1026,7 +1252,6 @@ public class StockController {
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
 			return "stock";
 		} else {
 			model.addAttribute("chotkho", "Hiện tại đã kiểm kê kho.");
@@ -1035,7 +1260,7 @@ public class StockController {
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
+
 			return "stock";
 		}
 	}
@@ -1070,7 +1295,11 @@ public class StockController {
 				model.addAttribute("product", new Product());
 				model.addAttribute("productList", productRepository.findAll());
 				model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-				
+				StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+				int status = 1;
+				if (stockTotalNow != null) {
+					model.addAttribute("status", status);
+				}
 				return "stock";
 
 			} else {
@@ -1080,7 +1309,7 @@ public class StockController {
 				model.addAttribute("product", new Product());
 				model.addAttribute("productList", productRepository.findAll());
 				model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-				
+
 				return "stock";
 			}
 
@@ -1091,7 +1320,11 @@ public class StockController {
 			model.addAttribute("product", new Product());
 			model.addAttribute("productList", productRepository.findAll());
 			model.addAttribute("stockTotalDetail", stockTotalDetailService.findAll(pageable));
-			
+			StockTotal stockTotalNow = stockTotalService.findAvaiableRecord();
+			int status = 1;
+			if (stockTotalNow != null) {
+				model.addAttribute("status", status);
+			}
 			return "stock";
 		}
 

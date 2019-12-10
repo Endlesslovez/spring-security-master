@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-@Entity(name = "tbl_brand")
+@Entity
+@Table(name = "tbl_brand")
 public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true,nullable = false)
-    @JsonIgnore
+	@Column(unique = true, nullable = false)
     private Long id;
 
     @Column(name = "col_name")

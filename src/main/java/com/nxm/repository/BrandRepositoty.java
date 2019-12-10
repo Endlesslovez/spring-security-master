@@ -11,8 +11,5 @@ import com.nxm.model.Brand;
 @Repository
 public interface BrandRepositoty  extends JpaRepository<Brand, Long>{
 	
-	final String SELECT_BY_ID = "SELECT b FROM tbl_brand b WHERE b.id=:id";
 	
-	@Query(SELECT_BY_ID)
-	public Brand findByBrandById(@Param("id") Long id);
 }
